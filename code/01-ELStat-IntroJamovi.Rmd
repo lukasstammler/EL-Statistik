@@ -1,0 +1,54 @@
+---
+title: "Übung: Datenimport in jamovi"
+author: "Lukas Stammler"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    highlight: pygments
+    theme: yeti
+    code_download: false
+---
+
+```{r setup, include=FALSE}
+rm(list = ls())
+
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+
+library(tidyverse)
+library(knitr)
+```
+
+# Vorbemerkung
+
+Für die Übungen verwenden wir Datensätze, die wir als erstes in die Statistiksoftware **jamovi** einlesen müssen. Ein Datensatz umfasst die Daten zu einer oder mehreren Variablen und einer oder mehreren Beobachtungseinheiten (diese Begriffe werden in der Lerneinheit **Deskriptive Statistik** erläutert). 
+
+# Vorgehen  
+
+## Datensatz in **jamovi** importieren  
+
+1. Laden Sie den Datensatz `physio.csv` aus dem Kursordner herunter und speichern Sie ihn an einem Ort, an dem sie ihn leicht wieder finden.  
+2. Starten Sie **jamovi**.   
+3. Im Menüband oben links klicken sie auf die *drei Striche* und wählen im Pulldown-Menü *Open*.   
+4. In der Auswahlliste wählen sie oben rechts *Browse* und es öffnet sich ein Dateimanager-Fenster. Suchen Sie den Ordner, in dem sie die Übungsdateien abgelegt haben und wählen Sie die Datei `physio.csv`.  
+5. Der Datensatz wird jetzt in **jamovi** geladen und im Fenster links werden die ersten Spalten angezeigt.  
+
+**Hinweis**: Sie können die Sprache in **jamovi** im Pulldown-Menü unter den *drei Punkten* ganz rechts im Menüband ihren Bedürfnissen anpassen. Wir verwenden in diesem Kurs immer die englischen Originalbezeichnungen der Befehle.
+
+## Übung 1 {.tabset}
+
+### Aufgabe
+
+Wieviele Variablen (Spalten) und Beobachtungseinheiten (Zeilen) umfasst der Datensatz?
+
+### Lösung
+
+Navigieren Sie mittels der Scrollbalken in der Tabelle im linken Fenster. Der Datensatz umfasst die 9 Variablen `ID, Kohorte, Klasse, Geschlecht, Augenfarbe, Groesse, Gewicht, Statistik, Schuhgroesse` und 228 Beobachtungseinheiten.
+
+
+
+
+
+
+
+
+
