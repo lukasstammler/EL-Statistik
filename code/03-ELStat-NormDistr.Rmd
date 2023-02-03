@@ -1,5 +1,5 @@
 ---
-title: 'Normalverteilung: Übungen'
+title: 'Übungen: Normalverteilung und Wahrscheinlichkeiten'
 author: "Lukas Stammler"
 date: "`r Sys.Date()`"
 output:
@@ -8,6 +8,8 @@ output:
     fig_width: 4
     highlight: pygments
     theme: yeti
+    toc: true
+    toc_float: true
     code_download: false
 ---
 
@@ -24,17 +26,17 @@ library(openintro)
 
 data(COL)
 
-phydata <- read_csv("../data/physio.csv")
+phydata <- readr::read_csv("../data/physio.csv")
+phydata$ID <- factor(phydata$ID)
+phydata$Kohorte <- factor(phydata$Kohorte)
+phydata$Klasse <- factor(phydata$Klasse)
+phydata$Geschlecht <- factor(phydata$Geschlecht)
+phydata$Augenfarbe <- factor(phydata$Augenfarbe)
 ```
 
-# Technische Vorbemerkung
+**Technischer Hinweis: Links in den Übungen öffnen Sie, indem sie darauf rechtsklicken und "Link in neuem Tab/Fenster öffnen" wählen.**   
 
-* Die Übungen sind für die Arbeit mit [jamovi](https://www.jamovi.org/) [1] angelegt, können aber mit jeder anderen Statistiksoftware bearbeitet werden.    
-* Die Datensätze für alle Übungen können  [hier](https://github.com/lukasstammler/statexercises/blob/main/data/data_statexercises.zip) als zip-Datei heruntergeladen werden. Es wird empfohlen, alle Datensätze im gleichen Ordner abzulegen.   
-* Die Datensätze liegen im `.csv`-Format vor (header = TRUE, sep = ",", dec = ".") und können direkt in jamovi geöffnet werden. Es wird empfohlen, nach der Kategorisierung der Variablen in jamovi, die Datei im jamovi-Format `.omv` zu speichern.   
-    
-[1] The jamovi project (2021). jamovi (Version 1.6) [Computer Software]. Retrieved from https://www.jamovi.org  
-
+<br>
 
 # Wahrscheinlichkeiten  
 
@@ -42,27 +44,27 @@ Zum Aufwärmen ein paar einfache Übungen zu Wahrscheinlichkeiten
 
 <br/>
 
-## Übung {.tabset}
+## Übung 1 {.tabset}
 
 ### Aufgaben
 
-1. Du wirfst einen 6-seitigen Würfel. Wie gross ist die Wahrscheinlichkeit, beim ersten Wurf eine 6 zu erhalten?    
-2. Du wirfst den Würfel nochmals. Wie gross ist die Wahrscheinlichkeit, beim ersten Wurf keine 6 zu erhalten?  
-3. Du wirfst den Würfel nochmals. Wie gross ist die Wahrscheinlichkeit, beim 2. Wurf eine 6 zu erhalten.  
-4. Du ziehst blind eine Karte aus einem Kartenspiel mit 36 Karten. Wie gross ist die Wahrscheinlichkeit, dass du Herz-As ziehst?  
-5. Du ziehst blind eine Karte aus einem Kartenspiel mit 36 Karten. Wie gross ist die Wahrscheinlichkeit, dass du kein Herz-As ziehst?  
+1. Sie werfen einen 6-seitigen Würfel. Wie gross ist die Wahrscheinlichkeit, beim ersten Wurf eine 6 zu erhalten?    
+2. Sie werfen den Würfel nochmals. Wie gross ist die Wahrscheinlichkeit, beim ersten Wurf keine 6 zu erhalten?  
+3. Sie werfen den Würfel nochmals. Wie gross ist die Wahrscheinlichkeit, beim 2. Wurf eine 6 zu erhalten.  
+4. Sie ziehen blind eine Karte aus einem Kartenspiel mit 36 Karten. Wie gross ist die Wahrscheinlichkeit, dass Sie Herz-As ziehen?  
+5. Sie ziehen blind eine Karte aus einem Kartenspiel mit 36 Karten. Wie gross ist die Wahrscheinlichkeit, dass Sie kein Herz-As ziehen?  
 
 <br/>
 
 ### Lösungen 
 
-1. Du wirfst einen 6-seitigen Würfel. Wie gross ist die Wahrscheinlichkeit, beim ersten Wurf eine 6 zu erhalten?  
+1. Sie werfen einen 6-seitigen Würfel. Wie gross ist die Wahrscheinlichkeit, beim ersten Wurf eine 6 zu erhalten? 
 
   * Die Wahrscheinlichkeit für jede Seite beträgt p = 1/6; sie ist für jede Seite gleich gross. Damit beträgt die Wahrscheinlichkeit für eine 6 p = 1/6 = ca. 17%  
 
-2. Wie gross ist die Wahrscheinlichkeit, beim ersten Wurf keine 6 zu erhalten?  
+2. Sie werfen den Würfel nochmals. Wie gross ist die Wahrscheinlichkeit, beim ersten Wurf keine 6 zu erhalten?    
 
-  * Du wirst in jedem Fall eine Zahl zwischen 1 und 6 werfen, etwas anderes gibt es nicht. Die Gesamtwahrscheinlichkeit addiert sich zu  
+  * Sie werden in jedem Fall eine Zahl zwischen 1 und 6 werfen, etwas anderes gibt es nicht. Die Gesamtwahrscheinlichkeit addiert sich zu  
   $$P = 1/6 (für 1) + 1/6 (für 2) + 1/6 (für 3) + 1/6 (für 4) + 1/6 (für 5) + 1/6 (für 6) = 1$$
   
   * Die Wahrscheinlichkeit, keine 6 zu würfeln beträgt also 
@@ -71,46 +73,30 @@ Zum Aufwärmen ein paar einfache Übungen zu Wahrscheinlichkeiten
   
   * Einfacher geht es so: $P = 1 - P(6) = 1 - 1/6 = 5/6$   
   
-3. Du wirfst den Würfel erneut. Wie gross ist die Wahrscheinlichkeit, beim 2. Wurf eine 6 zu erhalten.  
+3. Sie werfen den Würfel nochmals. Wie gross ist die Wahrscheinlichkeit, beim 2. Wurf eine 6 zu erhalten.  
 
-  * Die Wahrscheinlichkeit beträgt immer noch p = 1/6. Die Wahrscheinlichkeit hat ja kein Gedächtnis und erinnert sich nicht daran, dass du schon mal eine 6 gewürfelt hast.   
+  * Die Wahrscheinlichkeit beträgt immer noch p = 1/6. Die Wahrscheinlichkeit hat ja kein Gedächtnis und erinnert sich nicht daran, dass Sie schon einmal eine 6 gewürfelt haben.   
   * Eine andere Frage wäre: Wie gross ist die Wahrscheinlichkeit, bei 2 Würfen zweimal hintereinander eine 6 zu erhalten. In diesem Fall ist $P(6|6) = 1/6 \times 1/6 = 1/36$.  
-  * P(6|6) bezeichnen wir als *bedingte Wahrscheinlichkeit* weil die Bedingung für den zweiten Wurf durch den ersten Wurf definiert ist. Bedingte Wahrscheinlichkeiten spielen z.B. eine Rolle bei der Sensitivität und Spezifität von Assessments und werden im Unterricht dort behandelt. Auch der p-Wert beim Hypothesenprüfen in der Statistik ist eine bedingte Wahrscheinlichkeit: Er gibt an, wie gross die Wahrscheinlichkeit für ein Ereignis ist unter der Bedingung, dass die Nullhypothese wahr ist. Aber ich greife jetzt etwas vor, das kommt später ;)  
+  * P(6|6) bezeichnen wir als *bedingte Wahrscheinlichkeit* weil die Bedingung für den zweiten Wurf durch den ersten Wurf definiert ist. Auch der p-Wert beim Hypothesenprüfen in der Statistik ist eine bedingte Wahrscheinlichkeit: Er gibt an, wie gross die Wahrscheinlichkeit für ein Ereignis ist unter der Bedingung, dass die Nullhypothese wahr ist. Aber wir greifen jetzt etwas vor, das kommt später ;)  
 
-4. Du ziehst blind eine Karte aus einem Kartenspiel mit 36 Karten. Wie gross ist die Wahrscheinlichkeit, dass du Herz-As ziehst?   
+4. Sie ziehen blind eine Karte aus einem Kartenspiel mit 36 Karten. Wie gross ist die Wahrscheinlichkeit, dass Sie Herz-As ziehen? 
 
   * Bei 36 Karten beträgt die Wahrscheinlichkeit, eine bestimmte Karte zu ziehen $P = 1/36$  
   
-5. Du ziehst blind eine Karte aus einem Kartenspiel mit 36 Karten. Wie gross ist die Wahrscheinlichkeit, dass du kein Herz-As, also eine x-beliebige andere Karte, ziehst? $P = 1 - 1/36 = 35/36$  
+5. Sie ziehen blind eine Karte aus einem Kartenspiel mit 36 Karten. Wie gross ist die Wahrscheinlichkeit, dass Sie kein Herz-As ziehen, also eine x-beliebige andere Karte? $P = 1 - 1/36 = 35/36$  
   
 <br/>
 
 # Normalverteilung und z-Werte
 
-Wir arbeiten mit dem bereits bekannten Datensatz `physio.csv`, der Daten von 228 Physiostudierenden der Kohorten PHY13-PHY17 enthält. Der Datensatz liegt in 2 Versionen vor:  
-
-* `physio.csv`: Textdatei im CSV-Format; die Variablen müssen gemäss Codebook erst kategorisiert werden.  
-* `physio.omv`: Datei im `jamovi`-Format; die Variablen sind bereits kategoriesiert.
-
-Der Datensatz umfasst 9 Variablen:  
-
-Variable |	Beschreibung | Skala | Werte
-|:--------:|:-------------:|:-----:|:------:|
-ID | ID | nominal | 1 ... n
-Kohorte |	Jahrgang Studierende | nominal | PHY13 … PHY17
-Klasse | Klasse 1 oder 2 | nominal | 1, 2
-Geschlecht | Geschlecht | nominal| m = maennlich, w = weiblich
-Augenfarbe | Augenfarbe | nominal | gruen, blau, braun
-Groesse	| Körpergrösse in cm | kontinuierlich | 148 … 198
-Gewicht |	Körpergewicht in kg | kontinuierlich |	47 … 105
-Statistik |	Das Fach Statistik interessiert mich |ordinal| (Likert-Skala) 1 = trifft überhaupt nicht zu, 2 = trifft eher nicht zu, 3 = egal, 4 = trifft eher zu, 5 = trifft vollstänig zu
-Schuhgroesse | Schuhgrösse in DE/EU-Einheiten |diskret| 35, 36 … 48
+In den folgenden Übungen arbeiten wir mit dem bereits bekannten Datensatz `physio.csv`, der Daten von 228 Studierenden der Physiotherapie enthält. Wenn Sie den Datensatz bei den Übungen zur deskriptiven Statistik als `physio.omv` gespeichert haben, sind die Variablen bereits kategorisiert und Sie arbeiten mit diesem Datensatz, andernfalls laden Sie `physio.csv`in **jamovi** und kategorisieren als erstes die Variablen wie in den Übungen zur deskriptiven Statistik beschrieben.    
 
 
+## Kurze Einführung
 
-## Einführung
+### Wie gross sind die Studentinnen?
 
-### Grösse der Studentinnen PHY13-PHY17
+Als erstes verschaffen wir uns einen Überblick zu den Kennzahlen der Körpergrösse der Studentinnen und stellen diese in einem Histogramm dar.
 
 ```{r, fig.align='center'}
 phy_w <- phydata %>% 
@@ -130,24 +116,35 @@ phy_w %>%
 
 phy_w %>% 
     ggplot(., aes(x = Groesse)) +
-    geom_histogram(aes(y = ..density..), 
+    geom_histogram(aes(y = after_stat(density)), 
                    bins = 15, fill = "skyblue", color = "white") +
     stat_function(fun = dnorm, 
                   args = list(mean = mean(phy_w$Groesse), sd = sd(phy_w$Groesse)),
-                  color = "red", size = 1) +
+                  color = "red", linewidth = 1) +
     ggtitle("Groesse der Studentinnen in cm") +
   ylab("")
 ```
    
+Anleitung für **jamovi**:   
+
+Wir arbeiten mit einem Teildatensatz für Studentinnen. Dazu müssen wir unsere Daten Filtern. Das geht folgendermassen: **jamovi** > Register *Data* > Menüband *Filters* > im Fenster geben sie **= Geschlecht == "w"** ein und schliessen mit der Enter/Return-Taste ab. Im Tabellenfenster links ist eine neue Spalte mit der Bezeichnung `Filter 1` erschienen. Bei den Frauen (`Geschlecht` == "w") sollte in dieser Spalte ein grünes Häckchen und bei den Männern (`Geschlecht`== "m") ein rotes X eingetragen sein.    
+
+Hilfe zum Filtern von Daten bieten diese Video-Tutorials  
+
+- [jamovi Tutorial: Filter setzen (youtube, Deutsch, 9'46")](https://youtu.be/Jvr5Eo9xJk4)  
+- [Filtering cases - jamovi (youtube, Englisch, 8'25")](https://youtu.be/pij0KlFhITw)  
+
+Wenn der Filter gesetzt ist, können Sie die Kennzahlen und das Histogramm (ohne Normalverteilungskurve) in **jamovi** erstellen, wie wir das bei den Übungen zur deskriptiven Statistik gelernt haben.
+
+<br>
    
-   
-### Umwandlung der Verteilung in eine Standard-Normalverteilung
+### Repetition: Umwandlung der Verteilung in eine Standard-Normalverteilung
 
 Die Standardnormalverteilung ist gekennzeichnet durch den Mittelwert 0 und die Standardabweichung 1. Die Umwandlung einer beliebigen Verteilung erfolgt nach der Formel:
 
 $$z_n=\frac{x_n-\bar{x}}{s}$$
 
-**Beispiel:** (Mittelwert und Standardabweichung siehe oben)
+**Beispiel:** (Mittelwert und Standardabweichung siehe Tabelle oben)
 
 $$z_n=\frac{x_n-166.92}{5.66}$$
 
@@ -160,7 +157,7 @@ phy_w <- phy_w %>%
 
 phy_w %>% 
     ggplot(., aes(x = Groesse_std)) +
-    geom_histogram(aes(y = ..density..), 
+    geom_histogram(aes(y = after_stat(density)), 
                    bins = 15, fill = "skyblue", color = "white") +
     stat_function(fun = dnorm, 
                   args = list(mean = mean(phy_w$Groesse_std), 
@@ -173,12 +170,12 @@ phy_w %>%
   
 Wir sehen, dass das standardisierte Histogramm und die standardisierte Normalverteilungskurve genau gleich aussehen, wie mit den nicht transformierten Originaldaten. Was bringt uns das also?   
     
-Wenn wir beliebige, normalverteilte Merkmale messen, werden wir immer wieder neue Normalverteilungen mit ihrem eigenen Mittelwert und ihrer eigenen Standardabweichung erhalten. D.h. die Normalverteilungskurve wird manchmal breiter, manchmal schmaler, manchmal höher, manchmal tiefer sein. Jedes beliebige Merkmal weist seine charakteristische Verteilung auf. In der Statistik interessieren wir uns oft für die Wahrscheinlichkeit, dass ein bestimmtes Ereignis eintritt (z.B. das Ereignis, dass eine Studentin 168 cm gross ist) und effektiv ist die Normalverteilung eine Wahrscheinlichkeitsverteilung. Die Berechnung von Wahrscheinlichkeiten erfolgt über die Berechnung von Flächeninhalten unter der Normalverteilungskurve wobei die gesamte Fläche unter der Kurve stets gleich 1 ist (Tönt kompliziert, ist es aber nicht. Wir werden das unten üben). Die Berechnung von Flächen unter Kurven ist tatsächlich eine nicht ganz triviale Angelegenheit. Um diese Berechnungen zu erleichtern, wurde die Standardnormalverteilung "erfunden". Die Standardisierung erfolgt über die Berechnung von sog. z-Werten. Die z-Werte-Tabelle ist ein Hilfsmittel, das es uns erlaubt, für beliebige Normalverteilungen beliebige Flächeninhalte und somit Wahrscheinlichkeiten zu berechnen.
+Wenn wir beliebige, normalverteilte Merkmale messen, werden wir immer wieder neue Normalverteilungen mit ihrem eigenen Mittelwert und ihrer eigenen Standardabweichung erhalten. D.h. die Normalverteilungskurve wird manchmal breiter, manchmal schmaler, manchmal höher, manchmal tiefer sein. Jedes beliebige Merkmal weist seine charakteristische Verteilung auf. In der Statistik interessieren wir uns oft für die Wahrscheinlichkeit, dass ein bestimmtes Ereignis eintritt (z.B. das Ereignis, dass eine Studentin 168 cm gross ist), und effektiv ist die Normalverteilung eine Wahrscheinlichkeitsverteilung. Die Berechnung von Wahrscheinlichkeiten erfolgt über die Berechnung von Flächeninhalten unter der Normalverteilungskurve wobei die gesamte Fläche unter der Kurve stets gleich 1 ist (Tönt kompliziert, ist es aber nicht. Wir werden das unten üben). Die Berechnung von Flächen unter Kurven ist tatsächlich eine nicht ganz triviale Angelegenheit. Um diese Berechnungen zu erleichtern, wurde die Standardnormalverteilung "erfunden". Die Standardisierung erfolgt über die Berechnung von sog. z-Werten. Die z-Werte-Tabelle ist ein Hilfsmittel, das es uns erlaubt, für beliebige Normalverteilungen beliebige Flächeninhalte und somit Wahrscheinlichkeiten zu berechnen.
 
 
 ### Arbeiten mit z-Werten
 
-Uns interessiert jetzt die Frage *Wie gross ist die Wahrscheinlichkeit, dass eine Studentin PHY13-PHY17 eine bestimmte Körpergrösse aufweist?*. Aus hier nicht näher erläuterten Gründen ist es nicht möglich, diese Wahrscheinlichkeit exakt zu berechnen (sie wäre gleich Null). Was jedoch möglich ist, ist die Beantwortung der Frage *Wie gross ist die Wahrscheinlichkeit dass eine Studentin gleich gross oder grösser, bzw. kleiner ist?*.
+Uns interessiert jetzt die Frage *Wie gross ist die Wahrscheinlichkeit, dass eine Studentin eine bestimmte Körpergrösse aufweist?*. Aus hier nicht näher erläuterten Gründen ist es nicht möglich, diese Wahrscheinlichkeit exakt zu berechnen (sie wäre gleich Null). Was jedoch möglich ist, ist die Beantwortung der Frage *Wie gross ist die Wahrscheinlichkeit dass eine Studentin gleich gross oder grösser, bzw. kleiner ist?*.
 
 **Beispiel:** Wie gross ist die Wahrscheinlichkeit, dass eine Studientin 163 cm gross oder kleiner ist?
 
@@ -239,9 +236,9 @@ also p = `r 1-p_lowertail`.
 
 ## Übungen 
 
-* Arbeite mit der z-Werte-Tabelle (http://eswf.uni-koeln.de/glossar/zvert.htm) oder mit der R-Konsole in `jamovi`.  
+* Arbeiten Sie mit der z-Werte-Tabelle (http://eswf.uni-koeln.de/glossar/zvert.htm) oder mit der R-Konsole in **jamovi**.  
 * Alle Übungen werden mit dem Teildatensatz für Studentinnen (jamovi:Filter **= Geschlecht == "w"**) durchgeführt.  
-* Für gewisse Übungen muss das Modul *Rj - Editor to run R code inside jamovi* installiert sein.  
+* Für gewisse Übungen muss das Modul *Rj - Editor to run R code inside jamovi* installiert sein. Sie können dieses Modul über die Schaltfläche *Modules* (grosses Pluszeichen im Menüband) installieren. Wählen Sie *Modules* > *jamovi library* > *Rj - Editor to run R code inside jamovi* und das Modul wird installiert. Sie erkennen das nach der Installation am *R*-Symbol in der Menüleiste.  
 
 ## Übung 1 {.tabset}  
 
@@ -251,12 +248,11 @@ Ziel: z-Werte für Körpergrössen von Studentinnen berechnen
 
 1. Wie gross ist der z-Wert für die Körpergrösse 176 cm?
 2. Wie gross ist der z-Wert für die Körpergrösse 166.94 cm?
-3. Wie gross ist der z-Wert für die Körpergrösse 195 cm?
+3. Wie gross ist der z-Wert für die Körpergrösse 195 cm? 
+
+**Tipp:** Berechnen Sie die z-Werte von Hand mit einem Taschenrechner.
 
 <br/> 
-<br/>
-   
-
 
 ### Lösungen
 
@@ -267,9 +263,6 @@ Ziel: z-Werte für Körpergrössen von Studentinnen berechnen
 3. $z = \frac{195 - 166.9396}{5.587423} = 5.022065$
 
 <br/> 
-<br/>
-  
-
 
 ## Übung 2 {.tabset}
 
@@ -278,7 +271,7 @@ Ziel: Wahrscheinlichkeiten für Körpergrössen von Studentinnen berechnen.
 
 ### Aufgaben  
 
-Erstelle jeweils eine Skizze für jede Frage und überlege, ob der z-Wert jeweils links oder rechts vom Mittelwert liegt und ob p kleiner oder grösser 50% ist.   
+Erstellen Sie jeweils eine Skizze für jede Frage und überlegen Sie, ob der z-Wert jeweils links oder rechts vom Mittelwert liegt und ob p kleiner oder grösser 50% ist.   
 
 1. Wie gross ist die Wahrscheinlichkeit, dass eine Studentin 176 cm oder kleiner ist?
 2. Wie gross ist die Wahrscheinlichkeit, dass eine Studentin 176 cm oder grösser ist?
@@ -288,28 +281,27 @@ Erstelle jeweils eine Skizze für jede Frage und überlege, ob der z-Wert jeweil
 6. Wie gross ist die Wahrscheinlichkeit, dass eine Studentin zwischen 163 cm und 176 cm gross ist?
 
 <br/> 
-<br/>
-  
-
 
 ### Lösungen
 
-Vorgehen:    
+Vorgehen: Sie können die Wahrscheinlichkeiten für ihre berechneten z-Werte entweder mit der z-Werte-Tabelle bestimmen oder mit **jamovi**. Wir beschreiben hier das Vorgehen für **jamovi**.    
 
-- Rj-Editor öffnen   
-- Die Funktion zur Berechnung von Wahrscheinlichkeiten unter der Normalverteilung in R heisst 'pnorm()'.    
-- Damit 'pnorm()' die Wahrscheinlichkeit für einen bestimmten *Wert* berechnen kann, benötigt die Funktion die Kennzahlen der Verteilung *Mittelwert* und *Standardabweichung*, daraus ergibt sich die Syntax von pnorm()
+- Öffnen Sie den *Rj-Editor* durch Klick auf das *R*-Symbol in der Menüleiste.   
+- Die Funktion zur Berechnung von Wahrscheinlichkeiten unter der Normalverteilung in R heisst `pnorm()`.    
+- Damit `pnorm()` die Wahrscheinlichkeit für einen bestimmten z-Wert berechnen kann, benötigt die Funktion die Kennzahlen der Verteilung *Mittelwert* und *Standardabweichung*, daraus ergibt sich die Syntax von `pnorm()`
 
-$$pnorm(Wert, mean = Mittelwert,~ sd = Standardabweichung, ~ lower.tail = FALSE/TRUE)$$
+$$pnorm(z-Wert, mean = Mittelwert,~ sd = Standardabweichung, ~ lower.tail = FALSE/TRUE)$$
 
 
-- Der Parameter *lower.tail* gibt an, ob die Fläche unter der Kurve links vom z-Wert berechnet werden soll (p für $\leq$ z-Wert, lower.tail = TRUE), oder die Fläche unter der Kurve rechts vom Wert (p für $\geq$ Wert, lower.tail = FALSE).  
+- Der Parameter `lower.tail` gibt an, ob die Fläche unter der Kurve links vom z-Wert berechnet werden soll (p für $\leq$ z-Wert, lower.tail = TRUE), oder die Fläche unter der Kurve rechts vom Wert (p für $\geq$ Wert, lower.tail = FALSE).  
 - Standardmässig ist `lower.tail = TRUE` eingestellt. Statt `lower.tail = FALSE` kann die Fläche rechts vom z-Wert auch als `1 - pnorm()` berechnet werden.  
-- Gib den Code mit dem z-Wert in der Klammer im Rj-Editor-Fenster ein und drücke zur Ausführung des Codes den grünen Pfeil oben rechts.
+- Geben Sie den Code mit dem z-Wert in der Klammer im *Rj-Editor*-Fenster ein und drücken Sie zur Ausführung des Codes den *grünen Pfeil* oben rechts.  
+
+Codebeispiel:  
 
 ```{r, echo=TRUE, eval=FALSE}
-pnorm(z-Wert)          # Fläche links vom z-Wert  
-1 - pnorm(z-Wert)      # Fläche rechts vom z-Wert
+pnorm(z-Wert, mean = 0, sd = 1, lower.tail = FALSE)     # Fläche links vom z-Wert  
+1 - pnorm(z-Wert, mean = 0, sd = 1, lower.tail = FALSE) # Fläche rechts vom z-Wert
 ```
 
 
@@ -326,8 +318,15 @@ phy_w %>%
 ```
 
 
-1. Wert = 176, Mittelwert = 166.924, Standardabweichung = 5.664, Frage nach p $\leq$ z-Wert   
+1. Wie gross ist die Wahrscheinlichkeit, dass eine Studentin 176 cm oder kleiner ist?   
 
+
+- Gegebener Wert = 176  
+- Mittelwert = 166.924  
+- Standardabweichung = 5.664   
+- Gesucht wird $p \leq z$-Wert   
+
+Skizze:   
 
 ```{r, fig.dim=c(4, 4), fig.align='center'}
 value <- 176
@@ -342,7 +341,16 @@ normTail(m = m, s = s, L = value, col = COL[1], digits = 0, main = tit)
 pnorm(176, mean = 166.924, sd = 5.664, lower.tail = TRUE)
 ```
 
-2. Wert = 176, Mittelwert = 166.924, Standardabweichung = 5.664, Frage nach p $\geq$ z-Wert  
+Die Wahrscheinlichkeit, dass eine Studentin 176 cm oder kleiner ist beträgt p = 0.945 (94.5%). Mit anderen Worten, 94.5% der Studentinnen sind 176 cm gross oder kleiner.
+
+2. Wie gross ist die Wahrscheinlichkeit, dass eine Studentin 176 cm oder grösser ist?   
+
+- Gegebener Wert = 176   
+- Mittelwert = 166.924   
+- Standardabweichung = 5.664  
+- Gesucht wird $p \geq z$-Wert  
+
+Skizze
 
 ```{r, fig.dim=c(4, 4), fig.align='center'}
 value <- 176
@@ -358,7 +366,15 @@ pnorm(176, mean = 166.924, sd = 5.664, lower.tail = FALSE)
 1 - pnorm(176, mean = 166.924, sd = 5.664)  # ergibt das gleiche Resultat
 ```
 
-3. Wert = 166.9, Mittelwert = 166.924, Standardabweichung = 5.664, Frage nach p $\leq$ z-Wert
+Die Wahrscheinlichkeit, dass eine Studentin 176 cm oder grösser ist beträgt p = 0.055 (5.5%). Mit anderen Worten, 5.5% der Studentinnen sind 176 cm gross oder grösser.   
+
+3. Wie gross ist die Wahrscheinlichkeit, dass eine Studentin 166.924 cm oder kleiner ist?   
+
+- Gegebener Wert = 166.924  
+- Mittelwert = 166.924   
+- Standardabweichung = 5.664   
+- Gesucht wird $p \leq z$-Wert   
+
 
 ```{r, fig.dim=c(4, 4), fig.align='center'}
 value <- 166.9
@@ -374,7 +390,15 @@ normTail(m = m, s = s, L = value, col = COL[1], digits = 0, main = tit)
 pnorm(166.924, mean = 166.924, sd = 5.664, lower.tail = TRUE)
 ```
 
-4. Wert = 166.9, Mittelwert = 166.924, Standardabweichung = 5.664, Frage nach p $\geq$ z-Wert  
+Die Wahrscheinlichkeit, dass eine Studentin 166.924 cm oder kleiner ist beträgt p = 0.5 (50%). Mit anderen Worten, 50% der Studentinnen sind 176 cm gross oder kleiner.  
+
+
+4. Wie gross ist die Wahrscheinlichkeit, dass eine Studentin 166.924 cm oder grösser ist?  
+
+- Gegebener Wert = 166.924   
+- Mittelwert = 166.924  
+- Standardabweichung = 5.664  
+- Gesucht wird $p \geq z$-Wert  
 
 ```{r, fig.dim=c(4, 4), fig.align='center'}
 value <- 166.9
@@ -390,7 +414,14 @@ pnorm(166.924, mean = 166.924, sd = 5.664, lower.tail = FALSE)
 1 - pnorm(166.924, mean = 166.924, sd = 5.664)  # ergibt das gleiche Resultat
 ```
 
-5. Wert = 195, Mittelwert = 166.924, Standardabweichung = 5.664, Frage nach p $\geq$ Wert  
+Die Wahrscheinlichkeit, dass eine Studentin 166.924 cm oder grösser ist beträgt p = 0.5 (50%). Mit anderen Worten, 50% der Studentinnen sind 166.924 cm gross oder grösser. 
+
+5. Wie gross ist die Wahrscheinlichkeit, dass eine Studentin 195 cm oder grösser ist?  
+
+- Gegebener Wert = 195   
+- Mittelwert = 166.924  
+- Standardabweichung = 5.664  
+- Gesucht ist $p \geq z$-Wert  
 
 ```{r, fig.dim=c(4, 4), fig.align='center'}
 value <- 195
@@ -405,8 +436,12 @@ points(x = 195, y = 0, col = COL[4], cex = 2, pch = 19)
 ```{r, echo=TRUE}
 pnorm(195, mean = 166.924, sd = 5.664, lower.tail = FALSE)
 ```
+Die Wahrscheinlichkeit, dass eine Studentin 195 cm oder grösser ist beträgt p = 0.00000036 (0.000036%). Mit anderen Worten, die Wahrscheinlichkeit, dass eine Studentin grösser als 195 cm ist, ist extrem klein. 
 
-6. Lösungsweg: Berechne die Wahrscheinlichkeit, dass eine Studentin kleiner als 176 cm ist (grüne Fläche) und ziehe von diesem Wert die Wahrscheinlichkeit ab, dass eine Studentin kleiner als 163 cm gross ist (rote Fläche).
+
+6. Wie gross ist die Wahrscheinlichkeit, dass eine Studentin zwischen 163 cm und 176 cm gross ist?   
+
+Lösungsweg: Berechnen Sie die Wahrscheinlichkeit, dass eine Studentin kleiner als 176 cm ist (grüne Fläche) und ziehen Sie von diesem Wert die Wahrscheinlichkeit ab, dass eine Studentin kleiner als 163 cm gross ist (rote Fläche).  
 
 ```{r, fig.width=9, fig.asp=.3, fig.align='center'}
 par(mfrow = c(1, 3))
@@ -432,7 +467,7 @@ par(mfrow = c(1, 1))
 ```{r, echo=TRUE}
 pnorm(176, mean = 166.924, sd = 5.664, lower.tail = TRUE) - pnorm(163, mean = 166.924, sd = 5.664, lower.tail = TRUE)
 ```
-
+Die Wahrscheinlichkeit, dass eine Studentin grösser als 163 cm und kleiner als 176 cm ist ist p = 0.701 (70.1%), d.h. ca. 70% der Studentinnen sind zwischen 163 cm und 176 cm gross.   
 
 ```{r, fig.align='center', eval=FALSE}
 phy_w %>% 
@@ -482,19 +517,15 @@ phy_w %>%
 ```
 
 <br/> 
-<br/>
-  
-    
+
     
 ## Übung 3 {.tabset}
 
 ### Aufgabe
 
-Wie gross ist eine *"normalgrosse"* Studentin in PHY13 - PHY17 (95%-Normbereich)?    
+Wie gross ist eine *"normalgrosse"* Studentin in PHY13 - PHY17 (Tipp: Gesucht ist der 95%-Normbereich)?    
 
 <br/> 
-<br/>
-
 
 
 ### Lösung
@@ -540,7 +571,6 @@ phy_w %>%
 Wie gross ist die Wahrscheinlichkeit, dass die Körpergrösse einer Studentin ausserhalb (also oberhalb oder unterhalb) des 95%-Normbereichs liegt?   
 
 <br/> 
-<br/>
 
 ### Lösung
 
@@ -548,7 +578,6 @@ Die beiden 2.5%-Flächen in der Abbildung zu Aufgabe 3 liegen ausserhalb des 95%
 
 $$p = 0.025 + 0.025 = 0.05 = 5\%$$      
 
-<br/>
 <br/>
 
 ## Übung 5 {.tabset}
@@ -559,13 +588,12 @@ $$p = 0.025 + 0.025 = 0.05 = 5\%$$
 2. Wie gross ist eine Studentin, die auf der 25. Perzentile liegt?
 
 <br/> 
-<br/>
 
 ### Lösung
 
 1. Wie gross muss eine Studentin mindestens sein, damit sie zu den 10% grössten Studentinnen gehört?
 
-   a) z-Wert für 90% in z-Tabelle ablesen $z \approx 1.28$, alternativ z-Wert mit der Funktion `qnorm()` in `R` bestimmen (s. unten)
+   a) z-Wert für 90% in z-Tabelle ablesen $z \approx 1.28$, alternativ z-Wert mit der Funktion `qnorm()` in *Rj-Editor* bestimmen (s. unten)
    
 ![z-Werte-Tabelle](../png/zWerteUe5-1a.png) 
 
@@ -577,18 +605,31 @@ $$p = 0.025 + 0.025 = 0.05 = 5\%$$
    $$
    x_i =\bar{x} + z \times s = 166.9 + 1.28 \times 5.664 = 174.15
    $$  
+   
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, eval=FALSE}
+## z-Wert für die 90. Perzentile in Rj-Editor bestimmen
+qnorm(.9)
+
+## Groesse auf der 90. Perzentile aus einer Normalverteilung bestimmen
+qnorm(.9, mean = mean(data$Groesse), sd = sd(data$Groesse))
+```   
+
+
+```{r, echo=FALSE}
 ## z-Wert für die 90. Perzentile bestimmen
 qnorm(.9)
 
 ## Groesse auf der 90. Perzentile aus einer Normalverteilung bestimmen
 qnorm(.9, mean = mean(phy_w$Groesse), sd = sd(phy_w$Groesse))
 ```
+Eine Studentin muss mindestens 174.18 cm gross sein, damit sie zu den 10% der grössten Studentinnen gehört.  
+
+<br>
 
 2. Wie gross ist eine Studentin, die auf der 25. Perzentile liegt?
 
-  a) z-Wert für 25. Perzentile in z-Tabelle ablesen $z \approx -0.67$; alternativ z-Wert mit der Funktion `qnorm()` in `R` bestimmen (s. unten) 
+  a) z-Wert für 25. Perzentile in z-Tabelle ablesen $z \approx -0.67$; alternativ z-Wert mit der Funktion `qnorm()` in *Rj-Editor* bestimmen (s. unten) 
   b) 
    $$
    z = \frac{x_i - \bar{x}}{s}
@@ -596,14 +637,24 @@ qnorm(.9, mean = mean(phy_w$Groesse), sd = sd(phy_w$Groesse))
    $$
    x_i =\bar{x} + z \times s = 166.9 -0.67 \times 5.664 = 163.1
    $$ 
+   
+```{r, echo=TRUE, eval=FALSE}
+## z-Wert für die 25. Perzentile bestimmen in Rj-Editor
+qnorm(.25)
 
-```{r, echo=TRUE}
+## Groesse auf der 90. Perzentile aus einer Normalverteilung bestimmen
+qnorm(.25, mean = mean(data$Groesse), sd = sd(data$Groesse))
+```
+
+```{r, echo=FALSE}
 ## z-Wert für die 25. Perzentile bestimmen
 qnorm(.25)
 
 ## Groesse auf der 90. Perzentile aus einer Normalverteilung bestimmen
 qnorm(.25, mean = mean(phy_w$Groesse), sd = sd(phy_w$Groesse))
 ```
+
+Eine Studentin, die auf der 25. Perzentile liegt, ist 163.10 cm gross.
 
 <br/> 
 <br/>

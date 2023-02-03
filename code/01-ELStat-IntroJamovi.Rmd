@@ -6,6 +6,8 @@ output:
   html_document:
     highlight: pygments
     theme: yeti
+    toc: true
+    toc_float: true
     code_download: false
 ---
 
