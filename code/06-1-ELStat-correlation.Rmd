@@ -8,6 +8,8 @@ output:
     fig_width: 6
     highlight: pygments
     theme: yeti
+    toc: true
+    toc_float: true
     code_download: false
 ---
 
@@ -26,19 +28,11 @@ library(patchwork)
 data(COL)
 ```
 
-# Technische Vorbemerkung
-
-* Die Übungen sind für die Arbeit mit [jamovi](https://www.jamovi.org/) [1] angelegt, können aber mit jeder anderen Statistiksoftware bearbeitet werden.    
-* Die Datensätze für alle Übungen können  [hier](https://github.com/lukasstammler/statexercises/blob/main/data/data_statexercises.zip) als zip-Datei heruntergeladen werden. Es wird empfohlen, alle Datensätze im gleichen Ordner abzulegen.   
-* Die Datensätze liegen im `.csv`-Format vor (header = TRUE, sep = ",", dec = ".") und können direkt in jamovi geöffnet werden. Es wird empfohlen, nach der Kategorisierung der Variablen in jamovi, die Datei im jamovi-Format `.omv` zu speichern.   
-    
-[1] The jamovi project (2021). jamovi (Version 1.6) [Computer Software]. Retrieved from https://www.jamovi.org   
-
 # Übung 1 {.tabset}
 
 ## Aufgabe
 
-Entscheide für jede der 6 Grafiken, ob ein starker, moderater oder schwacher Zusammenhang zwischen den Variablen besteht und ob ein lineares Modell gültig ist.
+Entscheiden Sie für jede der sechs Grafiken, ob ein starker, moderater oder schwacher Zusammenhang zwischen den Variablen besteht und ob ein lineares Modell gültig ist.
 
 ```{r identify_relationship, fig.dim=c(8, 7), fig.align='center'}
 # simulate data -----------------------------------------------------
@@ -153,15 +147,15 @@ hb2 <- ggplot(hb, aes(x = ht_wife, y = ht_husband)) +
 (hb1 | hb2)
 ```
 
-a) Beschreibe die Beziehung zwischen dem Alter von Ehegattin und Ehegatten.  
-b) Beschreibe die Beziehung zwischen der Körpergrösse von Ehegattin und Ehegatten.  
-c) Welche Grafik zeigt eine stärkere Korrelation? Begründe deine Antwort.
+a) Beschreiben Sie den Zusammenhang zwischen dem Alter von Ehegattin und Ehegatten.  
+b) Beschreiben Sie den Zusammenhang zwischen der Körpergrösse von Ehegattin und Ehegatten.  
+c) Welche Grafik zeigt eine stärkere Korrelation? Begründen Sie ihre Antwort.
 
 ## Lösung
 
 a) Der Zusammenhang zwischen dem Alter von Mann und Frau ist stark, positiv und linear.  
 b) Der Zusammenhang zwischen der Körpergrösse von Mann und Frau ist schwach aber positiv.   
-c) Alter zwischen den Ehepartnern korreliert stärker (r = 0.939) als Körpergrösse (r = 0.306). Die Punkte im Altersplot streuen weniger um eine gedachte Gerade als die Punkte im Plot zur Körpergrösse.   
+c) Das Alter zwischen den Ehepartnern korreliert stärker (r = 0.939) als Körpergrösse (r = 0.306). Begründung Die Punkte im Altersplot streuen weniger um eine gedachte Gerade als die Punkte im Plot zur Körpergrösse.   
 <br>
 
 # Übung 3 {.tabset}
@@ -229,10 +223,10 @@ c4 <- ggplot(match_cor, aes(x = x, y = y_4_weak_neg)) +
 
 ## Lösung
 
-Plot a) r = 0.06, nicht linear   
-Plot b) r = 0.92, stark positiv linear  
-Plot c) r = 0.45, moderat positiv linear  
-Plot d) r = -0.7, moderat negativ linear
+Plot a) r = 0.06, nicht linearer Zusammenhang  
+Plot b) r = 0.92, stark positiv linearer Zusammenhang  
+Plot c) r = 0.45, moderat positiv linearer Zusammenhang  
+Plot d) r = -0.7, moderat negativ linearer Zusammenhang
 
 # Übung 4 {.tabset}
 
@@ -240,7 +234,7 @@ Besteht ein Zusammenhang zwischen Körpergrösse und Schuhgrösse bei den Physio
 
 ## Aufgabe
 
-0. Laden Sie den Datensatz `physio.csv` bzw. `physio.omv` in jamovi.   
+0. Laden Sie den Datensatz `physio.csv` bzw. `physio.omv` in **jamovi**.   
 1. Formulieren Sie Ihre Hypothesen.    
 2. Beschreiben Sie die interessierenden Variablen deskriptiv inkl. Grafik        
 3. Führen Sie eine Korrelationsanalyse durch.   
@@ -253,10 +247,14 @@ Besteht ein Zusammenhang zwischen Körpergrösse und Schuhgrösse bei den Physio
 1. Formulieren Sie Ihre Hypothesen.  
 
 * $H_0$: Es besteht kein Zusammenhang zwischen Schuhgrösse und Körpergrösse.    
-* $H_A$: Es besteht ein Zusammenhang zwischen Schuhgrösse und Körpergrösse.
+* $H_A$: Es besteht ein Zusammenhang zwischen Schuhgrösse und Körpergrösse.  
+
 <br />
 
-2. Beschreiben Sie die interessierenden Variablen deskriptiv inkl. Grafik (verwenden Sie für die Grafik das jamovi-Modul `scatr`).
+2. Beschreiben Sie die interessierenden Variablen deskriptiv inkl. Grafik.  
+
+* Deskriptive Statistik: **jamovi** > Register *Analyses* > *Exploration* > *Descriptives* > `Groesse` und  `Schuhgroesse` in *Variables*
+* Streudiagramm: **jamovi** > Register *Analyses* > *Exploration* > *Scatterplot* > `Groesse` in *X-Axis*, `Schuhgroesse` in *Y-Axis* 
 
 ```{r, eval=TRUE}
 phy <- read_csv("../data/physio.csv")
@@ -268,13 +266,13 @@ jmv::descriptives(
 )
 
 library(scatr)
-scat(data = phy, x = "Groesse", y = "Schuhgroesse", group = "Geschlecht")
+scatr::scat(data = phy, x = "Groesse", y = "Schuhgroesse")
 ```
 <br />
 
 3. Führen Sie eine Korrelationsanalyse durch.  
 
-Wählen Sie in jamovi unter dem Register `Regression` > `Correlation Matrix`
+* **jamovi** > Register *Regression* > *Correlation Matrix* > `Groesse` und `Schuhgroesse` als Variablen auswählen > *Correlation Coefficients* > Häkchen bei *Pearson* setzen > *Additional Options* > Häkchen bei *Report significance* und *Confidence intervals* setzen.  
 
 ```{r, eval=FALSE}
 corrMatrix(
@@ -288,9 +286,12 @@ corrMatrix(
 
 4. Interpretieren Sie ihr Resultat.
 
-**Geprüft wurde der Zusammenhang zwischen Körpergrösse und Schuhgrösse. Die Korrelationsanalyse ergab einen positiven Zusammenhang zwischen Körpergrösse und Schuhgrösse, $p$ = .85 [.8152, .8861], p < .0001.**
+**Geprüft wurde der Zusammenhang zwischen Körpergrösse und Schuhgrösse. Die Korrelationsanalyse ergab einen moderat bis starken positiven Zusammenhang zwischen Körpergrösse und Schuhgrösse, $p$ = .85 [.8152, .8861], p < .0001.**  
+
 <br />
-<br />
+<br />  
+
+***HIERWEITER
 
 # Übung 5 {.tabset}
 
