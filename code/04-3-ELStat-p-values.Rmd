@@ -1,5 +1,5 @@
 ---
-title: 'Inferenzstatistik: p-Werte'
+title: 'Inferenzstatistik: p-Werte berechnen'
 author: "Lukas Stammler"
 date: "`r Sys.Date()`"
 output:
@@ -25,9 +25,15 @@ library(jmv)
 library(knitr)
 library(kableExtra)
 library(openintro)
+# devtools::install_github("hadley/emo")
 
 #data(COL)
 ```
+
+# Technische Vorbemerkung
+
+Der R-Code in den grau unterlegten Feldern kann mittels Copy-Paste in den `Rj-Editor` eingegeben werden. Ausführen des Codes dem grünen Pfeil oben rechts im `Rj-Editor`-Fenster.   
+
 
 # Die Funktion pnorm()
 
@@ -92,7 +98,7 @@ Eine einfache Animation zeigt, wie der Stichprobenumfang die Form der $t$-Vertei
 * grüne Fläche: 5%-Verwerfungsbereich unter der t-Verteilung
 
 <center>
-![t-Verteilung](../tdistr.gif)
+![t-Verteilung](../png/tdistr.gif)
 </center>
 
 Die Funktion `pt()` kann mehrere Argumente annehmen, von denen wir drei benötigen:
@@ -102,7 +108,7 @@ Die Funktion `pt()` kann mehrere Argumente annehmen, von denen wir drei benötig
 |Argument|Erläuterung|
 |:-------|:----------|
 |q | $t$-Wert (z.B. eine Teststatistik)|
-|df | Anzahl Freiheitsgrade|
+|df | Anzahl Freiheitsgrade |
 |lower.tail| wenn `= TRUE` (Standardeinstellung), wird die Fläche links vom z-Wert berechnet; wenn `= FALSE`, wird die Fläche rechts vom z-Wert berechnet.|  
 
 Beispiel: $z$ = 1.1, $df$ = 5 ($n$ = 6)   
@@ -260,7 +266,7 @@ Kommentar:
 * Wir erkennen, dass bei einem zweiseitigen Hypothesentest $z_1$ und $z_3$ im 5%-Verwerfungsbereich liegen. Für beide $z$-Werte erhalten wir die identische Wahrscheinlichkeit $p$ = 0.0164.  
 * Wenn Du die Berechnung der $p$-Werte für zweiseitige Tests betrachtest, siehst Du, dass die $p$-Werte für ein bestimmtes $z$ jeweils verdoppelt werden müssen. *Warum ist das so?* Ein $p$-Wert gibt die Wahrscheinlichkeit dafür an, ein Resultat (eine Teststatistik) wie das beobachtete oder ein noch extremeres Resultat zu erhalten. Im Fall von zweiseitigen $z$- oder $t$-Tests bedeutet "extremer", einen $z$-/$t$-Wert zu erhalten, der mindestens so weit von Null entfernt ist, wie der beobachtete $z$-/$t$-Wert. Dabei spielt es keine Rolle, ob der $z$-/$t$-Wert ein positives oder negatives Vorzeichen hat, da wir ja auf beide Seiten prüfen und für uns der Abstand zum Nullwert relevant ist. Uns interessiert also eigentlich die Wahrscheinlichkeit für den absoluten $z$-/$t$-Wert: $|z|$ bzw. $|t|$. Dieser kann grösser oder kleiner als Null sein und wir müssen die beiden $p$-Werte für $|z|$ bzw. $|t|$ für beide Möglichkeiten addieren. Da die Normalverteilung bzw. die $t$-Verteilung symmetrisch ist, reicht es, den $p$-Wert für $|z|$ bzw. $|t|$ zu berechnen und dann zu verdoppeln.  
 
-In `R` sieht das dann so aus (z.B. für $z$ = -2.4):   
+In `Rj-Editor` sieht das dann so aus (z.B. für $z$ = -2.4):   
 
 ```{r, echo=TRUE}
 2 * (1 - pnorm(abs(-2.4)))
@@ -319,6 +325,6 @@ Mit grösserem $n$ nähern sich die Grenzen der 5%-Verwerfungsbereiche den bekan
 * Beide Funktionen berechnen im Standardmodus (default) jeweils die Wahrscheinlichkeit für Werte gleich oder kleiner als die Teststatistik $z$ bzw. $t$.  
 * Die Wahrscheinlichkeit für Werte gleich oder grösser als die Teststatistik kann mit `1 - pnorm(z-Wert)` bzw `1 - pt(z-Wert, df)` berechnet werden.  
 * Für eine bestimmte Teststatistik $z$ bzw. $t$ ist der $p$-Wert für zweiseitige Hypothesen doppelt so gross wie für einseitige Hypothesen. 
-* Es ist nicht erlaubt, im Nachhinein eine zweiseitige Alternativhypothese in eine einseitige Alternativhypothese umzuformulieren, nur um einen knapp nicht signifikanten $p$-Wert zu halbieren und damit ein signifikantes Ergebnis vorzutäuschen. (Bsp. Du erhältst in deiner Studie mit zweiseitiger $H_A$ einen $p$-Wert von 0.08. Durch nachträgliches Umformulieren der $H_A$ in eine einseitige Hypothese entsprechend deinem, in der Studie erhaltenen, Resultat, würde sich der $p$-Wert auf $p$ = 0.04 halbieren und dein Resultat wäre signifikant auf dem Niveau $\alpha$ = 0.05. `r emo::ji("-1")`)
+* Es ist wissenschaftlich unredlich, im Nachhinein eine zweiseitige Alternativhypothese in eine einseitige Alternativhypothese umzuformulieren, nur um einen knapp nicht signifikanten $p$-Wert zu halbieren und damit ein signifikantes Ergebnis vorzutäuschen. (Bsp. Du erhältst in deiner Studie mit zweiseitiger $H_A$ einen $p$-Wert von 0.08. Durch nachträgliches Umformulieren der $H_A$ in eine einseitige Hypothese entsprechend deinem, in der Studie erhaltenen, Resultat, würde sich der $p$-Wert auf $p$ = 0.04 halbieren und dein Resultat wäre signifikant auf dem Niveau $\alpha$ = 0.05. `r emo::ji("-1")`)
 
 <br/>

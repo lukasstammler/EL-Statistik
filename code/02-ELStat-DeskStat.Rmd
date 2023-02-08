@@ -446,3 +446,98 @@ Die Variationsbreite des Körpergewichts bei Studentinnen beträgt  47.0 kg bis 
 | Standard deviation | nicht robust |
 | Variationsbreite | nicht robust |
 
+<br>
+
+# Übung 7 {.tabset}
+
+```{r}
+# xls-csv in comma-separated csv konvertieren
+# mcdonalds <- rio::import("../data/mcdonalds-xls.csv")
+# write_csv(mcdonalds, file = "../data/mcdonalds.csv")
+
+mcdonalds <- rio::import("../data/mcdonalds.csv")
+```
+
+
+## Aufgabe
+
+Die Tabelle zeigt Nährwertangaben (in g pro 100g) und Preise (pro Portion in CHF) für ausgewählte McDonald's Beefburger. [Quelle Preise](https://www.smood.ch/de/lieferung/stores/zurich/mcdonalds-oerlikon), [Quelle Inhaltsstoffe](https://www.mcdonalds.com/ch/de-ch/menu.html), abgerufen am 6.2.2023  
+
+
+```{r}
+kable(mcdonalds)
+```
+
+Führen Sie alle Berechnungen in den folgenden Aufgaben von Hand durch:
+
+1. Wie viele kcal haben 100g Burger im Durchschnitt?   
+2. Welche grafische Darstellung eignet sich für den Gehalt an kcal/100g?  
+3. Wie gross ist der durchschnittliche Zuckergehalt/100g Burger? Berechnen Sie den arithmetischen Mittelwert und geben Sie den Median an.
+4. Sie gehen mit fünf Freund:innen im McDonald's essen: Irma bestellt einen McRaclette, Andreas einen Cheesburger Royal, Anwar einen McRaclette Chilli Bacon, Leif einen Big Mac, Geraldine einen Double Cheeseburger, Nathalie einen Hamburger und sie einen Big Tasty Single. Sie bezahlen für alle und weil sie gute Freunde sind, rechnen sie rasch den Durchnittspreis aus, den ihnen ihre Freunde zurückzahlen müssen, das ist am unkompliziertesten. Berechnen Sie auch die Standardabweichung für den Durchschnittspreis. 
+
+<br>
+
+## Lösung
+
+1.  Wie viele kcal haben 100g Burger im Durchschnitt?  
+
+Vorgehen: Sie summieren alle Kalorienangaben und teilen diese durch die Anzahl Menüs. Das Ergebnis ist `r round(mean(mcdonalds$kcal), 2)`kcal/100g.
+
+```{r, eval=FALSE}
+mean(mcdonalds$kcal)
+```
+
+2. Welche grafische Darstellung eignet sich für den Gehalt an kcal/100g?  
+
+Es handelt sich um quantitativ-kontinuierliche Daten, deren Verteilung am besten mit einem Histogramm oder einem Boxplot dargestellt wird.
+
+```{r}
+hist(mcdonalds$kcal, 
+     xlab = "kcal",
+     ylab = "Anzahl",
+     main = "Brennwert von McDonald's Burgern (kcal/100g)")
+boxplot(mcdonalds$kcal,
+        ylab = "kcal",
+        main = "Brennwert von McDonald's Burgern (kcal/100g)")
+```
+
+3. Wie gross ist der durchschnittliche Zuckergehalt/100g Burger? Berechnen Sie den arithmetischen Mittelwert und geben Sie den Median an.  
+
+```{r, eval = FALSE}
+mean(mcdonalds$Zucker)
+median(mcdonalds$Zucker)
+```
+
+Vorgehen: Der arithmetische Mittelwert berechnet sich wie bei Aufgabe 1. Das Ergebnis ist `r round(mean(mcdonalds$Zucker), 2)`g Zucker/100g. Für die Bestimmung des Medians sortieren sie zuerst die Zuckerangaben aufsteigend.  
+
+```{r}
+sort(mcdonalds$Zucker)
+```
+
+Jetzt suchen sie den mittleren Wert. Da es sich um eine gerade Zahl (n = 14) handelt, nehmen sie den Durchschnitt der beiden mittleren Werte: 7. Wert = 3, 8. Wert = 4 -> 3 + 4 = 7 -> 7/2 = 3.5. Der Median für den Zuckergehalt beträgt 3.5g Zucker/100g Burger.   
+
+4. Sie gehen mit sechs Freund:innen im McDonald's essen: Irma bestellt einen McRaclette, Andreas einen Cheesburger Royal, Anwar einen McRaclette Chilli Bacon, Leif einen Big Mac, Geraldine einen Double Cheeseburger, Nathalie einen Hamburger und sie einen Big Tasty Single. Sie bezahlen für alle den Gesamtpreis von 52.5 CHF und weil sie gute Freunde sind, rechnen sie rasch den Durchnittspreis aus, den ihnen ihre Freunde zurückzahlen müssen, das ist am unkompliziertesten. Berechnen Sie auch die Standardabweichung für den Durchschnittspreis. 
+
+|Name|Burger|Preis|$(Preis-\bar{x})$|$(Preis-\bar{x})^2$|
+|:---|:-----|:----|:----------------|:------------------|
+|Irma|McRaclette|9.0|1.5|2.25|
+|Andreas|Cheesburger Royal|8.0|0.5|0.25|
+|Anwar|McRaclette Chili Bacon|10.0|2.5|6.25|
+|Leif|Big Mac|7.0|-0.5|0.25|
+|Geraldine|Double Cheeseburger|6.5|-1.0|1.0|
+|Nathalie|Hamburger|2.9|-4.6|21.16|
+|Ich|Big Tasty Single|9.1|1.6|2.56
+
+(a) Berechnung des Mittelwerts: Im Durchschnitt hat jede:r von ihnen 52.5/6 CHF = `r mean(c(9, 8, 10, 7.0, 6.5, 2.9, 9.1))` CHF bezahlt. Sie erhalten von ihren Freund:innen je `r mean(c(9, 8, 10, 7.0, 6.5, 2.9, 9.1))` CHF.  
+
+(b) Berechnung der Standardabweichung: Bilden Sie für jeden gekauften Burger die Differenz von Preis und Durchschnittspreis (4. Spalte in der Tabelle oben) und quadrieren sie das Ergebnis (5. Spalte). Jetzt summieren sie die Zahlen in der 5. Spalte und dividieren die Summe durch $n-1$ (n = 6 Personen) und sie erhalten die Varianz. 
+
+$$s^2 = \frac{2.25 + 0.25 + 6.25 + 0.25 + 1 + 21.16 + 2.56}{6 - 1} = 5.62$$
+
+Die *Standardabweichung* $s$ ist die Quadratwurzel der Varianz 
+
+$$s = \sqrt{s^2} = \sqrt{5.62} \approx 2.37$$
+
+Die Standardabweichung beträgt gerundet 2.40 CHF.
+
+<br>

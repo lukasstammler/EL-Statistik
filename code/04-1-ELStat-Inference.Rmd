@@ -8,6 +8,8 @@ output:
     fig_width: 4
     highlight: pygments
     theme: yeti
+    toc: true
+    toc_float: true
     code_download: false
 ---
 
@@ -21,37 +23,15 @@ library(jmv)
 library(knitr)
 library(kableExtra)
 library(openintro)
+library(Hmisc)
+library(rio)
 
 data(COL)
 ```
 
-# Technische Vorbemerkung
 
-* Die Übungen sind für die Arbeit mit [jamovi](https://www.jamovi.org/) [1] angelegt, können aber mit jeder anderen Statistiksoftware bearbeitet werden.    
-* Die Datensätze für alle Übungen können  [hier](https://github.com/lukasstammler/statexercises/blob/main/data/data_statexercises.zip) als zip-Datei heruntergeladen werden. Es wird empfohlen, alle Datensätze im gleichen Ordner abzulegen.   
-* Die Datensätze liegen im `.csv`-Format vor (header = TRUE, sep = ",", dec = ".") und können direkt in jamovi geöffnet werden. Es wird empfohlen, nach der Kategorisierung der Variablen in jamovi, die Datei im jamovi-Format `.omv` zu speichern.   
-    
-[1] The jamovi project (2021). jamovi (Version 1.6) [Computer Software]. Retrieved from https://www.jamovi.org  
+**Technischer Hinweis: Links in den Übungen öffnen Sie, indem sie darauf rechtsklicken und "Link in neuem Tab/Fenster öffnen" wählen.**  
 
-
-Wir arbeiten mit dem Datensatz `physio.csv`, der Daten von 228 Physiostudierenden der Kohorten PHY13-PHY17 enthält. Der Datensatz liegt in 2 Versionen vor:  
-
-* `physio.csv`: Textdatei im CSV-Format; die Variablen müssen gemäss Codebook erst kategorisiert werden.  
-* `physio.omv`: Datei im `jamovi`-Format; die Variablen sind bereits kategorisiert.   
-
-Der Datensatz umfasst 9 Variablen:  
-
-Variable |	Beschreibung | Skala | Werte
-|:--------:|:-------------:|:-----:|:------:|
-ID | ID | nominal | 1 ... n
-Kohorte |	Jahrgang Studierende | nominal | PHY13 … PHY17
-Klasse | Klasse 1 oder 2 | nominal | 1, 2
-Geschlecht | Geschlecht | nominal| m = maennlich, w = weiblich
-Augenfarbe | Augenfarbe | nominal | gruen, blau, braun
-Groesse	| Körpergrösse in cm | kontinuierlich | 148 … 198
-Gewicht |	Körpergewicht in kg | kontinuierlich |	47 … 105
-Statistik |	Das Fach Statistik interessiert mich |ordinal| (Likert-Skala) 1 = trifft überhaupt nicht zu, 2 = trifft eher nicht zu, 3 = egal, 4 = trifft eher zu, 5 = trifft vollstänig zu
-Schuhgroesse | Schuhgrösse in DE/EU-Einheiten |diskret| 35, 36 … 48
 
 
 ```{r, fig.align='center'}
@@ -60,10 +40,10 @@ phydata <- readRDS("../data/physio.rds")
 phy_w <- phydata %>% 
     filter(Geschlecht == "w")
 
-jmv::descriptives(
-  formula = Groesse ~ Geschlecht,
-  data = phydata
-)
+# jmv::descriptives(
+#   formula = Groesse ~ Geschlecht,
+#   data = phydata
+# )
 ```
    
 
@@ -81,6 +61,8 @@ Nehmen wir an, wir hätten heute die Aufgabe, die durchschnittliche Körpergrös
 
 ### Die Verteilung von Stichprobenmittelwerten
 
+Zur Erinnerung hier nochmals die wichtigsten Kennzahlen zur Körpergrösse der Studentinnen:  
+
 
 ```{r, fig.align='center'}
 #phydata <- readRDS("../data/physio.rds")
@@ -95,9 +77,9 @@ jmv::descriptives(
 )
 ```
    
-Weil wir einen Datensatz mit den Körpergrössen der Studentinnen PHY13-PHY17 haben, kennen wir in unserem Fall den wahren Mittelwert $\mu$ = `r round(mean(phy_w$Groesse), 3)` und die wahre Standardabweichung $\sigma$ = `r round(sd(phy_w$Groesse), 3)`. *Um die theoretischen Grundlagen zu überprüfen, tun wir jetzt aber so, als ob wir das nicht wüssten!*.   
+Für die folgenden Überlegungen nehmen wir unsere 183 Studentinnen als Population. Weil wir einen Datensatz mit den Körpergrössen von allen diesen Studentinnen haben, kennen wir in unserem Fall den wahren Mittelwert $\mu$ = `r round(mean(phy_w$Groesse), 3)` und die wahre Standardabweichung $\sigma$ = `r round(sd(phy_w$Groesse), 3)`. *Um die theoretischen Grundlagen zu überprüfen, tun wir jetzt aber so, als ob wir das nicht wüssten!*.   
 
-Um unsere Fragestellung zu untersuchen, ziehen wir der Population mehrere Zufallsstichproben $sample_1$ bis $sample_n$ (Üblicherweise zieht man nur eine einzige Stichprobe, aber wir machen das hier, um die theoretischen Grundlagen zu erläutern). Von jeder dieser Stichproben bestimmen wir den Mittelwert und die Standardabweichung.
+Um unsere Fragestellung zu untersuchen, ziehen wir aus dieser Population mehrere Zufallsstichproben $sample_1$ bis $sample_n$ (Üblicherweise zieht man nur eine einzige Stichprobe, aber wir machen das hier, um die theoretischen Grundlagen zu erläutern). Von jeder dieser Stichproben bestimmen wir den Mittelwert und die Standardabweichung.
 
 ![](../png/exercise_ci1_cr.png)
 
@@ -105,11 +87,12 @@ Wir dürfen erwarten, dass der Mittelwert von den Stichprobenmittelwerten $\bar{
 
 $$\mu \approx \frac{\bar{x}_1+\bar{x}_2+...+\bar{x}_n}{n}$$
 
-Vermutlich wird keiner der Stichprobenmittelwerte  $\bar{x}_1$ bis $\bar{x}_n$ exakt den Populationsmittelwert $\mu$ treffen. Wir erhalten eine Verteilung der Stichprobenmittelwerte um den Populationsmittelwert $\mu$. Die Standardabweichung des Mittelwerts der einzelnen Stichprobenmittelwerte wird als **Standardfehler SE** (engl. standard error) bezeichnet.  
+Vermutlich wird keiner der Stichprobenmittelwerte  $\bar{x}_1$ bis $\bar{x}_n$ exakt den Populationsmittelwert $\mu$ treffen. Wir erhalten also eine Verteilung der Stichprobenmittelwerte um den Populationsmittelwert $\mu$. Die Standardabweichung des Mittelwerts der einzelnen Stichprobenmittelwerte wird als **Standardfehler SE** (engl. standard error) bezeichnet.  
 
-**Video**: [Bunnies, Dragons and the 'Normal' World: Central Limit Theorem | The New York Times](https://youtu.be/jvoxEYmQHNM) Youtube, 3m38s  
+Bevor Sie jetzt weiterfahren, empfehle ich ihnen ein Video: [Bunnies, Dragons and the 'Normal' World: Central Limit Theorem | The New York Times](https://youtu.be/jvoxEYmQHNM) Youtube, 3m38s  
 
-Wir können heute nicht von allen Studentinnen PHY13-PHY17 die Körpergrösse messen, aber 30 Kolleginnen in ihrer Kohorte haben von 10 Studentinnen PHY13-PHY17 die Kontaktdaten und fragen diese nach ihrer Körpergrösse. Für 15 unserer 30 Stichproben im Umfang von 10 Studentinnen sieht das Ergebnis folgendermassen aus:  
+
+Jetzt führen wir ein Experiment durch: Ihre Aufgabe ist es, die Körpergrösse von Studentinnen der Physiotherapie PHY13 bis PHY17 zu bestimmen. Sie können unmöglich alle 183 Studentinnen messen, da diese an verschiedenen Orten verteilt sind und der Aufwand unverhältnismässig gross ist. Zum Glück haben Sie 30 Kolleg:innen, die jeweils von 10 Studentinnen PHY13-PHY17 die Kontaktdaten haben. Sie bitten diese 30 Kolleg:innen darum, bei den 10 Studentinnen die Körpergrösse zu erfragen. Am Schluss haben Sie somit 30 Stichproben aus ihrer Population im Umfang von 10 Studentinnen. Sie berechnen von jeder Stichprobe den Mittelwert und die Standardabweichung. Das Ergebnis sieht folgendermassen aus:    
 
 ```{r}
 set.seed(4)
@@ -124,11 +107,13 @@ samples_means <- samples %>%
     ) %>% 
     ungroup() %>% 
     arrange(as.numeric(Sample))
-kable(samples_means[1:15,], caption = "Tab. 2: Grösse PHY13-PHY17, Tabelle gekürzt: 15 von 30 Stichproben, n = 10") %>% 
+kable(samples_means[1:30,], caption = "Tab. 2: Groesse PHY13-PHY17, 30 Stichproben, n = 10") %>% 
   kable_minimal(full_width = FALSE)
 ```
 
-**Beachte:** In jeder Stichprobe liegt der Mittelwert in der Nähe des Populationsmittelwertes $\mu = 166.92$ und die Standardabweichung in der Nähe der Populationsstandardabweichung $\sigma = 5.57$. Betrachten wir jetzt die Verteilung der Stichprobenmittelwerte im Histogramm:  
+**Beachte:** In jeder Stichprobe liegt der Mittelwert in der Nähe des Populationsmittelwertes $\mu = 166.92$ und die Standardabweichung in der Nähe der Populationsstandardabweichung $\sigma = 5.57$.   
+
+Betrachten wir jetzt die Verteilung der Stichprobenmittelwerte im Histogramm:  
 
 
 ```{r, fig.align='center', fig.dim=c(6, 5)}
@@ -143,8 +128,8 @@ samples_means %>%
   #               args = list(mean = mean(samples_means$m),
   #                           sd = sd(samples_means$s)),
   #               color = "darkblue", size = 1, xlim = c(162, 172)) +
-  geom_vline(xintercept = mean(phy_w$Groesse), size = 1, color = "purple") +
-  geom_vline(xintercept = mean(samples_means$m), size = 1, color ="red", linetype = "dotted") +
+  geom_vline(xintercept = mean(phy_w$Groesse), linewidth = 1, color = "purple") +
+  geom_vline(xintercept = mean(samples_means$m), linewidth = 1, color ="red", linetype = "dotted") +
   ggtitle("Verteilung der Stichprobenmittelwerte", 
           subtitle = "30 samples, n = 10, violette Linie = Populationsmittelwert") +
   xlab("Stichprobenmittelwerte") +
@@ -160,21 +145,27 @@ Die Verteilung einer Stichprobenkennzahl (hier der Mittelwerte aller Stichproben
 
 $$\bar{x} \sim N(\bar{x} = \mu, SE = \frac{\sigma}{\sqrt{n}})$$
 
+Wenn die Standardabweichung der Population unbekannt ist, was meist der Fall ist, setzen wir für die Berechnung des Standardfehlers $SE$ anstelle von $\sigma$ die Standardabweichung der Stichprobe $s$ ein:   
+
+$$SE = \frac{s}{\sqrt{n}})$$
+
+
 <br>
 
 # Verteilung von Stichprobenkennzahlen, Standardfehler  
 
 ## Übung 1 {.tabset}
 
-Wir arbeiten mit einer Simulations-App. Rufe den Link [Central Limit Theorem for Means](https://gallery.shinyapps.io/CLT_mean/) auf.
+Wir arbeiten mit einer Simulations-App. Rufen Sie den Link [Central Limit Theorem for Means](https://gallery.shinyapps.io/CLT_mean/) auf (Rechtsklick auf den Link > "Link in neuem Tab öffnen").   
 
 ### Aufgabe   
 
-1. Wähle *Parent Distribution*: normal (d.h. die Stichproben werden aus einer normalverteilten Population gezogen)        
-2. Stelle die Populationskennzahlen *Mean = 0* und *Standard Deviation = 20* ein.   
-3. Stelle die Stichprobenangaben *Sample size = 25* und *Number of Samples = 100* ein.   
+1. Wählen Sie *Parent Distribution*: normal (d.h. die Stichproben werden aus einer normalverteilten Population gezogen)        
+2. Stellen Sie die Populationskennzahlen *Mean = 0* und *Standard Deviation = 20* ein.   
+3. Stellen Sie die Stichprobenangaben *Sample size = 25* und *Number of Samples = 100* ein.
+4. 
 
-Vergrössere jetzt die *Sample Size* auf 100, 200, 400. Hat der Stichprobenumfang einen Einfluss ...    
+Vergrössern Sie jetzt die *Sample Size* auf 100, 200, 400. Hat der Stichprobenumfang einen Einfluss ...    
 
 * (a) ... auf die Standardabweichungen SD der Stichproben (Register *Samples*: Sample 1 bis Sample 8)?  
 * (b) ... auf die Mittelwerte $\bar{x}$ der Stichproben (Register *Samples*: Sample 1 bis Sample 8)?
@@ -195,10 +186,10 @@ Wir arbeiten weiter mit der Simulations-App [Central Limit Theorem for Means](ht
 
 ### Aufgabe   
 
-1. Wähle *Parent Distribution*: right skewed (d.h. die Stichproben werden aus einer rechtsschief  verteilten Population gezogen)        
-3. Stelle die Stichprobenangaben *Sample size = 2* und *Number of Samples = 700* ein. Notiere dir den Populationsmittelwert *mean of x* und die Standardabweichung *SD of x*, die im Register *Population Distribution* angezeigt wird  
+1. Wählen Sie *Parent Distribution*: right skewed (d.h. die Stichproben werden aus einer rechtsschief  verteilten Population gezogen)        
+3. Stellen Sie die Stichprobenangaben *Sample size = 2* und *Number of Samples = 700* ein. Notieren Sie sich den Populationsmittelwert *mean of x* und die Standardabweichung *SD of x*, die im Register *Population Distribution* angezeigt wird  
 
-Vergrössere jetzt die *Sample Size* schrittweise. Hat der Stichprobenumfang einen Einfluss ...    
+Vergrössern Sie jetzt die *Sample Size* schrittweise. Hat der Stichprobenumfang einen Einfluss ...    
 
 * (a) ... auf die Standardabweichungen SD der Stichproben (Register *Samples*: Sample 1 bis Sample 8)?  
 * (b) ... auf die Mittelwerte $\bar{x}$ der Stichproben (Register *Samples*: Sample 1 bis Sample 8)?
@@ -213,7 +204,7 @@ Vergrössere jetzt die *Sample Size* schrittweise. Hat der Stichprobenumfang ein
 * (c) Die Beobachtung aus (b) äussert sich darin, dass mit steigendem Stichprobenumfang die Variation der Stichprobenmittelwerte um den Populationsparameter, ausgedrückt als Standardfehler SE, immer kleiner wird. 
 * (d) In kleinen Stichproben (n < 30) entspricht die Verteilung der Stichprobenmittelwerte eher der rechtsschiefen Verteilung der Populationsdaten. Mit zunehmendem Stichprobenumfang nähert sich die Verteilung der Stichprobenmittelwerte der Normalverteilung an.  
 
-**Merke:** Unabhängig davon, wie die Daten in der Population verteilt sind (normal, rechtsschief, linksschief, irregulär), mit steigendem Umfang nähert sich die Verteilung der Stichprobenkennzahlen der Normalverteilung an.  
+**Merke:** Unabhängig davon, wie die Daten in der Population verteilt sind (normal, rechtsschief, linksschief, irregulär), nähert sich mit steigendem Umfang die Verteilung der Stichprobenkennzahlen der Normalverteilung an.  
 
 <br>
 
@@ -235,8 +226,8 @@ Wir können die Differenz der beiden Stichprobenkennzahlen verwenden: $4.3 - 3.2
 
 ### Aufgabe  
 
-* (a) Würdest du eher eine grosse oder eher eine kleine Stichprobe wählen, um einen Populationsparameter zu schätzen? Begründe deine Antwort.    
-* (b) Würdest Du erwarten, dass eine Punktschätzung von einer kleinen Stichprobe eher einen kleineren oder eher einen grösseren Standardfehler aufweist als eine Punktschätzung von einer grösseren Stichprobe? Begründe deine Antwort.  
+* (a) Würden Sie eher eine grosse oder eher eine kleine Stichprobe wählen, um einen Populationsparameter zu schätzen? Begründen Sie ihre Antwort.    
+* (b) Würden Sie erwarten, dass eine Punktschätzung von einer kleinen Stichprobe eher einen kleineren oder eher einen grösseren Standardfehler aufweist als eine Punktschätzung von einer grösseren Stichprobe? Begründn Sie ihre Antwort.  
 
 <br/>
 
@@ -269,19 +260,20 @@ In einer Stichprobe von n = 100 Studentinnen ist die Standardabweichung für die
 
 ### Aufgabe   
 
-* (a) Was ist vertrauenswürdiger: Eine Stichprobe mit n = 100 oder eine Stichprobe mit n = 400 Beobachtungseinheiten? Begründe deine Antwort.    
-* (b) Zeige mathematisch, dass unsere Punktschätzung präziser ist, wenn der Stichprobenumfang grösser ist: Berechne den Standardfehler für die beiden Stichproben; die Standardabweichung beträgt für beide Stichproben $s = 10$.  
+* (a) Was ist vertrauenswürdiger: Eine Stichprobe A mit n = 100 oder eine Stichprobe B mit n = 400 Beobachtungseinheiten? Begründen Sie ihre Antwort.    
+* (b) Zeigen Sie mathematisch, dass unsere Punktschätzung präziser ist, wenn der Stichprobenumfang grösser ist: Berechnen Sie dazu den Standardfehler für die beiden Stichproben A und B; die Standardabweichung beträgt für beide Stichproben $s = 10$.  
 
 <br>
 
 ### Lösung  
 
-* (a) Zusätzliche Beobachtungseinheiten sind immer wertvoll, wenn man einen Populationsparameter schätzen muss.  
+* (a) Zusätzliche Beobachtungseinheiten sind immer wertvoll, wenn man einen Populationsparameter schätzen muss. Allerdings bedeuten grössere Stichproben in der Realität auch höhere Kosten, weshalb der Stichprobenumfang stets einen Kompromiss zwischen Präzision und Kosten darstellt. 
 * (b) Der Standardfehler für n = 100 ist $SE = 10/sqrt{100} = 1$, für n = 400 $SE = 10/\sqrt{400} = 0.5$  
 
-Hinweis: Beachte an diesem Beispiel, dass für eine Halbierung des Standardfehlers, der Stichprobenumfang vervierfacht werden muss (Wurzel-n-Gesetz)
+Hinweis: Beachten Sie an diesem Beispiel, dass für eine Halbierung des Standardfehlers, der Stichprobenumfang vervierfacht werden muss (Wurzel-n-Gesetz)
 
 <br>
+
 
 # Vertrauensintervalle (CI)   
 
@@ -321,25 +313,26 @@ sample1 %>%
   stat_function(fun = dnorm, 
                 args = list(mean = mean(sample1$Groesse), 
                             sd = sd(sample1$Groesse)),
-                color = "darkblue", size = 1, xlim = c(150, 185)) +
-  geom_vline(xintercept = m, size = 1, color = "purple") +
+                color = "darkblue", linewidth = 1, xlim = c(150, 185)) +
+  geom_vline(xintercept = m, linewidth = 1, color = "purple") +
   ggtitle("Verteilung der Stichprobendaten 1", 
           subtitle = "n = 10, violette Linie = Populationsmittelwert") +
   theme_classic()
 ```
 
-Wie wir aus dem zentralen Grenzwertsatz gelernt haben, ist die Standardabweichung für den Mittelwert der Stichprobenmittelwerte der Standardfehler SE. Wir haben im Moment (und auch in der Regel) zwar nur eine einzige Stichprobe, daher müssen wir die Kennzahlen unserer Stichprobe als besten Schätzer verwenden. D.h.   
+Wie wir aus dem zentralen Grenzwertsatz gelernt haben, ist die Standardabweichung für den Mittelwert der Stichprobenmittelwerte der Standardfehler $SE$. Wir haben im Moment (und auch in der Regel) zwar nur eine einzige Stichprobe, daher müssen wir die Kennzahlen unserer Stichprobe als besten Schätzer verwenden. D.h.   
 
-$$\mu \approx \bar{x}$$   
+$$\mu \approx \bar{x}$$
+
 $$SE = \frac{\sigma}{\sqrt{n}} \approx \frac{s}{\sqrt{n}}$$
 
-Wie wir auch aus der Geometrie der Normalverteilung wissen, umfasst der Bereich $\bar{x} \pm 1.96s$ 95% der zu erwartenden Werte. Für die Schätzung der Vorhersagegenauigkeit unseres Mittelwertes kombinieren wir jetzt diese Kenntnisse und berechnen das 95%-Vertrauensintervall ($CI_{95}$) für den Mittelwert.
+Wie wir auch aus der Geometrie der Normalverteilung wissen, umfasst der Bereich $\bar{x} \pm 1.96s$ 95% der zu erwartenden Werte. Für die Schätzung der Vorhersagegenauigkeit unseres Mittelwertes kombinieren wir jetzt diese Kenntnisse und berechnen das 95%-Vertrauensintervall ($CI_{95}$) für den Mittelwert.  
 
-$$CI_{95} = \bar{x} \pm 1.96 SE$$
+$$CI_{95} = \bar{x} \pm 1.96 \times SE$$
 
 $$CI_{95} = 167.5 \pm 1.96 \times \frac{5.759}{\sqrt{10}} = [163.931, 171.070]$$
 
-**Interpretation des 95% CI** Wenn wir 100 Stichproben mit gleichem Stichprobenumfang aus der Population untersuchen, werden 95% der Vertrauensintervalle den wahren Populationsmittelwert $\mu$ enthalten.
+**Interpretation des 95% CI** Wenn wir 100 Stichproben mit gleichem Stichprobenumfang aus der Population untersuchen, werden 95% der Vertrauensintervalle den wahren Populationsmittelwert $\mu$ enthalten.  
 
 ```{r, fig.align='center', eval = FALSE}
 m_sample1 <- mean(sample1$Groesse)
@@ -354,8 +347,8 @@ sample1 %>%
   stat_function(fun = dnorm, 
                 args = list(mean = mean(sample1$Groesse), 
                             sd = sd(sample1$Groesse)),
-                color = "red", size = 1, xlim = c(150, 185)) +
-  geom_vline(xintercept = m, size = 1, color = "purple") +
+                color = "red", linewidth = 1, xlim = c(150, 185)) +
+  geom_vline(xintercept = m, linewidth = 1, color = "purple") +
   geom_area(stat = "function", fun = dnorm, 
             args = list(mean = mean(sample1$Groesse), sd = sd(sample1$Groesse)), 
             fill = "chartreuse1", alpha = .5, xlim = c(ci_low, ci_up)) +
@@ -363,12 +356,13 @@ sample1 %>%
           subtitle = "n = 10, violette Linie = Populationsmittelwert,\ngrüne Fläche = 95% CI für den Stichprobenmittelwert")
 ```
 
+Nach diesen Erläuterungen müsste das 95%-Konfidenzintervall in 95% von unseren 30 Stichproben den Populationsmittelwert enthalten (95% von 30 = 28.5).
 
 ```{r, fig.align='center', fig.width=8}
 mu <- mean(phy_w$Groesse)
 samples %>% 
   ggplot(., aes(x = as.numeric(Sample), y = Groesse)) +
-   geom_hline(yintercept = mu, color = "red", size = 1) +
+   geom_hline(yintercept = mu, color = "red", linewidth = 1) +
   stat_summary(geom="errorbar", fun.data=mean_cl_normal, width=0.1) +
   stat_summary(geom="point", fun = mean) +
   ggtitle("Grösse der Studentinnen PHY13-PHY17, 30 samples, n = 10",
@@ -377,6 +371,10 @@ samples %>%
   xlab("Stichproben") +
   theme_classic()
 ```
+
+Von den 30 Stichproben enthalten 27 den Populationsmittelwert und 3 Stichproben (Sample 4, 14 und 17), also 10%, enthalten ihn nicht. Diese Abweichung von den erwarteten 5% ist auf zufällige Variation zurückzuführen. Je mehr Stichproben wir nehmen würden, desto mehr würden wir uns dem theoretischen Modell annähern.
+
+**Quintessenz:** Wir wissen zwar nicht, ob ein 95%-Konfidenzintervall den wahren Populationsparameter enthält, aber wir können zu 95% darauf vertrauen, dass ein 95%-Konfidenzintervall den wahren Parameter enthält. 
 
 <br>
 
@@ -392,7 +390,11 @@ Wenn wir sicher sein wollen, dass wir den Populationsparameter treffen, sollten 
 
 Wenn wir sicher sein wollen, einen Fisch zu fangen, müssen wir ein grösseres Netz wählen. Genau gleich verhält es sich mit Vertrauensintervallen: Wenn wir ein grösseres Vertrauensintervall wählen, können wir eher darauf vertrauen, dass es den  Populationsparameter beinhaltet.  
 
+<br>
+
 ## Übung 8  {.tabset}
+
+Verwenden Sie für diese Aufgaben die Angaben aus Tabelle 2 oben.
 
 ### Aufgaben
 
@@ -410,12 +412,13 @@ $\bar{x} = 166.2, s = 5.308, n = 10$
   
 $$SE = \frac{s}{\sqrt{n}} = \frac{5.308}{\sqrt{10}} = \frac{5.308}{3.162} = 1.679$$
   
-   Die Formel für die Berechnung des 95%-Vertrauensintervalls ist
+   Die Formel für die Berechnung des 95%-Vertrauensintervalls lautet
   
 $$CI_{95} = \bar{x} \pm 1.96 SE = 166.2 \pm 1.96 \times 1.679 = [162.9, 169.5]$$
 
 2. Vorgehen wie Aufgabe 1: [159.8, 165.8]    
-3. Das 95%-Vertrauensintervall der Stichprobe 2 enthält den wahren Populationsmittelwert während das Intervall der 4. Stichprobe den wahren Mittelwert nicht enthält.   
+3. Der Populationsmittelwert beträgt 166.94. Das 95%-Vertrauensintervall der Stichprobe 2 enthält den wahren Populationsmittelwert während das Intervall der 4. Stichprobe den wahren Mittelwert nicht enthält.   
+
 <br />
 <br />
 
@@ -424,6 +427,7 @@ $$CI_{95} = \bar{x} \pm 1.96 SE = 166.2 \pm 1.96 \times 1.679 = [162.9, 169.5]$$
 ### Aufgabe
 
 Wie oft wird das 95%-Vertrauensintervall erwartungsgemäss den wahren Populationsmittelwert verfehlen, wenn Sie a) 20, b) 60, c) 120 Stichproben mit dem gleichen Stichprobenumfang untersuchen.
+
 <br />
 <br />
 
@@ -443,7 +447,7 @@ Wie können Sie die Präzision ihrer Schätzung des wahren Populationsmittelwert
 
 ### Lösung
 
-Durch die Erhöhung des Stichprobenumfangs n. Da der Standardfehler SE u.a. vom Stichprobenumfang abhängig ist, verkleinert sich das 95%-Vertrauensintervall proportional zur $\sqrt{n}$. Siehe z.B. hier https://seeing-theory.brown.edu/frequentist-inference/index.html#section2 
+Durch die Erhöhung des Stichprobenumfangs  $n$. Da der Standardfehler $SE$ u.a. vom Stichprobenumfang abhängig ist, verkleinert sich das 95%-Vertrauensintervall proportional zur $\sqrt{n}$. Siehe z.B. hier https://seeing-theory.brown.edu/frequentist-inference/index.html#section2 
 <br />
 <br />
 

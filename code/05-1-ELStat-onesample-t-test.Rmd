@@ -1,0 +1,663 @@
+---
+title: 'Übungen: Mittelwertsvergleiche, Teil 1'
+author: "Lukas Stammler"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    fig_height: 6
+    fig_width: 6
+    highlight: pygments
+    theme: yeti
+    toc: true
+    toc_float: true
+    code_download: false
+---
+
+```{r setup, include=FALSE}
+rm(list = ls())
+
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, fig.align = "center")
+
+library(tidyverse)
+library(jmv)
+library(knitr)
+library(kableExtra)
+# library(openintro)
+# library(rio)
+```
+
+
+# Kurze Einführung
+
+## Deskriptive Statistik vs. Inferenzstatistik
+
+In der *deskriptiven Statistik* wird ein bekannter Datensatz auf die bestmögliche
+Art beschrieben, indem die Datenmenge auf sinnvolle Kennzahlen und Grafiken
+reduziert wird. Mit anderen Worten, die deskriptive Statistik hilft uns dabei, 
+ein klares Bild von einer bestimmten Menge an Beobachtungen mittels zusammenfassender 
+Angaben und grafischen Darstellungen zu erhalten. In der deskriptiven Statistik 
+existiert keine Unsicherheit bezüglich der Gültigkeit der Ergebnisse, da nur 
+die vorliegenden Daten im Datensatz analysiert werden und kein Versuch unternommen 
+wird, die Ergebnisse verallgemeinern.   
+
+Die *Inferenzstatistik* hingegen versucht anhand von Zufallsstichproben (samples) 
+aus Populationen verallgemeindernde Schlussfolgerungen (inference = Schlussfolgerung) 
+auf eben diese Populationen zu ziehen. Mit anderen Worten, die Information aus 
+einer Stichprobe wird verwendet, um die Ergebnisse zu den untersuchten Merkmalen 
+auf die gesamte Population zu übertragen.Da die wahren Ausprägungen dieser Merkmale in der 
+Population nicht bekannt sind, handelt es sich um Schätzungen, die immer mit 
+einer gewissen Unsicherheit verbunden sind.   
+
+Die beiden wichtigsten Werkzeuge der Inferenzstatistik sind  
+- Hypothesentests, und    
+- Vertrauensintervalle    
+
+**Das Signifikanzniveau wird für alle Übungen auf $\alpha = 0.05$ festgelegt.**    
+
+
+# Übung 1 {.tabset}
+
+Verwenden Sie für diese Übung den Datensatz `physio.csv` (bzw. `physio.omv`), 
+den Sie bereits in früheren Übungen bearbeitet haben.
+
+```{r}
+phydata <- readRDS(file = "../data/physio.rds")
+```
+
+
+## Aufgabe
+
+Die Schweizerische Gesundheitsbefragung im Jahre 2017 ergab, dass Frauen im
+Alter von 15 - 24 Jahren ein durchschnittliches Körpergewicht von 67.6 kg
+aufweisen. 
+Quelle: [BFS](https://www.bfs.admin.ch/bfs/de/home/aktuell/neue-veroeffentlichungen.assetdetail.7586025.html)
+
+
+Frage: Unterscheidet sich das durchschnittliche Körpergewicht von Physiotherapie-Studentinnen von 67.6 kg? 
+
+1. Formulieren Sie die Nullhypothese $H_0$ und die Alternativhypothese $H_A$.  
+2. Berechnen Sie das 95%-Vertrauensintervall für das Körpergewicht der Studentinnen.  
+3. Prüfen Sie ihre Hypothese mit einem statistischen Test.  
+4. Fassen Sie ihr Resultat in ein bis zwei Sätzen zusammen.  
+
+<br />
+<br />
+
+## Lösung
+
+1. Formulieren Sie die Nullhypothese$H_0$ und die Alternativhypothese $H_A$
+
+- $H_0:$ Das durchschnittliche Gewicht von PHY-Studentinnen unterscheidet sich nicht von 67.5 kg, $\mu_{PHY_W} = 67.6$     
+- $H_A:$ Das durchschnittliche Gewicht von PHY-Studentinnen unterscheidet sich von 67.5 kg, $\mu_{PHY_W} \neq 67.6$   
+
+* Anmerkung: Inferenzstatistik bezieht sich immer auf Populationen. Daher wird die Hypothese für die Population *PHY-Studentinnen* formuliert (daher $\mu$ und nicht $\bar{x}$) und der Mittelwert der Stichprobe wird als Schätzer für diese Population eingesetzt.    
+
+<br />
+
+2. Berechnen Sie das 95%-Vertrauensintervall für das Körpergewicht der Studentinnen.  
+
+* Stichprobenumfang, Mittelwert und Standardabweichung für Gewicht (Achtung in **jamovi** `Filter = Geschlecht == "w"`) berechnen.   
+
+```{r, results='asis'}
+phy_w <- phydata %>% 
+  filter(Geschlecht == "w")
+
+phy_w_desc <- descriptives(
+  data = phy_w,
+  vars = Gewicht,
+  sd = TRUE,
+  se = TRUE,
+  median = FALSE,
+  min = FALSE,
+  max = FALSE
+)
+
+cat("<pre>")
+print(phy_w_desc)
+cat("</pre>")
+```
+
+* Standardfehler für den Mittelwert berechnen (von Hand oder **jamovi**: `S.E. mean` wählen), zur Erinnerung    
+
+$$SE =\frac{s}{\sqrt{n}}$$    
+
+* 95%-Vertrauensintervall für den Mittelwert berechnen. Zur Erinnerung    
+
+$$CI_{95} = \bar{x} \pm 1.96 \times SE$$
+    
+```{r}
+ci_lo <- round(mean(phy_w$Gewicht) - 1.96 * (sd(phy_w$Gewicht)/sqrt(length(phy_w$Gewicht))), 3)
+ci_hi <- round(mean(phy_w$Gewicht) + 1.96 * (sd(phy_w$Gewicht)/sqrt(length(phy_w$Gewicht))), 3)
+
+ci95 <- paste("95%-CI: [", ci_lo, ",", ci_hi, "]")
+ci95
+```
+
+* Das durchschnittliche Körpergewicht von PHY-Studentinnen beträgt 59.585 [58.618, 60.551] kg.Die Wahrscheinlichkeit dafür, dass bei der Ziehung einer weiteren Stichprobe (vom gleichen Umfang und aus der gleichen Grundgesamtheit) der neu ermittelte Mittelwert zwischen 58.6 kg und 60.6 kg liegt, beträgt mindestens 95 %. 
+
+* *Da das 95%-Vertrauensintervall den Referenzwert von 67.6 kg nicht einschliesst, kann die Nullhypothese zugunsten der Alternativhypothese verworfen werden und wir haben Evidenz dafür, dass ein signifikanter Unterschied zwischen dem durchschnittlichen Gewicht von Physiotherapie-Studentinnen und Schweizer Frauen im Alter von 15 - 24 Jahren besteht.*   
+
+<br />
+
+3. Teststatistik (kann von Hand berechnet werden)   
+
+* Wir vergleichen Stichprobendaten mit einem Referenzwert. Ein *Einstichproben-t-Test* ist hier die richtige Wahl.  
+
+* Z-Wert berechnen:   
+
+$$z = \frac{\bar{x} - \mu}{SE}$$
+
+* $\bar{x}$ = Stichprobenmittelwert (hier 59.6 kg einsetzen)      
+* $\mu$ = Populationsmittelwert (hier 67.6 kg einsetzen)  
+* $SE$ = Standardfehler (hier 0.493 einsetzen)
+
+```{r, echo=TRUE}
+# Code für jamovi Rj-Editor
+z_value <- round((59.6 - 67.6)/.493, 3) # z-Wert gemäss Formel berechnen
+paste("z-Wert =", z_value)              # z-Wert anzeigen
+```
+
+* Das durchschnittliche Körpergewicht liegt im Abstand von -16 SE von $\mu$ = 67.6 kg entfernt. Aus der Vorlesung wissen Sie, dass ein Abstand von mehr als $\mu \pm 2 \times SE$ typischerweise im Verwerfungsbereich für $H_0$ liegt. 
+
+
+```{r}
+cord.x <- c(-2, seq(-1.96, 1.96,0.01),2) 
+cord.y <- c(0,dnorm(seq(-1.96, 1.96,0.01)),0) 
+curve(dnorm(x,0,1),xlim=c(-18,18),main='95%-Annahme- und 5%-Verwerfungsbereich', col = "black")
+polygon(cord.x,cord.y,col='lightblue', border = "black")
+points(x = -16, y = 0, pch = 21, bg = "orange", col = "red", cex = 2)
+```
+
+* $p$-Wert in `R` berechnen
+
+```{r, echo=TRUE}
+# Code für jamovi Rj-Editor
+p_value <- 2 * pnorm(-16.227)    # p-Wert für 2-seitige Hypothese berechnen
+paste("p-Wert =", p_value)       # p-Wert anzeigen
+```
+
+* Der p-Wert für z = -16 ist extrem klein und kann nicht aus den Z-Tabellen abgelesen werden. Sie können ihn in **jamovi** > Register *Analyses* > *T-tests* > *One Sample T-Test* > Tests: *Student's* > Hypothesis: *Test value* = 67.6 (unsere Nullhypothese!)
+
+```{r, results='asis'}
+phy_w_tt <- ttestOneS(
+  data = phy_w,
+  vars = Gewicht,
+  testValue = 67.6
+)
+
+cat("<pre>")
+print(phy_w_tt)
+cat("</pre>")
+```
+
+* Der p-Wert von <0.0000001 gibt die Wahrscheinlichkeit dafür an, dass ein Stichprobenmittelwert von 59.6 kg ermittelt wird, wenn der wahre Mittelwert 67.6 kg beträgt. Mit anderen Worten, die Wahrscheinlichkeit dafür, dass ein Stichprobenmittelwert so unterschiedlich oder noch unterschiedlicher von 67.6 kg ist, als der Mittelwert in unserer Stichprobe. Da der p-Wert < 0.05 ist verwerfen wir die Nullhypothese zu Gunsten der Alternativhypothese.  
+
+<br />
+
+4. Fassen Sie ihr Resultat in ein bis zwei Sätzen zusammen.  
+
+*Das durchschnittliche Körpergewicht von Physiotherapie-Studentinnen (59.6[58.6 , 60.5] kg) ist signifikant geringer als das durchschnittliche Körpergewicht in der Population der Schweizerinnen zwischen 15 und 24 Jahren (67.6 kg), z = -16.05, p <.0001.*  
+
+<br />
+<br />
+
+# Übung 2 {.tabset}
+
+## Aufgabe
+
+New York gilt als "die Stadt, die nie schläft". Eine zufällige Stichprobe von 25 New Yorkern wurde gefragt, wie lange sie pro Nacht schlafen. Die Zusammenfassung der Daten sind in folgender Tabelle dargestellt:
+
+| n | m | s | min | max |
+|:-:|:-:|:-:|:---:|:---:|
+| 25 | 7.73 | .77 | 6.17 | 9.78 |
+
+Frage: Besteht aus diesen Daten Evidenz dafür, dass New Yorker im Durchschnitt 8 Stunden pro Nacht schlafen?    
+
+1. Formulieren Sie die Nullhypothese $H_0$ und die Alternativhypothese $H_A$.  
+2. Berechnen Sie das 95%-Vertrauensintervall für die Schlafdauer der New Yorker.  
+3. Prüfen Sie ihre Hypothese mit einem statistischen Test.  
+4. Fassen Sie ihr Resultat in ein bis zwei Sätzen zusammen.    
+
+<br />
+
+Quelle: [OpenIntro Statistics, 3rd ed](https://www.openintro.org/index.php)  
+
+<br />
+
+## Lösung
+
+1. Formulieren Sie die Nullhypothese $H_0$ und die Alternativhypothese $H_A$.  
+
+- $H_0:$ Die durchschnittliche Schlafdauer von New Yorkern beträgt 8 Std., $\mu = 8$       
+- $H_A:$ Die durchschnittliche Schlafdauer von New Yorkern beträgt nicht 8 Std., $\mu \neq 8$   
+<br />
+
+2. Berechnen Sie das 95%-Vertrauensintervall für den Mittelwert der Schlafdauer der New Yorker.   
+
+```{r, echo=TRUE}
+# Code für jamovi Rj-Editor
+
+n <- 25           # Stichprobenumfang in der Variable n speichern.
+m <- 7.73         # Stichprobenmittelwert in der Variable m speichern.
+s <- .77          # Stichproobenstandardabweichung in der Variable s speichern.
+se <- .77/sqrt(n) # Standardfehler berechnen
+
+
+ci_lo <- m - 1.96 * se  # untere Grenze des 95%-CI berechnen
+ci_hi <- m + 1.96 * se  # obere Grenze des 95%-CI berechnen
+
+# 95%-CI anzeigen
+paste("95%-Vertrauensintervall: [", ci_lo, ",", ci_hi, "]")
+```
+
+* New Yorker schlafen im Durchschnitt 7.73 [7.43, 8.03] Stunden. Das 95%-vertrauensintervall schliesst den Vergleichswert (Nullwert) von 8 Stunden ein. Es besteht keine Evidenz für einen Unterschied zwischen der mittleren Schlafdauer von New Yorkern zu 8 Stunden und die Nullhypothese wird nicht verworfen.  
+
+<br />
+
+3. Prüfen Sie ihre Hypothese mit einem statistischen Test.   
+
+* Wir vergleichen Stichprobendaten mit einem Referenzwert. Ein *Einstichproben-t-Test* ist hier die richtige Wahl.  
+
+```{r, echo=TRUE}
+# Code für jamovi Rj-Editor
+
+z_value <- (m - 8)/se       # z-Wert berechnen
+paste("Z-Wert:", z_value)   # z-Wert anzeigen
+```
+
+* Der Z-Wert liegt innerhalb von $\mu \pm 2SE$ und somit im Nicht-Verwerfungsbereich von $H_0$. 
+
+```{r}
+cord.x <- c(-2, seq(-1.96, 1.96,0.01),2) 
+cord.y <- c(0,dnorm(seq(-1.96, 1.96,0.01)),0) 
+curve(dnorm(x,0,1),xlim=c(-4,4),main='95%-Annahme- und 5%-Verwerfungsbereich', col = "black")
+polygon(cord.x,cord.y,col='lightblue', border = "black")
+points(x = -1.75, y = 0, pch = 21, bg = "orange", col = "red", cex = 2)
+```
+
+* Der p-Wert für diesen Z-Wert kann in Tabellen nachgesehen oder in `jamovi::Rj-Editor` berechnet werden.
+
+```{r, echo=TRUE}
+# Code für jamovi Rj-Editor
+
+2 * pnorm(-1.7532)   # p-Wert für 2-seitige Hypothese berechnen
+```
+
+ * Da der p-Wert > .05 ist, haben wir keine Evidenz dafür, dass sich die durchschnittliche Schlafdauer von New Yorkern von 8 Stunden unterscheidet und verwerfen die $H_0$ nicht.
+<br />
+
+4. Fassen Sie ihr Resultat in ein bis zwei Sätzen zusammen.   
+
+* *Die durchschnittliche Schlafdauer von New Yorkern beträgt 7.73 [7.43, 8.03] Stunden und unterscheidet sich nicht von den erwarteten 8 Stunden, z = -1.753, p = .0796.*  
+
+<br />
+
+## Aus Fehlern lernen
+
+Zu dieser Aufgabe wurde von Studierenden folgende Frage gestellt: "Bei der Berechnung des P-Wertes kommen wir bei Jamovi (0.7957) und der Z-Werte Tabelle (0.0401) auf einen anderen Wert. Bei den Lösungen wurde der Wert von Jamovi verwendet, welchen Lösungsweg sollten wir anwenden?"
+
+Hier noch einmal der Lösungsweg im Detail:   
+
+**Vorgaben**
+
+Referenzwert: $\mu_0$ = 8 Stunden    
+
+Stichprobe:    
+- $\bar{x}$ = 7.73    
+- $s$ = .77    
+- $n$ = 25   
+
+**Fragestellung**    
+
+Liefert unsere Stichprobe Evidenz dafür, dass New Yorker im Durchschnitt 8 Stunden schlafen?   
+
+**1. Hypothesen**    
+
+$H_0$: Die durchschnittliche Schlafdauer in unserer Stichprobe unterscheidet 
+sich nicht vom Referenzwert. $\mu_{Stichprobe} = \mu_0$ oder $\mu_{Stichprobe} = 8 h$  
+$H_A$: Die durchschnittliche Schlafdauer in unserer Stichprobe unterscheidet 
+sich vom Referenzwert. $\mu_{Stichprobe} \neq \mu_0$ oder $\mu_{Stichprobe} \neq 8 h$
+
+**2. Berechnung des 95%-Vertrauensintervalls für den Mittelwert unserer Stichprobe**     
+
+Mit dem 95%-Vertrauensintervall schätzen wir den wahren Mittelwert in der Population 
+auf Grundlage der Ergebnisse unserer Stichprobe.  
+
+$$CI_{95} = \bar{x} \pm 1.96 \times \frac{s}{\sqrt{n}}$$
+
+$$CI_{95} = \bar{7.73} \pm 1.96 \times \frac{.77}{\sqrt{25}} = CI_{95} = \bar{7.73} \pm 1.96 \times .154 = CI_{95} = [7.428, 8.032]$$  
+
+Da das 95%-Vertrauensintervall den Referenzwert $\mu = 8 h$ beinhaltet, können
+wir $H_0$ nicht verwerfen, d.h. es besteht kein signifikanter Unterschied 
+zwischen dem geschätzten Populationsmittelwert und dem Referenzwert.
+
+**3. Prüfung der Hypothesen mit dem Einstichproben-t-Test**   
+
+Als erstes berechnen wir den z-Wert:
+
+$z = \frac{\bar{x}-\mu_0}{SE_x}$, wobei ${SE_x = \frac{s}{\sqrt{n}}}$   
+
+$z = \frac{7.73 - 8}{.154} = -1.753$  
+
+In der z-Werte-Tabelle suchen wir die Wahrscheinlichkeit für ein Ereignis mit
+dem z-Wert -1.753. Das Problem ist, dass wir in der z-Wertetabelle nur z-Werte
+ablesen können bis zwei Stellen nach dem Komma. Unser z-Wert liegt demnach
+zwischen -1.75 und -1.76. Jetzt gibt es zwei Möglichkeiten:    
+
+1. Sie runden den berechneten z-Wert einfach auf -1.75 ab. Die z-Werte-Tabelle 
+sagt uns, dass für $p_{-1.75} = .0401$.
+
+2. Da unser z-Wert zwischen -1.75 und -1.76 liegt, können sie den Durchschnitt
+der beiden p-Werte nehmen (das ist zwar auch nicht ganz präzis, aber etwas besser
+als Variante 1): $p_{-1.75} = .0401$ und $p_{-1.76} = .0392$. Das Ergebnis lautet dann  
+$p_{-1.755} = \frac{.0401 + .0392}{2} = .03965$.  
+
+image: ![](../png/zWerteUe5_2_3.png)
+
+Der p-Wert in der z-Werte-Tabelle gibt die Fläche links unter der Normalverteilungskurve an (s. Abb. oben links in der z-Tabelle). Dieser Wert wäre dann gültig, wenn Sie die Hypothese einseitig formuliert hätten:
+
+$H_A: \mu_{Stichprobe} < \mu_0$   
+
+Da Sie ihre Hypothese aber zweiseitig formuliert haben, müssen Sie den erhaltenen p-Wert verdoppeln:
+
+**$p = 2 \times p_{-1.76} = 2 \times .03965 = .0793$**
+
+Jetzt entspricht ihr berechneter p-Wert so genau wie möglich dem Wert, den 
+jamovi berechnet hat. jamovi muss den p-Wert nicht in einer z-Tabelle nachschlagen 
+und berechnet den p-Wert auf mathematischer Basis. Deshalb ist dieser Wert etwas 
+präziser als der von Hand berechnete Wert.  
+
+<br />
+
+# Übung 3 {.tabset}
+
+## Aufgabe
+
+Es soll getestet werden, ob die durchschnittliche Laufzeit von Notebook-Akkus möglicherweise von den vom Hersteller angegebenen 7,5 Stunden abweicht. Dazu werden bei 50 Akkus dieser Marke, unter kontrollierten gleichen Bedingungen, die Laufzeiten gemessen. Das Ergebnis der Untersuchung ist in folgender Tabelle dargestellt
+
+| n | m | s | min | max |
+|:-:|:-:|:-:|:---:|:---:|
+| 50 | 6.94 | .884 | 5.2 | 9.1 |
+
+<br />
+
+1. Formulieren Sie die Nullhypothese $H_0$ und die Alternativhypothese $H_A$.  
+2. Berechnen Sie das 95%-Vertrauensintervall für die Akku-Laufzeit.  
+3. Prüfen Sie ihre Hypothese mit einem statistischen Test.  
+4. Fassen Sie ihr Resultat in ein bis zwei Sätzen zusammen.    
+
+<br />
+
+## Lösung   
+
+1. Formulieren Sie die Nullhypothese $H_0$ und die Alternativhypothese $H_A$. 
+
+- $H_0:$ Die durchschnittliche Laufzeit der Akkus beträgt 7.5 Std., $\mu = 7.5$        
+- $H_A:$ Die durchschnittliche Laufzeit der Akkus beträgt nicht 7.5 Std., $\mu \neq 7.5$  
+
+<br />
+
+2. Berechnen Sie das 95%-Vertrauensintervall für die Akku-Laufzeit  
+
+
+```{r, echo=TRUE}
+# Code für jamovi Rj-Editor
+
+n <- 50                 # Stichprobenumfang in n speichern
+m <- 6.94               # Stichprobenmittlewert in m speichern
+s <- .884               # Stichprobenstandardabweichung in s speichern
+se <- s/sqrt(n)         # SE berechnen
+
+ci_lo <- m - 1.96 * se  # untere Grenze des 95%-CI berechnen
+ci_hi <- m + 1.96 * se  # obere Grenze des 95%-CI berechnen
+
+# 95%-CI anzeigen
+paste("95%-Vertrauensintervall: [", ci_lo, ",", ci_hi, "]")
+```
+
+* *Die gemessene durchschnittliche Akku-Laufzeit beträgt 6.94 [6.695, 7.185] Stunden. Das 95%-vertrauensintervall schliesst den Vergleichswert von 7.5 Stunden nicht ein. Es besteht Evidenz dafür, dass die Laufzeit dieser Akkus von der angegebenen Laufzeit von 7.5 Stunden abweicht.*     
+
+<br />
+
+3. Prüfen Sie ihre Hypothese mit einem statistischen Test.   
+
+Wir vergleichen Stichprobendaten mit einem Referenzwert. Ein *Einstichproben-t-Test* ist hier die richtige Wahl.  
+
+```{r, echo=TRUE}
+# Code für jamovi Rj-Editor
+
+z_value <- (m - 7.5)/se      # z-Wert gemäss Formel berechnen
+paste("Z-Wert:", z_value)    # z-Wert anzeigen
+```
+
+* Der Z-Wert von -4.479 liegt ausserhalb von $\mu \pm 2 \times SE$ und somit im Verwerfungsbereich von $H_0$.  
+
+```{r}
+cord.x <- c(-2, seq(-1.96, 1.96,0.01),2) 
+cord.y <- c(0,dnorm(seq(-1.96, 1.96,0.01)),0) 
+curve(dnorm(x,0,1),xlim=c(-6,6),main='Standard Normal, area = 95% (1.96 sd)', col = "black")
+polygon(cord.x,cord.y,col='lightgrey', border = "black")
+points(x = -4.48, y = 0, pch = 21, bg = "orange", col = "red", cex = 2)
+```
+
+* Der p-Wert für diesen Z-Wert kann im **jamovi:Rj-Editor** berechnet werden.
+
+```{r, echo=TRUE}
+# Code für jamovi Rj-Editor
+
+2 * pnorm(-4.48)   # p-Wert für 2-seitige Hypothese berechnen
+```
+
+ * Da der p-Wert < .05 ist, besteht Evidenz dafür, dass sich die durchschnittliche Akku-Laufzeit sich von 7.5 Stunden unterscheidet und verwerfen die $H_0$.  
+ 
+ <br>
+
+4. Fassen Sie ihr Resultat in ein bis zwei Sätzen zusammen.   
+
+*Die durchschnittliche Akku-Laufzeit beträgt 6.94 [6.695, 7.185] Stunden und unterscheidet sich signifikant von den erwarteten 7.5 Stunden, z = -4.480, p < 0.0001.*   
+
+<br />
+<br />
+
+
+# Übung 4 {.tabset}
+
+## Aufgabe 
+
+Auf Grund ihrer Erfahrung vermuten Sie, dass die Laufzeit von Notebook-Akkus (siehe Übung 3) kürzer ist als in den  Unterlagen angegeben. 
+
+1. Formulieren Sie ihre Hypothesen $H_0$ und $H_A$.
+2. Wie unterscheidet sich diese Hypothese von der Hypothese in Übung 3?     
+3. Fassen Sie ihr Resultat in ein bis zwei Sätzen zusammen (verwenden Sie ihre Analyse aus Übung 3)   
+<br />
+<br />
+
+## Lösung
+
+1. Formulieren Sie ihre Hypothesen $H_0$ und $H_A$.
+
+- $H_0$ : Die Akku-Laufzeit ist gleich lang oder länger als 7.5 Stunden, $\mu \ge 7.5$  
+- $H_A$ : Die Akku-Laufzeit ist kürzer als 7.5 Stunden $\mu < 7.5$    
+
+2. Wie unterscheidet sich diese Hypothese von der Hypothese in Übung 3?     
+
+* in Übung 3 ist die Hypothese zweiseitig formuliert, in der Übung 4 ist sie einseitig formuliert.   
+
+<br>
+
+3. Fassen Sie ihr Resultat in ein bis zwei Sätzen zusammen (verwenden Sie ihre Analyse aus Übung 3) 
+
+* Wir können für die Berechnung des p-Werts einfach das Ergebnis aus Übung 3 halbieren oder den p-Wert neu berechnen:
+
+```{r, echo=TRUE}
+# Code für jamovi Rj-Editor
+
+pnorm(-4.48)   # p-Wert für 1-seitige Hypothese berechnen
+```
+
+* *Die durchschnittliche Akku-Laufzeit (6.94[6.695, 7.185] Stunden) ist signifikant kürzer als in den Unterlagen mit 7.5 Stunden angegeben, z = -4.480, p < 0.0001.* 
+
+<br />
+
+# Übung 5 {.tabset}
+
+Unterscheidet sich der mittlere BMI (body mass index) von Physiotherapie-Studentinnen vom gesamtschweizerischen Durchschnitt von 23.7 $kg/m^2$ für Frauen im Alter von 20-29 Jahren?   
+
+Wir prüfen diese Frage anhand einer Zufallsstichprobe von 183 Physiotherapie-Studentinnen. Sie finden diese Daten im Datensatz `bmi_phy_w.csv`. Laden Sie diesen Datensatz in **jamovi**; er umfasst nur die Variable `bmi` für 183 Studentinnen; die Variable wird von **jamovi** automatisch als *continuous-decimal* erkannt.
+
+*Dies ist die gleiche Fragestellung mit den identischen Daten, wie im Video Mittelwertsvergleiche Teil 1, Kap. Einstichproben-t-Test.*
+
+
+## Aufgabe 
+
+Führen Sie eine inferenzstatistische Analyse zu dieser Fragestellung durch. Legen Sie das Signifikanzniveau auf $\alpha$ = .05 fest.  
+
+<br>
+
+## Lösung  
+
+1. Kennzahlen
+
+* Es wird empfohlen, vor der inferenzstatistischen Analyse, die wichtigsten Kennzahlen zu berechnen um einen Eindruck von den Daten zu erhalten.
+
+```{r}
+bmi_phy_w <- read_csv("../data/bmi_phy_w.csv")
+```
+
+* **jamovi** > Reiter *Analyses* > *Exploration* > *Descriptives* > `bmi` in *Variables* einfügen und unter > im Untermenü *Statistics* die gewünschten Kennzahlen auswählen.
+
+```{r, results='asis'}
+desc_bmi <- jmv::descriptives(
+  data = bmi_phy_w,
+  vars = bmi
+)
+
+cat("<pre>")
+print(desc_bmi)
+cat("</pre>")
+```
+
+
+2. Statistische Hypothesen formulieren
+
+* $H_0: \mu_{bmi} = 23.7$   
+* $H_A: \mu_{bmi} \neq 23.7$  
+
+3. Signifikanzniveau festlegen   
+
+* $\alpha$ = .05   
+
+4. Sind die Daten gepaart oder unabhhängig?    
+
+* Es handelt sich um eine einzige Stichprobe.  
+
+5. Prüfgrösse bestimmen
+
+* Die Prüfgrösse ist $\mu_{bmi}$ von Physiotherapie-Studentinnen   
+
+6. Voraussetzungen prüfen
+
+* Der Stichprobenumfang $n$ ist grösser als 30.   
+* Es handelt sich um eine Zufallsstichprobe; wir können annehmen, dass die Beobachtungseinheiten unabhängig sind.  
+* Verteilung der Prüfgrösse anhand eines QQ-Plots prüfen  
+
+
+* Datensatz *bmi_phy_w.csv* öffnen  
+* **jamovi** > Register *Analyses* > *Exploration* > *Descriptives* > Untermenü *Plots* > *Q-Q Plots* > Häkchen bei Q-Q setzen
+
+```{r, results='asis'}
+desc0 <- jmv::descriptives(
+  data = bmi_phy_w,
+  vars = bmi,
+  qq = TRUE
+)
+
+cat("<pre>")
+print(desc0)
+cat("</pre>")
+```
+
+* Obwohl der QQ-Plot leicht konvex nach unten gekrümmt ist (was auf eine rechtsschiefe Verteilung hinweist) entscheiden wir vorerst auf annähernd normalverteilte Daten (s.a. Lösung 2).    
+
+7. Vertrauensintervalle für $\hat{\mu}_{bmi}$ berechnen.
+
+* **jamovi** > Register *Analyses* > *Exploration* > *Descriptives* > *Mean Dispersion* > bei *Confidence interval for Mean* Häkchen setzen, Vorgabe ist der Wert 95 für ein 95%-CI.
+
+```{r, results='asis'}
+desc <- jmv::descriptives(
+  data = bmi_phy_w,
+  vars = bmi,
+  ci = TRUE
+)
+
+cat("<pre>")
+print(desc)
+cat("</pre>")
+```
+
+* *Interpretation: Der durchschnittliche BMI von Physiotherapie-Studentinnen beträgt 21.377 [21.072, 21.682] $kg/m^2$. Das 95%-Konfidenzintervall enthält den Nullwert von 23.7 nicht und wir haben Evidenz gegen die Nullhypothese. Der durchschnittliche BMI von Physiotherapeutinnen unterscheidet sich signifikant vom durchschnittlichen BMI von Schweizer Frauen im Alter von 20-29 Jahren.*  
+
+8. Einstichproben-t-Test durchführen   
+
+* **jamovi** > Register *Analyses* > *T-Tests* > *One Sample T-Test* > `bmi` in *Dependent Variables* einfügen > unter Tests: *Student's* wählen, unter *Hypothesis > Test value* den Nullwert 23.7 eingeben und zweiseitige Hypothese $\neq Test~ value$ wählen.
+
+* Unter *Additional Statistics* kann *Mean Difference* inkl. *Confidence Interval* für die Berechnung der Differenz zwischen dem durchschnittlichen BMI von Physiotherapie-Studentinnen und dem Referenzwert von 23.7 gewählt werden.
+
+
+```{r, results='asis'}
+res <- jmv::ttestOneS(
+  data = bmi_phy_w,
+  vars = bmi,
+  testValue = 23.7,
+  meanDiff = TRUE,
+  ci = TRUE
+)
+
+cat("<pre>")
+print(res)
+cat("</pre>")
+```
+
+9. Schlussfolgerung
+
+* *Der durchschnittliche BMI von Physiotherapie-Studentinnen (Mittelwert = 21.377, 95%-CI [21.072, 21.682] $kg/m^2$) unterscheidet sich signifikant vom durchschnittlichen BMI von Schweizer Frauen im Alter von 20 - 29 Jahren (BMI = 23.7 $kg/m^2$). Physiotherapie-Studentinnen haben im Durchschnitt einen um -2.323 [-2.628, -2.018] $kg/m^2$ geringeren BMI als der Durchschnitt von Schweizer Frauen, $t$ = -15.030, $df$ = 182, $p$ < 0.0001.*  
+
+<br/>
+
+## Lösung 2  
+
+Auf Grund der etwas fraglichen Normalverteilung der Prüfgrösse, kann auch ein Wilcoxon-Vorzeichenrangtest durchgeführt werden. $\tilde{x}$ = Median    
+
+1. Hypothesen  
+
+* $H_0: \tilde{x}_{BMI} = 23.7$  
+* $H_A: \tilde{x}_{BMI} \neq 23.7$   
+
+2. Wilcoxon-Vorzeichenrangtest   
+
+* **jamovi** > Register *Analyses* > *T-Tests* > *One Sample T-Test* > `bmi` in *Dependent Variables* einfügen > unter Tests: *Wilcoxon rank* wählen > unter *Hypothesis > Test value* den Nullwert 23.7 eingeben und zweiseitige Hypothese $\neq  Test~ value$ wählen.
+
+* Unter *Additional Statistics* kann *Mean Difference* inkl. *Confidence Interval* für die Berechnung der Differenz zwischen dem Median BMI von Physiotherapie-Studentinnen und dem Referenzwert von 23.7 gewählt werden.
+
+```{r, results='asis'}
+wilcox <- jmv::ttestOneS(
+  data = bmi_phy_w,
+  vars = bmi,
+  students = FALSE,
+  wilcoxon = TRUE,
+  testValue = 23.7,
+  meanDiff = TRUE,
+  ci = TRUE
+)
+
+cat("<pre>")
+print(wilcox)
+cat("</pre>")
+```
+
+3. Schlussfolgerung   
+
+* *Der durchschnittliche BMI von Physiotherapie-Studentinnen (Median = 21.01 $kg/m^2$) unterscheidet sich signifikant vom durchschnittlichen BMI von Schweizer Frauen im Alter von 20 - 29 Jahren. Physiotherapie-Studentinnen haben einen um -2.439 [-2.743, -2.124] $kg/m^2$ geringeren BMI als der Durchschnitt von Schweizer Frauen, Wilcoxon W = 1211, p < 0.0001.*
+
+<br/>
+<br/>

@@ -8,6 +8,8 @@ output:
     fig_width: 4
     highlight: pygments
     theme: yeti
+    toc: true
+    toc_float: true
     code_download: false
 ---
 
@@ -25,14 +27,8 @@ library(openintro)
 data(COL)
 ```
 
-# Technische Vorbemerkung
+**Technischer Hinweis: Links in den Übungen öffnen Sie, indem sie darauf rechtsklicken und "Link in neuem Tab/Fenster öffnen" wählen.**  
 
-* Die Übungen sind für die Arbeit mit [jamovi](https://www.jamovi.org/) [1] angelegt, können aber mit jeder anderen Statistiksoftware bearbeitet werden.    
-* Die Datensätze für alle Übungen können  [hier](https://github.com/lukasstammler/statexercises/blob/main/data/data_statexercises.zip) als zip-Datei heruntergeladen werden. Es wird empfohlen, alle Datensätze im gleichen Ordner abzulegen.   
-* Die Datensätze liegen im `.csv`-Format vor (header = TRUE, sep = ",", dec = ".") und können direkt in jamovi geöffnet werden. Es wird empfohlen, nach der Kategorisierung der Variablen in jamovi, die Datei im jamovi-Format `.omv` zu speichern.   
-    
-[1] The jamovi project (2021). jamovi (Version 1.6) [Computer Software]. Retrieved from https://www.jamovi.org   
-    
    
 # Übungen zu Hypothesen  
 
@@ -40,7 +36,7 @@ data(COL)
 
 ### Aufgabe
 
-Eine Studienberaterin möchte wissen, wieviel Studierende im Monat für Wohnungsmiete budgetieren müssen. Einer Empfehlung der ETH Zürich entnimmt sie, dass die durchschnittlichen Wohnkosten der Studierenden auf CHF 840.-/Monat betragen (https://ethz.ch/content/dam/ethz/main/education/finanzielles/files-de/lebenshaltung.pdf). Formuliere die Null- und die Alternativhypothese.  
+Eine Studienberaterin der Berner Fachhochschule möchte wissen, wieviel Studierende im Monat für die Wohnungsmiete budgetieren müssen. Einer Empfehlung der ETH Zürich entnimmt sie, dass die durchschnittlichen Wohnkosten der Studierenden CHF 840.-/Monat betragen (https://ethz.ch/content/dam/ethz/main/education/finanzielles/files-de/lebenshaltung.pdf). Sie zweifelt, ob diese Angaben auch für Bern gelten. Formulieren Sie ihre Null- und Alternativhypothese.  
 
 ### Lösung  
 
@@ -68,7 +64,7 @@ Beachte, dass die Alternativhypothese einseitig formuliert ist.
 
 ## Übung 3 {.tabset}
 
-Der Studienbeauftragte an der Universität Basel (>10'000 Studierende) führt eine Befragung an einer Zufallsstichprobe von 400 Studierenden durch. Das Resultat seiner Untersuchung ergibt, dass die durchschnittlichen Mietkosten $\bar{x} = 730.-$ mit einer Standardabweichung von $s = 100$ betragen.
+Der Studienbeauftragte an der Universität Basel (>10'000 Studierende) führt eine Befragung an einer Zufallsstichprobe von 400 Studierenden durch. Das Resultat seiner Untersuchung ergibt, dass die durchschnittlichen Mietkosten $\bar{x} = 730.-$ mit einer Standardabweichung von $s = 100.-$ betragen.
 
 ### Aufgabe
 
@@ -79,7 +75,7 @@ Der Studienbeauftragte an der Universität Basel (>10'000 Studierende) führt ei
 
 (a) Sind die Voraussetzungen für ein Normalmodell erfüllt?   
 
-Es handelt sich um eine Zufallsstichprobe, der Stichprobenumfang ist kleiner als 10% der Population und wir dürfen Unabhängigkeit der Daten annehmen. Da die Daten der einzelnen Studierenden nicht vorliegen, können wir nicht auf Normalverteilung prüfen. Wir können aber davon ausgehen, dass das Normalmodell gültig ist, da die Stichprobe recht gross ist.   
+Es handelt sich um eine *Zufallsstichprobe*, der *Stichprobenumfang* ist kleiner als 10% der Population und wir dürfen *Unabhängigkeit der Daten* annehmen. Da die Daten der einzelnen Studierenden nicht vorliegen, können wir nicht auf Normalverteilung prüfen. Wir können aber davon ausgehen, dass das Normalmodell gültig ist, da die Stichprobe recht gross ist.   
 
 (b) Unterscheidet sich das Ergebnis signifikant von der Aussage der ETH Zürich?   
 
@@ -146,7 +142,7 @@ In Übung 2 und 3 hat der Studienbeauftragte eine einseitig Alternativhypothese 
 
 **Variante 1:** Prüfung mittels 95%-Konfidenzintervall  
 
-Das 95%-Konfidenzintervall für die Mietkosten ergibt in Übung 3 mit [720.2, 739.8].  Der Nullwert von CHF 840.- ist in diesem Konfidenzintervall nicht enthalten und wir haben Evidenz dafür, dass sich die durchschnittlichen Mietkosten signifikant von 840.- unterscheiden.
+Das 95%-Konfidenzintervall für die Mietkosten ergibt in Übung 3 mit [720.2, 739.8].  Der Nullwert von CHF 840.- ist in diesem Konfidenzintervall nicht enthalten und wir haben Evidenz dafür, dass sich die durchschnittlichen Mietkosten signifikant von 840.- unterscheiden.  
 
 **Variante 2:** Prüfung mittels Teststatisik
 
@@ -159,7 +155,7 @@ $$z = \frac{730-840}{5} = \frac{-110}{5} = -22$$
 
 Ein z-Wert von -22 ist extrem klein und kann nicht in der z-Tabelle abgelesen werden. Die Berechnung der Wahrscheinlichkeit $p$ für $z=-22$ ergibt
 
-```{r}
+```{r, echo=TRUE}
 pnorm(-22)
 ```
 
@@ -168,13 +164,13 @@ pnorm(-22)
 
 ## Übung 8 {.tabset}
 
-Sie müssen eine neuen Physiotherapie-Methode anhand einer Stichprobe von $n = 25$ Patienten beurteilen: Die mittlere Veränderung auf der Schmerzskala (Skala von 0 bis 100) nach einwöchiger Physiotherapie mit der neuen Methode war $\bar{x} = -17.8$, mit einer Standardabweichung von $s = 10$.
+Sie müssen eine neuen Physiotherapie-Methode bei Rückenschmerzen anhand einer Stichprobe von $n = 25$ Patienten beurteilen: Nach einwöchiger Physiotherapie mit der neuen Methode nahmen die Rückenschmerzen  bei den 25 Proband:innen auf der VAS (visuelle Analogskala, Wert von 0 = kein Schmerz bis 100 = maximaler Schmerz) um durchschnittlich $\bar{x} = -17.8$ Punkte ab. Die Standardabweichung beträgt $s = 10$ Punkte.
 
-Ein Langzeiterfahrungswert mit der bisherigen Behandlung beträgt -15 auf der VAS-Skala.
+Ein Langzeiterfahrungswert mit der bisherigen Referenztherapie beträgt -15 Punkte auf der VAS-Skala.
 
 ### Aufgabe
 
-Ist die neue Therapiemethode besser als die bisherige Referenztherapie? Formulieren sie die Hypothesen. Signifikanzniveau $\alpha = 0.05$
+Ist die neue Therapiemethode besser oder schlechter als die bisherige Referenztherapie? Formulieren sie die Hypothesen und prüfen Sie diese mittels Konfidenzintervall oder Teststatistik. Signifikanzniveau $\alpha = 0.05$
 
 ### Lösung
 
@@ -185,7 +181,9 @@ $H_A: \bar{x} \neq -15$
 
 <br/>
 
-**Variante 1:** Prüfung mittels 95% Konfidenzintervall
+**Variante 1:** Prüfung mittels Konfidenzintervall 
+
+Dem Signifikanzniveau $\alpha = 0.05$ entspricht ein 95%-Konfidenzintervall.
 
 1. Schritt: Berechnung des Standardfehlers
 
@@ -320,6 +318,6 @@ polygon(cord.x,cord.y,col='lightblue', border = "black")
 points(x = t2, y = 0, pch = 21, bg = "orange", col = "red", cex = 2)
 ```
 
-Die Grenzen zwischen Annahmebereich (blaue Fläche) und Verwerfungsbereich (weisse Enden der Kurve) bei einem Signifikanzniveau $\alpha = 0.05$, liegt für die Standardnormalverteilung bei -1.96 und +1.96. Unsere Teststatistik $z = -2.8$ liegt innerhalb des Verwerfungsbereichs und wir haben Evidenz gegen die Nullhypothese.
+Die Grenzen zwischen Annahmebereich (blaue Fläche) und Verwerfungsbereich (weisse Enden der Kurve) bei einem Signifikanzniveau $\alpha = 0.05$, liegt für die Standardnormalverteilung bei -1.96 und +1.96. Unsere Teststatistik $z = -2.8$ liegt innerhalb des Verwerfungsbereichs und wir haben Evidenz gegen die Nullhypothese.  
 
 <br/>
