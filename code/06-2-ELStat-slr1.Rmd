@@ -9,6 +9,8 @@ output:
     fig_align: "center"
     highlight: pygments
     theme: yeti
+    toc: true
+    toc_float: true
     code_download: false
 ---
 
@@ -23,17 +25,6 @@ library(knitr)
 library(scatr)
 library(equatiomatic)
 ```
-
-# Technische Vorbemerkung
-
-* Die Übungen sind für die Arbeit mit [jamovi](https://www.jamovi.org/) [1] angelegt, können aber mit jeder anderen Statistiksoftware bearbeitet werden.    
-* Die Datensätze für alle Übungen können  [hier](https://github.com/lukasstammler/statexercises/blob/main/data/data_statexercises.zip) als zip-Datei heruntergeladen werden. Es wird empfohlen, alle Datensätze im gleichen Ordner abzulegen.   
-* Die Datensätze liegen im `.csv`-Format vor (header = TRUE, sep = ",", dec = ".") und können direkt in jamovi geöffnet werden. Es wird empfohlen, nach der Kategorisierung der Variablen in jamovi, die Datei im jamovi-Format `.omv` zu speichern.   
-    
-[1] The jamovi project (2021). jamovi (Version 1.6) [Computer Software]. Retrieved from https://www.jamovi.org   
-
-<br/>
-
 
 # Einführung
 
@@ -52,7 +43,7 @@ Wobei:
 
 Die Gerade, welche insgesamt den geringsten Abstand zu allen Datenpunkten hat, nennt man *Regressionsgerade*. 
 
-Wie aus der Formel ersichtlich, ist im Regressionsmodell die y-Variable abhängig von der x-Variablen, d.h. wir gehen hier von einem ursächlichen Zusammenhang zwischen den beiden Variablen aus: Die Ausprägung von x bestimmt die Ausprägung von y, mit anderen Worten, der Zusammenhang ist so, dass der Wert von x den Wert von y voraussagt. Daher wird x auch als Prädiktorvariable bezeichnet.   
+Wie aus der Formel ersichtlich, ist im Regressionsmodell die y-Variable abhängig von der x-Variablen, d.h. wir gehen hier von einem ursächlichen Zusammenhang zwischen den beiden Variablen aus: Die Ausprägung von x bestimmt die Ausprägung von y, mit anderen Worten, der Zusammenhang ist derart, dass der Wert von x den Wert von y voraussagt. Daher wird x auch als Prädiktorvariable bezeichnet.   
 
 **Beispiel:**
 
@@ -71,7 +62,7 @@ ggplot(phy, aes(x = Groesse, y = Schuhgroesse)) +
 ```
 
 
-* Die Grafik zeigt einen linearen Zusammenhang zwischen Schuhgrösse und Körpergrösse. Die blaue Linie ist die Regressionsgrade. Sie wird vom PC so berechnet, dass die Summe der quadrierten Abstände aller Punkte minimal ist. Die Steigung der Geraden $\beta_1$ gibt uns an, um wieviel die Schuhgrösse zunimmt, wenn die Körpergrösse um eine Einheit zunimmt. So genau lässt sich das aber nicht ablesen und deshalb lassen wir den PC unser Regressionsmodell rechnen.    
+* Die Grafik zeigt einen positiven linearen Zusammenhang zwischen Schuhgrösse und Körpergrösse. Die blaue Linie ist die Regressionsgrade. Sie wird vom PC so berechnet, dass die Summe der quadrierten Abstände aller Punkte minimal ist. Die Steigung der Geraden $\beta_1$ gibt uns an, um wieviel die Schuhgrösse zunimmt, wenn die Körpergrösse um eine Einheit zunimmt. So genau lässt sich das aber nicht ablesen und deshalb lassen wir den PC unser Regressionsmodell rechnen.    
 
 ```{r}
 jmv::linReg(
@@ -82,7 +73,6 @@ jmv::linReg(
     list("Groesse")),
   refLevels = list()
 )
- 
 ```
 
 * Jetzt können wir die Koeffizienten $\beta_0$ (= Estimate Intercept) und $\beta_1$ (= Estimate Groesse) in unsere Formel einsetzen:    
@@ -104,7 +94,7 @@ extract_eq(model, use_coefs = TRUE)
 
 ## Aufgabe
 
-Wir haben eine Regression, die das Körpergewicht (kg) von der Körpergrösse (cm) vorhersagt. Welche Einheiten haben Korrelationskoeffizient $r$, Achsenabschnitt $\beta_0$ und Steigung $\beta_1$?  
+Wir haben eine Regression, die das Körpergewicht (kg) in Abhängigkeit von der Körpergrösse (cm) vorhersagt. Welche Einheiten haben Korrelationskoeffizient $r$, Achsenabschnitt $\beta_0$ und Steigung $\beta_1$?  
 
 <br/>
 
@@ -149,7 +139,7 @@ Unser Modell hat die Inzidenz unterschätzt. Ein Residuum wird berechnet als $\e
 
 # Übung 4 {.tabset}
 
-Eine Forschungsgruppe sammelte Messungen zu Körperumfang und Knochendurchmesser. Zusätzlich wurden Alter, Körpergewicht, Körpergrösse und Geschlecht erfasst. Eingeschlossen wurden 507 jugendliche und erwachsene, körperlich aktive Menschen. Wir untersuchen den Zusammenhang zwischen Schulterumfang und Körpergrösse.   
+Eine Forschungsgruppe sammelte Messungen zu Körperumfang und Knochendurchmesser. Zusätzlich wurden Alter, Körpergewicht, Körpergrösse und Geschlecht erfasst. Eingeschlossen wurden 507 jugendliche und erwachsene, körperlich aktive Menschen. Wir untersuchen den Zusammenhang zwischen Schulterumfang und Körpergrösse, wobei wir für unsere Fragestellung die Körpergrösse als abhängige Variable und den Schulterumfang als unabhängige Variable annehmen.   
 
 **Hinweis**   
 
@@ -178,6 +168,7 @@ Der durchschnittliche Schulterumfang im Datensatz beträgt 107.2 cm (s = 10.37 c
 - Zuerst berechnen wir die Steigung:  
 
 $$\beta_1 = \frac{s_y}{s_x} r = \frac{9.41}{10.37}\times0.67 = 0.608$$  
+
 - jetzt berechnen wir den Achsenabschnitt: 
 
 $$\beta_0 = \bar{y} - \beta_1 \bar{x} = 171.14 - 0.608 \times 107.2 = 105.96$$
@@ -216,7 +207,7 @@ $$\epsilon_i = y_i - \hat{y_i} = 160 - 167 = -7 cm$$
 
 # Übung 5 {.tabset}
 
-Wir untersuchen den Zusammenhang zwischen dem Herzgewicht (Hwt in g) von Katzen in Abhängigkeit von ihrem Körpergewicht (Bwt in kg). Die Regressionskoeffizienten in diesem jamovi-Output wurden anhand eines Datensatzes berechnet, der die Daten von 144 Hauskatzen umfasst.
+Wir untersuchen den Zusammenhang zwischen dem Herzgewicht (`Hwt` in g) von Katzen in Abhängigkeit von ihrem Körpergewicht (`Bwt` in kg). Die Regressionskoeffizienten in diesem **jamovi**-Output wurden anhand eines Datensatzes berechnet, der die Daten von n = 144 Hauskatzen umfasst.
 
 ```{r}
 # library(MASS)
@@ -258,7 +249,7 @@ $$\widehat{Hwt} = -0.357 + 4.034 \times Bwt$$
 
 2. Interpretieren Sie den Achsenabschnitt.   
 
-- Für eine Katze mit 0 kg Körpergewicht, erwarten wir ein Herzgewicht von -0.357 g. Diese Angabe ist offensichtlich ohne Bedeutung.   
+- Für eine Katze mit 0 kg Körpergewicht, erwarten wir ein Herzgewicht von -0.357 g. Diese Angabe ist offensichtlich sinnfrei.   
 
 3. Interpretieren Sie die Steigung.   
 
@@ -270,13 +261,13 @@ $$\widehat{Hwt} = -0.357 + 4.034 \times Bwt$$
 
 5. Interpretieren sie $R$.    
 
-- $R$ ist der Korrelationskoeffizient nach Pearson. Mit $r = 0.80$ besteht ein starker Zusammenhang zwischen dem Körpergewicht und dem Herzgewicht von Katzen.   
+- $R$ ist der Korrelationskoeffizient nach Pearson. Mit $r = 0.80$ besteht ein starker positiver Zusammenhang zwischen dem Körpergewicht und dem Herzgewicht von Katzen.   
 
 <br/>
 
 # Übung 6 {.tabset}  
 
-Kann die Anzahl an Mordfällen pro Million Einwohner und pro Jahr (annual_murders_per_mil) aus dem prozentualen Anteil an Menschen, die in Armut leben (perc_pov) vorhergesagt werden? Die Regressionskoeffizienten in diesem jamovi-Output wurden anhand einer Zufallsstichprobe von 20 Metropolitanregionen in den USA berechnet.
+Kann die Anzahl an Mordfällen pro Million Einwohner und pro Jahr (`annual_murders_per_mil`) aus dem prozentualen Anteil an Menschen, die in Armut leben (`perc_pov`) vorhergesagt werden? Die Regressionskoeffizienten in diesem **jamovi**-Output wurden anhand einer Zufallsstichprobe von n = 20 Metropolitanregionen in den USA berechnet.
 
 ```{r}
 murders <- read_csv("../data/murders.csv")
@@ -330,7 +321,7 @@ $$\widehat{Morde} = -29.901 + 2.559 \times Armut$$
 
 5. Interpretieren sie $R$.   
 
-- Mit $r = 0.84$ besteht ein starker Zusammenhang zwischen dem Anteil Menschen, die in Armut leben und der Mordrate in Metropolitanregionen der USA.   
+- Mit $r = 0.84$ besteht ein starker positiver Zusammenhang zwischen dem Anteil Menschen, die in Armut leben und der Mordrate in Metropolitanregionen der USA.   
 
 <br/>
 
@@ -338,7 +329,7 @@ $$\widehat{Morde} = -29.901 + 2.559 \times Armut$$
 
 Erfahrungsgemäss hat die Schlafdauer junger Mütter einen erheblichen Einfluss auf ihre Laune. Danielle hat in einem Selbstversuch während 100 Tagen ihre Laune anhand einer selbst erstellten Skala von 0 - 100 gemessen. Zudem hat sie ihre eigene Schlafdauer und diejenige ihres Babys gemessen.  
 
-Wir arbeiten mit dem Datesatz `parenthood.csv`. Der Datensatz stammt aus dem Lehrbuch *Learning Statistics with jamovi* von Danielle Navarro und David Foxcroft und enthält 5 Variablen
+Wir arbeiten mit dem Datesatz `parenthood.csv`. Der Datensatz stammt aus dem Lehrbuch [Learning Statistics with jamovi](https://www.learnstatswithjamovi.com/) von Danielle Navarro und David Foxcroft und enthält 5 Variablen
 
 | Variable | Erläuterung |
 |:-|:-|
@@ -358,7 +349,7 @@ parenthood <- read_csv("../data/parenthood.csv")
 
 Besteht ein Zusammenhang zwischen der Stimmung von Dan (Danielle) und ihrer Schlafdauer?  
 
-0. Laden Sie den Datensatz in jamovi    
+0. Laden Sie den Datensatz in **jamovi** und kategorisieren Sie `dan.grump` als Ordinal-Integer   
 1. Formulieren Sie Ihre Hypothesen.    
 2. Erstellen Sie eine Tabelle mit den deskriptiven Kennzahlen.    
 3. Überlegen Sie welches die abhängige und die unabhängige Variable ist und erstellen Sie ein Punktediagramm mit einer Regressionsgeraden.
@@ -372,12 +363,12 @@ Besteht ein Zusammenhang zwischen der Stimmung von Dan (Danielle) und ihrer Schl
 
 1. Formulieren Sie Ihre Hypothesen.  
 
-* $H_0$: Es besteht kein Zusammenhang zwischen Dan's Stimmung und ihrer Schlafdauer.    
-* $H_A$: Es besteht ein Zusammenhang zwischen Dan's Stimmung und ihrer Schlafdauer.   
+* $H_0: \rho = 0$: Es besteht kein Zusammenhang zwischen Dan's Stimmung und ihrer Schlafdauer.    
+* $H_A: \rho \neq 0$: Es besteht ein Zusammenhang zwischen Dan's Stimmung und ihrer Schlafdauer.   
 
 <br />
 
-2. Erstellen Sie eine Tabelle mit den deskriptiven Kennzahlen.    
+2. Erstellen Sie eine Tabelle mit den deskriptiven Kennzahlen für `dan.sleep` und `dan.grump`.    
 
 ```{r}
 jmv::descriptives(
@@ -399,7 +390,7 @@ scatr::scat(
 )
 ```
 
-- Es besteht ein negativer linearer Zusammenhang zwischen der Schlafdauer von Dan und ihrer Laune. Je länger Dan schläft, desto tiefer ist ihr Schlechte-Laune-Score.
+* Es besteht ein negativer linearer Zusammenhang zwischen der Schlafdauer von Dan und ihrer Laune. Je länger Dan schläft, desto tiefer ist ihr Schlechte-Laune-Score.
 
 <br />
 
@@ -413,11 +404,13 @@ jmv::corrMatrix(
 )
 ```
 
-- Der Korrelationskoeffizient $r = -0.90$. Damit besteht ein starker Zusammenhang zwischen Dan's Schlafdauer und ihrer Laune.  
+- Der Korrelationskoeffizient $r = -0.90 [-0.934; -0.859], p < 0.0001$. Damit besteht ein starker, negativer, signifikanter Zusammenhang zwischen Dan's Schlafdauer und ihrer Laune.  
 
 <br />
 
-5. Erstellen Sie ein einfaches lineares Regressionsmodell.    
+5. Erstellen Sie ein einfaches lineares Regressionsmodell. 
+
+* **jamovi** > Register *Analyses* > *Regression* > *Linear Regression* > `dan.grump` als *Dependent Variable*, `dan.sleep` als *Covariates* einfügen > unter *Model Coefficients* Häkchen bei *Estimate* Confidence interval setzen.
 
 ```{r}
 jmv::linReg(
@@ -433,6 +426,8 @@ jmv::linReg(
 ```
 <br />
 
+* Durch Einsetzen der Koeffizienten erhalten wir das Regressionsmodell  
+
 ```{r}
 m000 <- lm(dan.grump ~ dan.sleep, data = parenthood)
 extract_eq(m000, use_coefs = TRUE)
@@ -441,9 +436,9 @@ extract_eq(m000, use_coefs = TRUE)
 
 6. Formulieren Sie Ihre Resultate.    
 
-**Zwischen Dan's Schlafdauer und ihrer Laune besteht ein negativer linearer Zusammenhang, d.h. je kürzer ihre Schlafdauer, desto höher ihr Schlechte-Laune-Score. Der Zusammenhang ist stark und signifikant, $r_p$ = .9033[-0.9341, -0.8595], p < .0001.** (Nebenbemerkung: Dan scheint eher ein Grummel zu sein, hat sie doch im Durchschnitt über die 100 Tage 63.7 Punkte auf ihrer Skala und mit einem Minimum von 41 Punkten nie wirklich gute Laune)    
+* **Zwischen Dan's Schlafdauer und ihrer Laune besteht ein negativer linearer Zusammenhang, d.h. je kürzer ihre Schlafdauer, desto höher ihr Schlechte-Laune-Score. Der Zusammenhang ist stark und signifikant, $r_p$ = .9033[-0.9341, -0.8595], p < .0001.** (Nebenbemerkung: Dan scheint eher ein Grummel zu sein, hat sie doch im Durchschnitt über die 100 Tage 63.7 Punkte auf ihrer Skala und mit einem Minimum von 41 Punkten nie wirklich gute Laune)    
 
-**Eine einfache lineare Regression mit Schlechte-Laune-Score als abhängiger Variable und Schlafdauer als unabhängiger Variable wurde durchgeführt. Der geschätzte Regressionskoeffizient $\beta_1$ für Schlaf beträgt -8.94 [-9.79, -8.09], p < .0001). Dan's Laune verbessert sich somit im Durchschnitt um -8.94 [-9.79, -8.09] Punkte pro Stunde, die sie mehr Schlaf bekommt. Die Schlafdauer erklärt 81.6% der Variabilität von Dan's Laune ($R^2$ = .8161) **
+* **Eine einfache lineare Regression mit Schlechte-Laune-Score als abhängiger Variable und Schlafdauer als unabhängiger Variable wurde durchgeführt. Der geschätzte Regressionskoeffizient $\beta_1$ für Schlaf beträgt -8.94 [-9.79, -8.09], p < .0001). Dan's Laune verbessert sich somit im Durchschnitt um -8.94 [-9.79, -8.09] Punkte pro Stunde, die sie mehr Schlaf bekommt. Die Schlafdauer erklärt 81.6% der Variabilität von Dan's Laune ($R^2$ = .8161) **
 
 <br />
 
@@ -451,11 +446,11 @@ extract_eq(m000, use_coefs = TRUE)
 
 ## Aufgabe
 
-Wir arbeiten mit dem gleichen Datensatz wie in Übung 1.
+Wir arbeiten weiter mit dem Datensatz `parenthood.csv`.
 
 Die Frage lautet: Besteht ein Zusammenhang zwischen der Schlaufdauer von Dan und von ihrem Baby?  
 
-0. Laden Sie den Datensatz in jamovi (ist vermutlich schon geschehen)    
+0. Laden Sie den Datensatz in **jamovi** (ist vermutlich schon geschehen)    
 1. Formulieren Sie Ihre Hypothesen.    
 2. Erstellen Sie eine Tabelle mit den deskriptiven Kennzahlen.    
 3. Überlegen Sie welches die abhängige und die unabhängige Variable ist und erstellen Sie ein Punktediagramm mit einer Regressionsgeraden.
@@ -469,11 +464,11 @@ Die Frage lautet: Besteht ein Zusammenhang zwischen der Schlaufdauer von Dan und
 
 1. Formulieren Sie Ihre Hypothesen.  
 
-* $H_0$: Es besteht kein Zusammenhang zwischen der Schlafdauer von Dan und ihrem Baby.    
-* $H_A$: Es besteht ein Zusammenhang zwischen der Schlafdauer von Dan und ihrem Baby.
+* $H_0: \rho = 0$: Es besteht kein Zusammenhang zwischen der Schlafdauer von Dan und ihrem Baby.    
+* $H_A: \rho \neq 0$: Es besteht ein Zusammenhang zwischen der Schlafdauer von Dan und ihrem Baby.
 <br />
 
-2. Erstellen Sie eine Tabelle mit den deskriptiven Kennzahlen.    
+2. Erstellen Sie eine Tabelle mit den deskriptiven Kennzahlen für `dan.sleep` und `baby.sleep`.    
 
 ```{r}
 #parenthood <- read_csv("../data/parenthood.csv")
@@ -487,7 +482,7 @@ jmv::descriptives(
 
 <br />
 
-3. Überlegen Sie welches die abhängige und die unabhängige Variable ist und erstellen Sie ein Punktediagramm mit einer Regressionsgeraden.
+3. Überlegen Sie welches die abhängige und die unabhängige Variable ist und erstellen Sie ein Punktediagramm mit einer Regressionsgeraden. (Tipp für noch Unerfahrene: In der Regel ist es so, dass Eltern wegen dem Baby aufwachen und nicht umgekehrt.)
 
 ```{r}
 scatr::scat(
@@ -498,7 +493,7 @@ scatr::scat(
 )
 ```
 
-- Es besteht ein positiver linearer Zusammenhang zwischen der Schlafdauer des Babys und Dan's Schlafdauer.   
+* Es besteht ein positiver linearer Zusammenhang zwischen der Schlafdauer des Babys und Dan's Schlafdauer.   
 
 <br />
 
@@ -512,7 +507,7 @@ jmv::corrMatrix(
 )
 ```
 
-- Mit $r = 0.63$ besteht ein mittlerer Zusammenhang zwischen der Schlafdauer des Babys und Dan's Schlafdauer.
+- Mit $r = 0.63 [0.734; 0.492$ besteht ein mittlerer Zusammenhang zwischen der Schlafdauer des Babys und Dan's Schlafdauer.
 
 <br />
 
@@ -533,6 +528,8 @@ jmv::linReg(
 
 <br />
 
+* Durch einsetzen der Koeffizienten erhalten wir folgendes Regressionsmodell
+
 ```{r}
 m001 <- lm(dan.sleep ~ baby.sleep, data = parenthood)
 extract_eq(m001, use_coefs = TRUE)
@@ -543,9 +540,9 @@ extract_eq(m001, use_coefs = TRUE)
 
 6. Formulieren Sie Ihre Resultate.    
 
-**Zwischen der Schlafdauer von Dan's Baby und ihrer eigenen Schlafdauer besteht ein positive linearer Zusammenhang, d.h. je länger das Baby schläft, desto länger schläft auch Dan. Der Zusammenhang ist mässig und signifikant, $r_p$ = 0.6279 [0.4922, 0.7339], p < 0.0001.** 
+* **Zwischen der Schlafdauer von Dan's Baby und ihrer eigenen Schlafdauer besteht ein positive linearer Zusammenhang, d.h. je länger das Baby schläft, desto länger schläft auch Dan. Der Zusammenhang ist moderat und signifikant, $r$ = 0.6279 [0.4922, 0.7339], p < 0.0001.** 
 
-**Eine einfache lineare Regression mit Dan's Schlafdauer als abhängiger Variable und der Schlafdauer des Babys als unabhängiger Variable wurde durchgeführt. Der geschätzte Regressionskoeffizient $\beta$ für Schlaf Baby beträgt 0.3075 [0.2311, 0.3840], p < 0.0001). Pro Stunde Schlaf des Babys erhöht sich Dan's Schlafdauer demnach im Durchschnitt um 0.3075 [.2311, .3840] Stunden. Die Schlafdauer des Babys erklärt 39.4% der Varianz von Dan's Schlafdauer ($R^2$ = .3943)**   
+* **Eine einfache lineare Regression mit Dan's Schlafdauer als abhängiger Variable und der Schlafdauer des Babys als unabhängiger Variable wurde durchgeführt. Der geschätzte Regressionskoeffizient $\beta$ für Schlaf Baby beträgt 0.3075 [0.2311, 0.3840], p < 0.0001. Pro Stunde Schlaf des Babys erhöht sich Dan's Schlafdauer im Durchschnitt um 0.3075 [.2311, .3840] Stunden. Die Schlafdauer des Babys erklärt 39.4% der Varianz von Dan's Schlafdauer ($R^2$ = .3943).**   
 
 <br />
 <br />
