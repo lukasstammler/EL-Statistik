@@ -26,3 +26,220 @@ library(knitr)
 library(scatr)
 library(openintro)
 ```
+
+# Übung 1 {.tabset}   
+
+Beeinflusst die Teilnahme an einem psychologischen Unterstützungsprogramm die Fähigkeit, mit dem Rauchen aufzuhören? Um diese Frage zu beantworten wurde mit 300 Raucher:innen, die mit dem Rauchen aufhören wollten, ein randomisiertes Experiment durchgeführt. 150 Teilnehmer:innen erhielten ein Nikotinpflaster und erhielten wöchentlich psychologische Beratung (Interventionsgruppe); die anderen 150 Teilnehmer:innen erhielten nur das Nikotinpflaster und keine psychologische Beratung (Kontrollgruppe). Beim Abschluss der Studie hatten 40 Teilnehmer:innen in der Interventionsgruppe mit dem Rauchen aufgehört, während in der Kontrollgruppe nur 30 Teilnehmer:innen mit dem Rauchen aufgehört haben.   
+
+## Aufgabe
+
+1. Erstellen Sie eine Kreuztabelle für die Resultate der Studie.   
+2. Beantworten Sie die beiden folgenden Fragen unter der Nullhypothese, dass die Teilnahme an einem psychologischen Unterstützungsprogramm keinen Effekt auf die Fähigkeit hat, mit dem Rauchen aufzuhören. Geben Sie auch an, ob die erwarteten Werte höher oder tiefer als die beobachteten Werte sind.  
+
+  a. Von wievielen Teilnehmer:innen in der Interventionsgruppe würden Sie erwarten, dass sie mit Rauchen aufhören?  
+  b. Von wievielen Teilnehmer:innen in der Kontrollgruppe würden Sie erwarten, dass sie nicht mit Rauchen aufhören?   
+  
+<br>
+  
+## Lösung  
+
+1. Erstellen Sie eine Kreuztabelle für die Resultate der Studie.  
+
+|Gruppe|Rauchstop ja| Rauchstop nein|Total|
+|:-----|:-----------|:--------------|:----|
+|Intervention|40|110|150|
+|Kontrolle|30|120|150|
+|Total|70|230|300|
+
+2. a) Von wievielen Teilnehmer:innen in der Interventionsgruppe würden Sie unter der Nullhypothese erwarten, dass sie mit dem Rauchen aufhören? 
+
+$$Erwartete~Häufigkeit = \frac{Zeilensumme \times Spaltensumme}{Gesamtsumme}$$
+
+* Erwartete Häufigkeit: $E_{zeile1, spalte1} = \frac{150 \times 70}{300} = 35$  
+* Unter der Annahme, dass es keinen Einfluss auf den Rauchstop hat, ob bei der Raucherentwöhnung eine psychologische Beratung in Anspruch genommen wird, erwarten wir, dass in der Interventionsgruppe 35 Teilnehmer:innen mit dem Rauchen aufhören. Tatsächlich haben jedoch in dieser Gruppe 40 Personen mit dem Rauchen aufgehört, das sind 5 mehr als erwartet.  
+
+2. b) Von wievielen Teilnehmer:innen in der Kontrollgruppe würden Sie unter der Nullhypothese erwarten, dass sie nicht mit dem Rauchen aufhören?   
+
+* Erwartete Häufigkeit: $E_{zeile2, spalte2} = \frac{150 \times 230}{300} = 115$   
+* Unter der Annahme, dass es keinen Einfluss auf den Rauchstop hat, ob bei der Raucherentwöhnung eine psychologische Beratung in Anspruch genommen wird, erwarten wir, dass in der Kontrollgruppe 115 Teilnehmer:innen nicht mit dem Rauchen aufhören. Tatsächlich haben jedoch in dieser Gruppe 120 Personen nicht mit dem Rauchen aufgehört, das sind 5 mehr als erwartet.   
+
+```{r}
+# # create dataset
+# group <- c(rep("IG", 150), rep("KG", 150))
+# smoke <- c(rep("stop", 40), rep("smoke", 110), rep("stop", 30), rep("smoke", 120))
+# ID <- 1:300
+# rauchstop <- tibble(ID = ID, group = group, smoke = smoke)
+# write_csv(rauchstop, file = "../data/rauchstop.csv")
+
+rauchstop <- read_csv("../data/rauchstop.csv")
+```
+
+<br>
+
+# Übung 2 {.tabset}
+
+Die Daten zum Rauchstop-Experiment sind im Datensatz `rauchstop.csv` abgelegt. Laden Sie diesen Datensatz in **jamovi**.
+
+## Aufgabe  
+
+Führen Sie einen $\chi^2$-Test in **jamovi** durch. Geben Sie für jede Zelle die erwarteten Werte, die Teststatistik $\chi^2$, die Anzahl Freiheitsgrade für die Teststatistik und den $p$-Wert an. Treffen Sie einen Entscheid für die Null- oder die Alternativhypothese (Signifikanzniveau $\alpha$ = 0.05).
+
+
+## Lösung
+
+* **jamovi** > Register *Analyses* > *Frequencies* > *Contingency tables* > *Independent Samples* > Variable `group` in *Rows*, Variable `smoke` in *Columns* > Unter *Cells* Häkchen bei *Observered counts* und bei *Expected counts*.  
+
+```{r}
+jmv::contTables(
+  formula = ~group:smoke,
+  data = rauchstop,
+  exp = TRUE
+)
+```
+
+* **jamovi** berechnet für alle Zellen die erwarteten Werte.   
+* $\chi^2$ = 1.8634, $df = (Anzahl Zeilen - 1) \times (Anzahl Spalten - 1) = (2-1)\times(2-1) = 1$, $p$ = 0.1722  
+* *Untersucht wurde die Frage, ob die Teilnahme an einem psychologischen Unterstützungsprogramm die Fähigkeit beeinflusst, mit dem Rauchen aufzuhören. Aufgrund der vorliegenden Daten liegt keine Evidenz für einen zusätzlichen Effekt von psychologischer Beratung vor, $\chi^2$ = 1.8634, df = 1, p = 0.1722.*
+
+<br>
+
+# Übung 3 {.tabset}
+
+Igor, der erfahrene Eisverkäufer behauptet, dass es geschlechtsspezifische Präferenzen für seine drei Eissorten Schokolade, Erdbeere und Vanille gibt. Sie können sich das nicht vorstellen und begleiten Igor einen Tag lang. Bei jedem, jeder Kund:in notieren sie das Geschlecht und die gekaufte Eissorte. Sie speichern ihre Resultate im Datensatz `eis.csv`.  
+
+```{r}
+# # create dataset
+# ID <- 1:137
+# Geschlecht <- c(rep("w", 66), rep("m", 71))
+# Eissorte <- c(rep("Schokolade", 37), rep("Erdbeere", 17), rep("Vanille", 12), 
+#               rep("Schokolade", 21), rep("Erdbeere", 18), rep("Vanille", 32))
+# eis <- tibble(ID = ID, Geschlecht = Geschlecht, Eissorte = Eissorte)
+# write_csv(eis, file = "../data/eis.csv")
+
+eis <- read_csv("../data/eis.csv")
+```
+
+Die ersten Zeilen ihres Datensatzes sehen so aus:
+
+```{r}
+set.seed(1234)
+eis %>% 
+  select(-ID) %>% 
+  sample_n(size = 10)
+```
+
+
+
+## Aufgabe  
+
+1. Notieren Sie ihre Hypothesen.  
+2. Wie oft erwarten Sie, dass Männer Eis mit Vanillegeschmack kaufen.
+3. Wie hoch ist relative Häufigkeit von Frauen, die Schokoladeeis wählen?  
+4. Führen Sie in **jamovi** einen Hypothesentest durch.  
+5. Fassen Sie ihre Resultate in ein, zwei Sätzen zusammen.    
+
+<br>
+
+## Lösung  
+
+1.  Notieren Sie ihre Hypothesen.  
+
+- $H_0:$ Es besteht kein Zusammenhang zwischen Geschlecht und Wahl der Eissorte.  
+- $H_A:$ Es besteht ein Zusammenhang zwischen Geschlecht und Wahl der Eissorte.    
+
+2. Wie oft erwarten Sie, dass Männer Eis mit Vanillegeschmack kaufen.  
+
+* Der erwartete Wert ist (71 x 44) / 137 = 22.8. Sie erwarten, dass ca. 23 Männer Vanilleeis wählen. Der beobachtete Wert liegt mit 32 wesentlich höher als erwartet.  
+
+3. Wie hoch ist relative Häufigkeit von Frauen, die Schokoladeeis wählen?  
+
+* Relative Häufigkeit = 37/66 = 0.561 = 56.1%  
+
+4. Führen Sie in **jamovi** einen Hypothesentest durch.   
+
+```{r}
+jmv::contTables(
+  formula = ~Geschlecht:Eissorte,
+  data = eis,
+  exp = TRUE
+)
+```
+
+5. Fassen Sie ihre Resultate in ein, zwei Sätzen zusammen.   
+
+* *Untersucht wurde die Frage, ob Männer und Frauen eine unterschiedliche Vorliebe für bestimmte Eissorten haben. Die Untersuchung ergab einen signifikanten Unterschied zwischen Männern und Frauen, $\chi^2$ = 13.4, df = 2, p = 0.0013. Bei Männern sind Vanilleeis (45.1%) und bei Frauen Schokoladeeis (56.1%) am beliebtesten.*   
+
+<br>
+
+# Übung 4 {.tabset}
+
+![BTS, Quelle pngegg.com](../png/bts-group.png)
+
+BTS ist eine K-Pop-Boygroup, die bei Jugendlichen sehr beliebt ist. Anhang einer Zufallsstichprobe von n = 16 Jugendlichen (8 Frauen, 8 Männer) wurde untersucht, ob es einen Geschlechtsunterschied bei der Beliebtheit der Gruppe gibt.   
+
+Das Ergebnis der Befragung ist im Datensatz `bts.csv` abgelegt. 
+
+```{r}
+ID <- 1:16
+geschlecht <- c(rep("m", 8), rep("w", 8))
+daumen <- c(rep("hoch", 1), rep("runter", 7), rep("hoch", 6), rep("runter", 2))
+bts <- tibble(ID = ID, geschlecht = geschlecht, daumen = daumen)
+write_csv(bts, file = "../data/bts.csv")
+
+bts <- read_csv("../data/bts.csv")
+```
+
+
+## Aufgabe
+
+1. Notieren Sie ihre Hypothesen.  
+2. Wie hoch ist die relative Häufigkeit von Männern, die "Daumen hoch" geben?   
+3. Wie hoch ist die relative Häufigkeit von Frauen, die "Daumen hoch" geben?  
+4. Wie hoch ist der erwartete Wert für die Männer, die "Daumen hoch" geben?
+5. Führen Sie in **jamovi** einen Hypothesentest durch.  
+6. Fassen Sie ihre Resultate in ein, zwei Sätzen zusammen.    
+
+<br>
+
+## Lösung
+
+1. Notieren Sie ihre Hypothesen.  
+
+- $H_0:$ Es besteht kein Zusammenhang zwischen Geschlecht und Akzeptanz von BTS.  
+- $H_A:$ Es besteht ein Zusammenhang zwischen Geschlecht und Akzeptanz von BTS.    
+
+2. Wie hoch ist die relative Häufigkeit von Männern, die "Daumen hoch" geben?  
+
+* Relative Häufigkeit = 1/8 = 0.125 = 12.5%  
+
+3. Wie hoch ist die relative Häufigkeit von Frauen, die "Daumen hoch" geben?    
+
+* Relative Häufigkeit = 6/8 = 0.75 = 75%  
+
+4. Wie hoch ist der erwartete Wert für die Männer, die "Daumen hoch" geben?  
+
+* Der erwartete Wert ist (7 x 8)/16 = 3.5   
+
+5. Führen Sie in **jamovi** einen Hypothesentest durch.  
+
+* Die erwarteten Werte liegen in allen Zellen unter 5. Damit ist eine Voraussetzung für den $\chi^2$-Test verletzt und wir wählen den *Fisher's exact Test*.  
+
+```{r}
+jmv::contTables(
+  formula = ~geschlecht:daumen,
+  data = bts,
+  chiSq = FALSE,
+  fisher = TRUE, 
+  exp = TRUE,
+  pcRow = TRUE
+)
+```
+
+
+6. Fassen Sie ihre Resultate in ein, zwei Sätzen zusammen.  
+
+* *Untersucht wurde die Frage, ob die Akzeptanz der K-Pop-Gruppe BTS unabhängig vom Geschlecht ist. Eine Analyse der Daten mit dem Fishers exakter Test liefert Evidenz dafür, dass ein Zusammenhang zwischen der Akzeptanz von BTS und dem Geschlecht besteht, p = 0.041. BTS erhält bei 75% der befragten Frauen ein Daumen hoch; bei Männern sind es nur 12.5%.*  
+
+
+
+
