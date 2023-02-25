@@ -1,0 +1,24 @@
+---
+title: "z-Werte-Tabelle"
+author: "Lukas Stammler"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    fig_height: 4
+    fig_width: 4
+    highlight: pygments
+    theme: yeti
+    toc: true
+    toc_float: true
+    code_download: false
+---
+
+# Tabelle 1: negative z-Werte
+
+![](../png/z-score-table-1.png)
+
+# Tabelle 2: positive z-Werte
+
+![](../png/z-score-table-2.png)
+
+Quelle: [D.J. Rumsey: Statistics for Dummies](https://www.dummies.com/article/academics-the-arts/math/statistics/how-to-find-probabilities-for-z-with-the-z-table-169599/)

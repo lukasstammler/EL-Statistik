@@ -162,7 +162,7 @@ phy_w %>%
     stat_function(fun = dnorm, 
                   args = list(mean = mean(phy_w$Groesse_std), 
                               sd = sd(phy_w$Groesse_std)),
-                  color = "red", size = 1) +
+                  color = "red", linewidth = 1) +
     ggtitle("Standardnormalverteilung der Groesse der Studentinnen PHY13-PHY17") +
     ylab("") +
     xlab("Standardisierte Grösse")
@@ -187,8 +187,8 @@ phy_w %>%
     stat_function(fun = dnorm, 
                   args = list(mean = mean(phy_w$Groesse), 
                               sd = sd(phy_w$Groesse)),
-                  color = "red", size = 1) +
-    geom_vline(aes(xintercept = 163), color = "purple", size = 1) +
+                  color = "red", linewidth = 1) +
+    geom_vline(aes(xintercept = 163), color = "purple", linewidth = 1) +
     ggtitle("Groesse der Studentinnen PHY13-PHY17",
             subtitle = "Vertikale Linie bei 163 cm") +
     ylab("")
@@ -207,14 +207,14 @@ phy_w %>%
     stat_function(fun = dnorm, 
                   args = list(mean = mean(phy_w$Groesse), 
                               sd = sd(phy_w$Groesse)),
-                  color = "red", size = 1) +
-    geom_vline(aes(xintercept = 163), color = "purple", size = 1) +
+                  color = "red", linewidth = 1) +
+    geom_vline(aes(xintercept = 163), color = "purple", linewidth = 1) +
     ggtitle("Groesse der Studentinnen PHY13-PHY17",
             subtitle = "Vertikale Linie bei 163 cm") +
     ylab("")
 ```
 
-Aber wie genau berechnet man jetzt die Grösse der blauen Fläche? Bevor Computerprogramme die Berechnung übernommen haben, hat man sich mit sogenannten z-Werte-Tabellen (siehe z.B. http://eswf.uni-koeln.de/glossar/zvert.htm) beholfen. Weil es unmöglich ist für alle möglichen Verteilungen  Tabellen zu berechnen, wurde die z-Transformation entwickelt. Damit lassen sich beliebige Normalverteilungen in eine standardisierte Verteilung umwandeln. Heute übernimmt diese Arbeit der PC, wir machen es hier aber von Hand, um zu verstehen, was da vorgeht. 
+Aber wie genau berechnet man jetzt die Grösse der blauen Fläche? Bevor Computerprogramme die Berechnung übernommen haben, hat man sich mit sogenannten z-Werte-Tabellen (siehe https://rpubs.com/BFH-PHY-WA/1007683) beholfen. Weil es unmöglich ist für alle möglichen Verteilungen  Tabellen zu berechnen, wurde die z-Transformation entwickelt. Damit lassen sich beliebige Normalverteilungen in eine standardisierte Verteilung umwandeln. Heute übernimmt diese Arbeit der PC, wir machen es hier aber von Hand, um zu verstehen, was da vorgeht. 
 
 **Übung:** Welche Wahrscheinlichkeit gibt die Z-Wertetabelle für den z-Wert `r (163 - mean(phy_w$Groesse))/sd(phy_w$Groesse)` an?
 
