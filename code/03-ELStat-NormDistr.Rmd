@@ -236,31 +236,32 @@ also p = `r 1-p_lowertail`.
 
 ## Übungen 
 
-* Arbeiten Sie mit der z-Werte-Tabelle (http://eswf.uni-koeln.de/glossar/zvert.htm) oder mit der R-Konsole in **jamovi**.  
+* Arbeiten Sie mit der [z-Werte-Tabelle](https://rpubs.com/BFH-PHY-WA/1007683) oder mit der R-Konsole in **jamovi**.  
 * Alle Übungen werden mit dem Teildatensatz für Studentinnen (jamovi:Filter **= Geschlecht == "w"**) durchgeführt.  
+* **Runden** Sie Kennzahlen und z-Werte auf zwei Stellen nach dem Komma, p-Werte auf drei Stellen nach dem Komma.   
 * Für gewisse Übungen muss das Modul *Rj - Editor to run R code inside jamovi* installiert sein. Sie können dieses Modul über die Schaltfläche *Modules* (grosses Pluszeichen im Menüband) installieren. Wählen Sie *Modules* > *jamovi library* > *Rj - Editor to run R code inside jamovi* und das Modul wird installiert. Sie erkennen das nach der Installation am *R*-Symbol in der Menüleiste.  
 
 ## Übung 1 {.tabset}  
 
-Ziel: z-Werte für Körpergrössen von Studentinnen berechnen     
+Ziel: $z$-Werte für Körpergrössen von Studentinnen berechnen     
 
 ### Aufgaben
 
-1. Wie gross ist der z-Wert für die Körpergrösse 176 cm?
-2. Wie gross ist der z-Wert für die Körpergrösse 166.94 cm?
-3. Wie gross ist der z-Wert für die Körpergrösse 195 cm? 
+1. Wie gross ist der $z$-Wert für die Körpergrösse 176.00 cm?
+2. Wie gross ist der $z$-Wert für die Körpergrösse 166.92 cm?
+3. Wie gross ist der $z$-Wert für die Körpergrösse 195.00 cm? 
 
-**Tipp:** Berechnen Sie die z-Werte von Hand mit einem Taschenrechner.
+**Tipp:** Berechnen Sie die $z$-Werte von Hand mit einem Taschenrechner.
 
 <br/> 
 
 ### Lösungen
 
-1. $z = \frac{176 - 166.9396}{5.587423} = 1.62157$   
+1. $z = \frac{176 - 166.92}{5.66} = 1.660424 \approx 1.66$   
     
-2. $z = \frac{166.94 - 166.9396}{5.587423} = 7.158935 \times 10^{-5} \approx 0$      
+2. $z = \frac{166.92 - 166.92}{5.66} = 0$      
     
-3. $z = \frac{195 - 166.9396}{5.587423} = 5.022065$
+3. $z = \frac{195 - 166.92}{5.66} = 4.961131 \approx 4.96$
 
 <br/> 
 
@@ -273,12 +274,12 @@ Ziel: Wahrscheinlichkeiten für Körpergrössen von Studentinnen berechnen.
 
 Erstellen Sie jeweils eine Skizze für jede Frage und überlegen Sie, ob der z-Wert jeweils links oder rechts vom Mittelwert liegt und ob p kleiner oder grösser 50% ist.   
 
-1. Wie gross ist die Wahrscheinlichkeit, dass eine Studentin 176 cm oder kleiner ist?
-2. Wie gross ist die Wahrscheinlichkeit, dass eine Studentin 176 cm oder grösser ist?
-3. Wie gross ist die Wahrscheinlichkeit, dass eine Studentin 166.924 cm oder kleiner ist?
-4. Wie gross ist die Wahrscheinlichkeit, dass eine Studentin 166.924 cm oder grösser ist?
-5. Wie gross ist die Wahrscheinlichkeit, dass eine Studentin 195 cm oder grösser ist?
-6. Wie gross ist die Wahrscheinlichkeit, dass eine Studentin zwischen 163 cm und 176 cm gross ist?
+1. Wie gross ist die Wahrscheinlichkeit, dass eine Studentin 176.00 cm oder kleiner ist?
+2. Wie gross ist die Wahrscheinlichkeit, dass eine Studentin 176.00 cm oder grösser ist?
+3. Wie gross ist die Wahrscheinlichkeit, dass eine Studentin 166.92 cm oder kleiner ist?
+4. Wie gross ist die Wahrscheinlichkeit, dass eine Studentin 166.92 cm oder grösser ist?
+5. Wie gross ist die Wahrscheinlichkeit, dass eine Studentin 195.00 cm oder grösser ist?
+6. Wie gross ist die Wahrscheinlichkeit, dass eine Studentin zwischen 163.00 cm und 176.00 cm gross ist?
 
 <br/> 
 
@@ -313,7 +314,7 @@ phy_w %>%
     Mittelwert = mean(Groesse),
     Standardabweichung = sd(Groesse)
   ) %>% 
-  kbl(digits = 3) %>% 
+  kbl(digits = 2) %>% 
   kable_minimal(full_width = FALSE)
 ```
 
@@ -322,96 +323,96 @@ phy_w %>%
 
 
 - Gegebener Wert = 176  
-- Mittelwert = 166.924  
-- Standardabweichung = 5.664   
+- Mittelwert = 166.92  
+- Standardabweichung = 5.66   
 - Gesucht wird $p \leq z$-Wert   
 
 Skizze:   
 
 ```{r, fig.dim=c(4, 4), fig.align='center'}
 value <- 176
-m <- 166.924
-s <- 5.664
-z <- round((value - m)/s, 3)
+m <- 166.92
+s <- 5.66
+z <- round((value - m)/s, 2)
 tit <- paste("z-Wert =", z)
 normTail(m = m, s = s, L = value, col = COL[1], digits = 0, main = tit)
 ```
 
 ```{r, echo=TRUE}
-pnorm(176, mean = 166.924, sd = 5.664, lower.tail = TRUE)
+pnorm(176, mean = 166.92, sd = 5.66, lower.tail = TRUE)
 ```
 
-Die Wahrscheinlichkeit, dass eine Studentin 176 cm oder kleiner ist beträgt p = 0.945 (94.5%). Mit anderen Worten, 94.5% der Studentinnen sind 176 cm gross oder kleiner.
+Die Wahrscheinlichkeit, dass eine Studentin 176 cm oder kleiner ist beträgt p = 0.946 (94.6%). Mit anderen Worten, 94.6% der Studentinnen sind 176 cm gross oder kleiner.
 
 2. Wie gross ist die Wahrscheinlichkeit, dass eine Studentin 176 cm oder grösser ist?   
 
 - Gegebener Wert = 176   
-- Mittelwert = 166.924   
-- Standardabweichung = 5.664  
+- Mittelwert = 166.92   
+- Standardabweichung = 5.66  
 - Gesucht wird $p \geq z$-Wert  
 
 Skizze
 
 ```{r, fig.dim=c(4, 4), fig.align='center'}
 value <- 176
-m <- 166.924
-s <- 5.664
+m <- 166.92
+s <- 5.66
 z <- round((value - m)/s, 3)
 tit <- paste("z-Wert =", z)
 normTail(m = m, s = s, U = value, col = COL[1], digits = 0, main = tit)
 ```
 
 ```{r, echo=TRUE}
-pnorm(176, mean = 166.924, sd = 5.664, lower.tail = FALSE)
-1 - pnorm(176, mean = 166.924, sd = 5.664)  # ergibt das gleiche Resultat
+pnorm(176, mean = 166.92, sd = 5.66, lower.tail = FALSE)
+1 - pnorm(176, mean = 166.92, sd = 5.66)  # ergibt das gleiche Resultat
 ```
 
-Die Wahrscheinlichkeit, dass eine Studentin 176 cm oder grösser ist beträgt p = 0.055 (5.5%). Mit anderen Worten, 5.5% der Studentinnen sind 176 cm gross oder grösser.   
+Die Wahrscheinlichkeit, dass eine Studentin 176 cm oder grösser ist beträgt p = 0.054 (5.4%). Mit anderen Worten, 5.4% der Studentinnen sind 176 cm gross oder grösser.   
 
-3. Wie gross ist die Wahrscheinlichkeit, dass eine Studentin 166.924 cm oder kleiner ist?   
+3. Wie gross ist die Wahrscheinlichkeit, dass eine Studentin 166.92 cm oder kleiner ist?   
 
-- Gegebener Wert = 166.924  
-- Mittelwert = 166.924   
-- Standardabweichung = 5.664   
+- Gegebener Wert = 166.92  
+- Mittelwert = 166.92   
+- Standardabweichung = 5.66   
 - Gesucht wird $p \leq z$-Wert   
 
 
 ```{r, fig.dim=c(4, 4), fig.align='center'}
 value <- 166.9
-m <- 166.924
-s <- 5.664
-z <- round((value - m)/s, 3)
+m <- 166.92
+s <- 5.66
+z <- round((value - m)/s, 2)
 tit <- paste("z-Wert =", z)
 normTail(m = m, s = s, L = value, col = COL[1], digits = 0, main = tit)
 ```
 
 
 ```{r, , echo=TRUE}
-pnorm(166.924, mean = 166.924, sd = 5.664, lower.tail = TRUE)
+pnorm(166.92, mean = 166.92, sd = 5.66, lower.tail = TRUE)
 ```
 
-Die Wahrscheinlichkeit, dass eine Studentin 166.924 cm oder kleiner ist beträgt p = 0.5 (50%). Mit anderen Worten, 50% der Studentinnen sind 176 cm gross oder kleiner.  
+Die Wahrscheinlichkeit, dass eine Studentin 166.92 cm oder kleiner ist beträgt p = 0.5 (50%). Mit anderen Worten, 50% der Studentinnen sind 176 cm gross oder kleiner.  
 
 
-4. Wie gross ist die Wahrscheinlichkeit, dass eine Studentin 166.924 cm oder grösser ist?  
+4. Wie gross ist die Wahrscheinlichkeit, dass eine Studentin 166.92 cm oder grösser ist?  
 
-- Gegebener Wert = 166.924   
-- Mittelwert = 166.924  
-- Standardabweichung = 5.664  
+- Gegebener Wert = 166.92   
+- Mittelwert = 166.92 
+- Standardabweichung = 5.66  
 - Gesucht wird $p \geq z$-Wert  
 
 ```{r, fig.dim=c(4, 4), fig.align='center'}
 value <- 166.9
-m <- 166.924
-s <- 5.664
-z <- round((value - m)/s, 3)
+m <- 166.92
+s <- 5.66
+z <- round((value - m)/s, 2)
 tit <- paste("z-Wert =", z)
 normTail(m = m, s = s, U = value, col = COL[1], digits = 0, main = tit)
 ```
 
 ```{r, echo=TRUE}
-pnorm(166.924, mean = 166.924, sd = 5.664, lower.tail = FALSE) 
-1 - pnorm(166.924, mean = 166.924, sd = 5.664)  # ergibt das gleiche Resultat
+pnorm(166.92, mean = 166.92, sd = 5.66, lower.tail = FALSE) 
+1 - pnorm(166.92, mean = 166.92, sd = 5.66)  # ergibt das gleiche Resultat
 ```
 
 Die Wahrscheinlichkeit, dass eine Studentin 166.924 cm oder grösser ist beträgt p = 0.5 (50%). Mit anderen Worten, 50% der Studentinnen sind 166.924 cm gross oder grösser. 
@@ -419,24 +420,24 @@ Die Wahrscheinlichkeit, dass eine Studentin 166.924 cm oder grösser ist beträg
 5. Wie gross ist die Wahrscheinlichkeit, dass eine Studentin 195 cm oder grösser ist?  
 
 - Gegebener Wert = 195   
-- Mittelwert = 166.924  
-- Standardabweichung = 5.664  
+- Mittelwert = 166.92  
+- Standardabweichung = 5.66  
 - Gesucht ist $p \geq z$-Wert  
 
 ```{r, fig.dim=c(4, 4), fig.align='center'}
 value <- 195
-m <- 166.924
-s <- 5.664
-z <- round((value - m)/s, 3)
+m <- 166.92
+s <- 5.66
+z <- round((value - m)/s, 2)
 tit <- paste("z-Wert =", z)
 normTail(m = m, s = s, U = value, col = COL[1], digits = 0, main = tit, xlim = c(127, 207))
 points(x = 195, y = 0, col = COL[4], cex = 2, pch = 19)
 ```
 
 ```{r, echo=TRUE}
-pnorm(195, mean = 166.924, sd = 5.664, lower.tail = FALSE)
+pnorm(195, mean = 166.92, sd = 5.66, lower.tail = FALSE)
 ```
-Die Wahrscheinlichkeit, dass eine Studentin 195 cm oder grösser ist beträgt p = 0.00000036 (0.000036%). Mit anderen Worten, die Wahrscheinlichkeit, dass eine Studentin grösser als 195 cm ist, ist extrem klein. 
+Die Wahrscheinlichkeit, dass eine Studentin 195 cm oder grösser ist beträgt p = 0.00000035 (0.000035%). Mit anderen Worten, die Wahrscheinlichkeit, dass eine Studentin grösser als 195 cm ist, ist extrem klein. 
 
 
 6. Wie gross ist die Wahrscheinlichkeit, dass eine Studentin zwischen 163 cm und 176 cm gross ist?   
@@ -447,14 +448,14 @@ Lösungsweg: Berechnen Sie die Wahrscheinlichkeit, dass eine Studentin kleiner a
 par(mfrow = c(1, 3))
 
 value <- 176
-m <- 166.924
-s <- 5.664
-z <- round((value - m)/s, 3)
+m <- 166.92
+s <- 5.66
+z <- round((value - m)/s, 2)
 tit <- paste("z-Wert =", z)
 normTail(m = m, s = s, L = value, col = COL[2], digits = 0, main = tit)
 
 value2 <- 163
-z2 <- round((value2 - m)/s, 3)
+z2 <- round((value2 - m)/s, 2)
 tit <- paste("z-Wert =", z2)
 normTail(m = m, s = s, L = value2, col = COL[4], digits = 0, main = tit)
 
@@ -465,7 +466,7 @@ par(mfrow = c(1, 1))
 ```
 
 ```{r, echo=TRUE}
-pnorm(176, mean = 166.924, sd = 5.664, lower.tail = TRUE) - pnorm(163, mean = 166.924, sd = 5.664, lower.tail = TRUE)
+pnorm(176, mean = 166.92, sd = 5.66, lower.tail = TRUE) - pnorm(163, mean = 166.92, sd = 5.66, lower.tail = TRUE)
 ```
 Die Wahrscheinlichkeit, dass eine Studentin grösser als 163 cm und kleiner als 176 cm ist ist p = 0.701 (70.1%), d.h. ca. 70% der Studentinnen sind zwischen 163 cm und 176 cm gross.   
 
@@ -478,7 +479,7 @@ phy_w %>%
     stat_function(fun = dnorm, 
                   args = list(mean = mean(phy_w$Groesse), 
                               sd = sd(phy_w$Groesse)),
-                  color = "red", size = 1) +
+                  color = "red", linewidth = 1) +
     ggtitle("Groesse der Studentinnen PHY13-PHY17",
             subtitle = "Wahrscheinlichkeit, dass die Studentin 176 cm gross oder kleiner ist") +
     ylab("")
@@ -494,7 +495,7 @@ phy_w %>%
     stat_function(fun = dnorm, 
                   args = list(mean = mean(phy_w$Groesse), 
                               sd = sd(phy_w$Groesse)),
-                  color = "red", size = 1) +
+                  color = "red", linewidth = 1) +
     ggtitle("Groesse der Studentinnen PHY13-PHY17",
             subtitle = "Wahrscheinlichkeit, dass die Studentin 163 cm gross oder kleiner ist") +
     ylab("")
@@ -510,7 +511,7 @@ phy_w %>%
     stat_function(fun = dnorm, 
                   args = list(mean = mean(phy_w$Groesse), 
                               sd = sd(phy_w$Groesse)),
-                  color = "red", size = 1) +
+                  color = "red", linewidth = 1) +
     ggtitle("Groesse der Studentinnen PHY13-PHY17",
             subtitle = "Wahrscheinlichkeit, dass die Studentin zwischen 163 und 176 cm gross ist") +
     ylab("")
@@ -538,9 +539,9 @@ $Normbereich_{obere Grenze} = \bar{x}+2s$
     
 Daraus folgt: *"Normalgrosse"* Studentinnen sind zwischen   
     
-$Normbereich_{untere Grenze} = 166.92 - 2 \times 5.66 = 166.94 - 11.18 = 155.62$  
+$Normbereich_{untere Grenze} = 166.92 - 2 \times 5.66 = 166.92 - 11.34 = 155.62$  
    
-$Normbereich_{obere Grenze} = 166.92 + 2 \times 5.66 = 166.94 + 11.18 = 178.26$   
+$Normbereich_{obere Grenze} = 166.92 + 2 \times 5.66 = 166.92 + 11.34 = 178.26$   
    
 cm gross.
 
@@ -553,7 +554,7 @@ phy_w %>%
     stat_function(fun = dnorm, 
                   args = list(mean = mean(phy_w$Groesse), 
                               sd = sd(phy_w$Groesse)),
-                  color = "red", size = 1) +
+                  color = "red", linewidth = 1) +
     ggtitle("Groesse der Studentinnen PHY13-PHY17",
             subtitle = "95%-Normbereich") +
     ylab("") +
@@ -603,7 +604,7 @@ $$p = 0.025 + 0.025 = 0.05 = 5\%$$
    $$
    
    $$
-   x_i =\bar{x} + z \times s = 166.9 + 1.28 \times 5.664 = 174.15
+   x_i =\bar{x} + z \times s = 166.92 + 1.28 \times 5.66 = 174.16
    $$  
    
 
@@ -623,7 +624,16 @@ qnorm(.9)
 ## Groesse auf der 90. Perzentile aus einer Normalverteilung bestimmen
 qnorm(.9, mean = mean(phy_w$Groesse), sd = sd(phy_w$Groesse))
 ```
-Eine Studentin muss mindestens 174.18 cm gross sein, damit sie zu den 10% der grössten Studentinnen gehört.  
+```{r, echo=FALSE, eval=FALSE}
+jmv::descriptives(
+  data = phy_w,
+  vars = "Groesse",
+  pc = TRUE,
+  pcValues = "90"
+)
+```
+
+Eine Studentin muss mindestens 174.18 cm (**jamovi** gibt 174.0 cm an) gross sein, damit sie zu den 10% der grössten Studentinnen gehört (es entsteht eine kleine Rundungsdifferenz gegenüber dem von Hand berechneten Wert).  
 
 <br>
 
@@ -635,7 +645,7 @@ Eine Studentin muss mindestens 174.18 cm gross sein, damit sie zu den 10% der gr
    z = \frac{x_i - \bar{x}}{s}
    $$
    $$
-   x_i =\bar{x} + z \times s = 166.9 -0.67 \times 5.664 = 163.1
+   x_i =\bar{x} + z \times s = 166.92 -0.67 \times 5.66 = 163.13
    $$ 
    
 ```{r, echo=TRUE, eval=FALSE}
@@ -654,7 +664,194 @@ qnorm(.25)
 qnorm(.25, mean = mean(phy_w$Groesse), sd = sd(phy_w$Groesse))
 ```
 
-Eine Studentin, die auf der 25. Perzentile liegt, ist 163.10 cm gross.
+```{r, echo=FALSE, eval=FALSE}
+jmv::descriptives(
+  data = phy_w,
+  vars = "Groesse",
+  pc = TRUE,
+  pcValues = "25"
+)
+```
+
+Eine Studentin, die auf der 25. Perzentile liegt, ist 163.10 cm gross (es entsteht eine kleine Rundungsdifferenz gegenüber dem von Hand berechneten Wert, **jamovi** gibt 163.0 cm aus).
 
 <br/> 
 <br/>
+
+## Übung 6 {.tabset}
+
+### Aufgabe
+
+Wir betrachten die Standardnormalverteilung mit dem Mittelwert $\mu=0$ und der Standardabweichung $\sigma= 1$. 
+
+a) Wie gross ist die Wahrscheinlichkeit für für ein Ereignis mit $z > 2.30$?
+	
+b) Wie gross ist die Wahrscheinlichkeit, dass $z < 3.10$ ?
+	
+c) Wie gross ist die Wahrscheinlichkeit dass $z$ zwischen -1.60 und 3.10 liegt??
+	
+d) Welcher Wert von $z$ markiert die Grenze zu den oberen 15\% der Verteilung?
+	
+e) Welcher Wert von $z$ markiert die Grenze zu den unteren 20\% der Verteilung?   
+
+**Tipp:** Arbeiten Sie mit den R-Funktionen `pnorm()` und `qnorm` im *Rj-Editor* von **jamovi**.
+
+<br/>
+
+### Lösung   
+
+a) Wie gross ist die Wahrscheinlichkeit für für ein Ereignis mit $z > 2.30$?  
+
+*Die Funktion `pnorm()` gibt die Wahrscheinlichkeit links von $z$ an. Die Wahrscheinlichkeit rechts von $z$ berechnen wir als `1 - pnorm()`.*  
+
+```{r, echo=TRUE}
+1 - pnorm(2.3)
+
+# auf 3 Nachkommastellen gerundet
+round(1 - pnorm(2.3), 3)
+```
+
+b) Wie gross ist die Wahrscheinlichkeit, dass $z < 3.10$?  
+
+```{r, echo=TRUE}
+pnorm(3.1)
+
+# auf 3 Nachkommastellen gerundet
+round(pnorm(3.1), 3)
+```
+
+c) Wie gross ist die Wahrscheinlichkeit dass $z$ zwischen -1.60 und 3.10 liegt?   
+
+```{r, echo=TRUE}
+pnorm(3.1) - pnorm(-1.6)
+
+# auf 3 Nachkommastellen gerundet
+round(pnorm(3.1) - pnorm(-1.6), 3)
+```
+	
+d) Welcher Wert von $z$ markiert die Grenze zu den oberen 15\% der Verteilung?  
+
+*Die Grenze zu den oberen 15% der Verteilung ist die 85. Perzentile. Mit der Funktion `qnorm()` berechnen wir die Werte, die auf einer bestimmten Perzentile liegen.*
+
+```{r, echo=TRUE}
+qnorm(.85)
+
+#auf 3 Nachkommastellen gerundet
+round(qnorm(.85), 3)
+```
+
+e) Welcher Wert von $z$ markiert die Grenze zu den unteren 20\% der Verteilung?   
+
+```{r, echo=TRUE}
+qnorm(0.2)
+
+# auf 3. Nachkommastelle runden
+round(qnorm(.2), 3)
+```
+
+<br/>
+
+## Übung 7 {.tabset} 
+
+### Aufgabe 
+
+Die WHO (Weltgesundheitsorganisation) definiert Osteoporose bei jungen Erwachsenen als gemessene Knochendichte, die 2.5 Standardabweichungen unter dem Mittelwert für junge Erwachsene liegt. Wie hoch ist der prozentuale Anteil an jungen Erwachsenen mit Osteoporose, unter der Voraussetzung, dass die Knochendichte bei jungen Erwachsenen normalverteilt ist?   
+
+<br/>
+
+### Lösung  
+
+* Gesucht ist die Fläche unter der Standardnormalverteilungskurve links von $z$ = -2.5.   
+* Skizze erstellen   
+
+```{r}
+openintro::normTail(m = 0, s = 1, L = -2.5, 
+                    col = COL[1], digits = 0, main = "z <= -2.5")
+```
+
+
+```{r, echo=TRUE}
+# Berechne die Wahrscheinlichkeit für z = -2.5
+pnorm(-2.5)
+
+# in Prozent
+100 * pnorm(-2.5)
+
+# auf 2. Nachkommastelle gerundet
+round(100 * pnorm(-2.5), 2)
+```
+
+*Gemäss den WHO-Kriterien leiden 0.62% der jungen Erwachsenen an Osteoporose*  
+
+<br/>
+
+## Übung 8 {.tabset}  
+
+Ein hoher Cholesterinspiegel im Blut ist ein Risikofaktor für eine koronare Herzkrankheit. Junge Frauen leiden seltener an einem hohen Cholesterinspiegel als andere Gruppen. Der Cholesterinspiegel von Frauen im Alter von 20 bis 34 Jahre ist annähernd normalverteilt mit einem Mittelwert von 185 mg/dl und einer Standardabweichung von 39 mg/dl Blut.
+
+### Aufgabe   
+
+a) Cholesterinspiegel über 240 mg/dl müssen mediznisch überwacht werden. Wie hoch ist der prozentuale Anteil an jungen Frauen, die einen Cholesterinspiegel von 240 mg/dl oder höher haben?   
+
+b) Cholesterinspiegel über 200 mg/dl gelten als grenzwertig erhöht. Wie gross ist der prozentuale Anteil an jungen Frauen mit einem Cholesterinspiegel zwischen 200 mg/dl und 240 mg/dl?    
+
+<br/>
+<br/>
+
+### Lösung  
+
+a) Cholesterinspiegel über 240 mg/dl müssen medizinisch überwacht werden. Wie hoch ist der prozentuale Anteil an jungen Frauen, die einen Cholesterinspiegel über 240 mg/dl haben?   
+
+* Variante 1: Berechnung des $z$-Werts   
+
+* Skizze erstellen
+
+```{r}
+openintro::normTail(m = 185, s = 39, U = 240, 
+                    col = COL[1], digits = 0, main = "z >= 240")
+```
+
+
+```{r, echo=TRUE}
+# z-Wert für 240 berechnen, m = 185, s = 39
+z <- (240 - 185) / 39
+
+# Wahrscheinlichkeit rechts vom z-Wert berechnen (gesucht ist >= 240)
+1 - pnorm(z)
+```
+
+* Variante 2: Die Funktion `pnorm()` geht in ihrer Grundeinstellung von einer Standardnormalverteilung aus. Wenn eine andere Normalverteilung als Referenz dient, können ihre Parameter in die Funktion eingetragen werden `pnorm(Wert, mean = Mittelwert, sd = Standardabweichung)`   
+
+```{r, echo=TRUE}
+1 - pnorm(240, mean = 185, sd = 39)
+```
+
+*Der Anteil junger Frauen mit einem Cholesterinspiegel über 240 mg/dl beträgt durchschnittlich 7.92%.*    
+
+b) Cholesterinspiegel über 200 mg/dl gelten als grenzwertig erhöht. Wie gross ist der prozentuale Anteil an jungen Frauen mit einem Cholesterinspiegel zwischen 200 mg/dl und 240 mg/dl?   
+
+* Skizze erstellen
+
+```{r}
+openintro::normTail(m = 185, s = 39, M = c(200, 240), 
+                    col = COL[1], digits = 0, main = "200 >= z <= 240")
+```
+
+
+```{r, echo=TRUE}
+# Häufigkeit für <= 240 berechnen (aus Teilaufgabe a)
+p_240 <- pnorm(240, mean = 185, sd = 39)
+
+# Häufigkeit für <= 200 berechnen
+p_200 <- pnorm(200, mean = 185, sd = 39) 
+
+# Differenz berechnen
+p_240 - p_200
+```
+
+*Der prozentuale Anteil junger Frauen mit einem Cholesterinspiegel zwischen 200 mg/dl und 240 mg/dl beträgt 27.10%.*  
+
+<br/>
+<br/>
+
+

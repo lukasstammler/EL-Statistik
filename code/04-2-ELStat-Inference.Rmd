@@ -29,6 +29,8 @@ data(COL)
 
 **Technischer Hinweis: Links in den Übungen öffnen Sie, indem sie darauf rechtsklicken und "Link in neuem Tab/Fenster öffnen" wählen.**  
 
+**Runden** Sie Kennzahlen und z-Werte auf zwei Stellen nach dem Komma, p-Werte auf drei Stellen nach dem Komma.  
+
    
 # Übungen zu Hypothesen  
 
@@ -55,8 +57,8 @@ Der Studienbeauftragte an der Universität Basel findet, dass der Betrag der ETH
 
 ### Lösung
 
-$H_0:$ Die durchschnittlichen Mietkosten betragen CHF 840.-. $\mu = 840.-$
-$H_A:$ Die durchschnittlichen Mietkosten sind tiefer als CHF 840.-. $\mu < 840.-$
+$H_0:$ Die durchschnittlichen Mietkosten betragen CHF 840.-. $\mu = 840.-$  
+$H_A:$ Die durchschnittlichen Mietkosten sind tiefer als CHF 840.-. $\mu < 840.-$  
 
 Beachte, dass die Alternativhypothese einseitig formuliert ist.   
 
@@ -91,7 +93,7 @@ Wenn der Studienbeauftragte die Nullhypothese verwirft, welchen Fehler kann er d
 
 ### Lösung  
 
-Einen Fehler 1. Art: Er verwirft die Nullhypothese, obwohl sie wahr ist.  
+Einen Fehler 1. Art: Wenn wir die Nullhypothese $H_0$ verwerfen, besteht das Risiko, dass wir einen Fehler erster Art begehen. Bei einem Signifikanzniveau $\alpha = 0.05$ nehmen wir dieses Risiko in 5% unserer Entscheidungen in Kauf.  
 
 <br>
 
@@ -116,7 +118,7 @@ Ein Fehler 1. Art am Gericht ist für den unschuldig Verurteilten eine gravieren
 
 ### Aufgabe
 
-Wenn wir alle Variablen der folgenden Datensätze auswerten und für jede Variable einen Hypothesentest durchführen, wie oft werden wir im durchschnitt einen Fehler 1. Art begehen? (Signifikanzniveau $\alpha = 0.05$)
+Wenn wir alle Variablen der folgenden Datensätze auswerten und für jede Variable einen Hypothesentest durchführen, wie oft werden wir im Durchschnitt einen Fehler 1. Art begehen? (Signifikanzniveau $\alpha = 0.05$)
 
 (a) Datensatz mit 20 Variablen  
 (b) Datensatz mit 60 Variablen

@@ -32,6 +32,7 @@ data(COL)
 
 **Technischer Hinweis: Links in den Übungen öffnen Sie, indem sie darauf rechtsklicken und "Link in neuem Tab/Fenster öffnen" wählen.**  
 
+**Runden** Sie Kennzahlen und z-Werte auf zwei Stellen nach dem Komma, p-Werte auf drei Stellen nach dem Komma.  
 
 
 ```{r, fig.align='center'}
@@ -70,14 +71,16 @@ Zur Erinnerung hier nochmals die wichtigsten Kennzahlen zur Körpergrösse der S
 phy_w <- phydata %>% 
     filter(Geschlecht == "w")
 
-jmv::descriptives(
+desc <- jmv::descriptives(
   data = phy_w,
   vars = Groesse,
   hist = TRUE
 )
+
+desc
 ```
    
-Für die folgenden Überlegungen nehmen wir unsere 183 Studentinnen als Population. Weil wir einen Datensatz mit den Körpergrössen von allen diesen Studentinnen haben, kennen wir in unserem Fall den wahren Mittelwert $\mu$ = `r round(mean(phy_w$Groesse), 3)` und die wahre Standardabweichung $\sigma$ = `r round(sd(phy_w$Groesse), 3)`. *Um die theoretischen Grundlagen zu überprüfen, tun wir jetzt aber so, als ob wir das nicht wüssten!*.   
+Für die folgenden Überlegungen nehmen wir unsere 183 Studentinnen als Population. Weil wir einen Datensatz mit den Körpergrössen von allen diesen Studentinnen haben, kennen wir in unserem Fall den wahren Mittelwert $\mu$ = `r round(mean(phy_w$Groesse), 2)` und die wahre Standardabweichung $\sigma$ = `r round(sd(phy_w$Groesse), 2)`. *Um die theoretischen Grundlagen zu überprüfen, tun wir jetzt aber so, als ob wir das nicht wüssten!*.   
 
 Um unsere Fragestellung zu untersuchen, ziehen wir aus dieser Population mehrere Zufallsstichproben $sample_1$ bis $sample_n$ (Üblicherweise zieht man nur eine einzige Stichprobe, aber wir machen das hier, um die theoretischen Grundlagen zu erläutern). Von jeder dieser Stichproben bestimmen wir den Mittelwert und die Standardabweichung.
 
@@ -107,18 +110,18 @@ samples_means <- samples %>%
     ) %>% 
     ungroup() %>% 
     arrange(as.numeric(Sample))
-kable(samples_means[1:30,], caption = "Tab. 2: Groesse PHY13-PHY17, 30 Stichproben, n = 10") %>% 
+kable(samples_means[1:30,], digits = 2, caption = "Tab. 2: Groesse PHY13-PHY17, 30 Stichproben, n = 10") %>% 
   kable_minimal(full_width = FALSE)
 ```
 
-**Beachte:** In jeder Stichprobe liegt der Mittelwert in der Nähe des Populationsmittelwertes $\mu = 166.92$ und die Standardabweichung in der Nähe der Populationsstandardabweichung $\sigma = 5.57$.   
+**Beachte:** In jeder Stichprobe liegt der Mittelwert in der Nähe des Populationsmittelwertes $\mu = 166.92$ und die Standardabweichung in der Nähe der Populationsstandardabweichung $\sigma = 5.66$.   
 
 Betrachten wir jetzt die Verteilung der Stichprobenmittelwerte im Histogramm:  
 
 
 ```{r, fig.align='center', fig.dim=c(6, 5)}
-mean_samples <- paste("M =", round(mean(samples_means$m), 3))
-sd_samples <- paste("s = ", round(sd(samples_means$s), 3))
+mean_samples <- paste("M =", round(mean(samples_means$m), 2))
+sd_samples <- paste("s = ", round(sd(samples_means$s), 2))
 
 samples_means %>% 
   ggplot(., aes(x = m)) + 
@@ -161,22 +164,24 @@ Wir arbeiten mit einer Simulations-App. Rufen Sie den Link [Central Limit Theore
 ### Aufgabe   
 
 1. Wählen Sie *Parent Distribution*: normal (d.h. die Stichproben werden aus einer normalverteilten Population gezogen)        
-2. Stellen Sie die Populationskennzahlen *Mean = 0* und *Standard Deviation = 20* ein.   
+2. Stellen Sie die Populationskennzahlen *Mean = 0* und *Standard Deviation = 20* ein. Im Fenster rechts unter *Population Distribution* wird jetzt die Verteilung ihrer Population dargestellt. Da die Daten mit ihren Angaben zu Mittelwert und Standardabweichung randomisiert erstellt wurden, kann es sein, dass der Mittelwert und die Standardabweichung leicht von ihren Vorgaben abweichen.     
 3. Stellen Sie die Stichprobenangaben *Sample size = 25* und *Number of Samples = 100* ein.
-4. 
+4. Wechseln sie jetzt ins Register *Samples*: Die App hat nach ihren Vorgaben 100 Zufallsstichproben gezogen und die Ergebnisse der ersten acht Stichproben werden angezeigt. Notieren Sie die jeweiligen Mittelwerte *x_bar* und die Standardabweichung *SD* der acht Stichproben.  
 
-Vergrössern Sie jetzt die *Sample Size* auf 100, 200, 400. Hat der Stichprobenumfang einen Einfluss ...    
+Vergrössern Sie jetzt die *Sample Size* auf 100. Hat der Stichprobenumfang einen Einfluss ...    
 
 * (a) ... auf die Standardabweichungen SD der Stichproben (Register *Samples*: Sample 1 bis Sample 8)?  
 * (b) ... auf die Mittelwerte $\bar{x}$ der Stichproben (Register *Samples*: Sample 1 bis Sample 8)?
-* (c) ... auf den den Standardfehler SE der Verteilung der Stichprobenmittelwerte (Register *Sampling distribution*)?  
+* (c) ... auf den den Standardfehler SE der Verteilung der Stichprobenmittelwerte (Register *Sampling distribution*)?   
+
+Wiederholen Sie die Übung mit Stichprobenumfängen von 200 und 400.   
   
   
 ### Lösung
 
 * (a) Die Standardabweichungen der Stichproben ensprechen etwa der Standardabweichung der Population $s \approx 20$. Der Stichprobenumfang beeinflusst die Standardabweichung SD der Stichprobe insofern, als dass die Abweichungen der einzelnen Stichproben-Standardabweichungen von der Populationsstandardabweichung $\sigma = 20$ mit steigendem Stichprobenumfang abnehmen.  
 * (b) Die Mittelwerte der Stichproben entsprechen etwa dem Mittelwert der Population $\bar{x} \approx 0$. Der Stichprobenumfang beeinflusst die Mittelwerte $\bar{x}$ der Stichproben insofern, als dass die Abweichungen der einzelnen  Stichprobenmittelwerte vom Populationsmittelwert $\mu = 0$ mit steigendem Stichprobenumfang abnehmen.   
-* (c) Die Beobachtung aus (b) äussert sich darin, dass mit steigendem Stichprobenumfang die Variation der Stichprobenmittelwerte um den Populationsparameter, ausgedrückt als Standardfehler SE, immer kleiner wird. Eine Vervierfachung des Stichprobenumfangs von 125 auf 500 führt zu einer Halbierung des Standardfehlers.
+* (c) Die Beobachtung aus (b) äussert sich darin, dass mit steigendem Stichprobenumfang die Variation der Stichprobenmittelwerte um den Populationsparameter, ausgedrückt als Standardfehler SE, immer kleiner wird. Eine Vervierfachung des Stichprobenumfangs von 25 auf 100 oder von 100 auf 400 führt zu einer Halbierung des Standardfehlers.
 
 <br>
 
@@ -212,7 +217,7 @@ Vergrössern Sie jetzt die *Sample Size* schrittweise. Hat der Stichprobenumfang
 
 ### Aufgabe
 
-Wir wollen untersuchen, ob es einen Unterschied gibt in der körperlichen Aktivität zwischen Männern und Frauen. Eine Zufallstichprobe ergibt, dass Männer an $\bar{x}_{maenner} = 4.3$ und Frauen an $\bar{x}_{frauen} = 3.2$ Tagen pro Woche körperlich aktiv sind. Was wäre eine gute Punktschätzung für die Differenz?  
+Wir wollen untersuchen, ob es einen Unterschied gibt in der körperlichen Aktivität zwischen Männern und Frauen. Eine Zufallstichprobe ergibt, dass Männer an $\bar{x}_{maenner} = 4.3$ und Frauen an $\bar{x}_{frauen} = 3.2$ Tagen pro Woche körperlich aktiv sind. Was wäre eine gute Punktschätzung für die Differenz der körperlichen Aktivität zwischen Männern und Frauen?  
 
 <br/>
 
@@ -295,7 +300,7 @@ sample1 %>%
         m = mean(Groesse),
         s = sd(Groesse)
     ) %>% 
-    kable(., caption = "Tab. 4: Mittelwert und Standardabweichung für Stichprobe 1") %>% 
+    kable(., digits = 2, caption = "Tab. 4: Mittelwert und Standardabweichung für Stichprobe 1") %>% 
   kable_minimal(full_width = FALSE)
 ```
 
@@ -330,7 +335,7 @@ Wie wir auch aus der Geometrie der Normalverteilung wissen, umfasst der Bereich 
 
 $$CI_{95} = \bar{x} \pm 1.96 \times SE$$
 
-$$CI_{95} = 167.5 \pm 1.96 \times \frac{5.759}{\sqrt{10}} = [163.931, 171.070]$$
+$$CI_{95} = 168.1 \pm 1.96 \times \frac{7.61}{\sqrt{10}} = [163.38, 172.82]$$
 
 **Interpretation des 95% CI** Wenn wir 100 Stichproben mit gleichem Stichprobenumfang aus der Population untersuchen, werden 95% der Vertrauensintervalle den wahren Populationsmittelwert $\mu$ enthalten.  
 
@@ -374,7 +379,7 @@ samples %>%
 
 Von den 30 Stichproben enthalten 27 den Populationsmittelwert und 3 Stichproben (Sample 4, 14 und 17), also 10%, enthalten ihn nicht. Diese Abweichung von den erwarteten 5% ist auf zufällige Variation zurückzuführen. Je mehr Stichproben wir nehmen würden, desto mehr würden wir uns dem theoretischen Modell annähern.
 
-**Quintessenz:** Wir wissen zwar nicht, ob ein 95%-Konfidenzintervall den wahren Populationsparameter enthält, aber wir können zu 95% darauf vertrauen, dass ein 95%-Konfidenzintervall den wahren Parameter enthält. 
+**Quintessenz:** Wir wissen zwar nicht, ob ein 95%-Konfidenzintervall den wahren Populationsparameter enthält, aber wir können zu 95% darauf vertrauen, dass ein bestimmtes 95%-Konfidenzintervall den wahren Parameter enthält. 
 
 <br>
 
@@ -382,7 +387,7 @@ Von den 30 Stichproben enthalten 27 den Populationsmittelwert und 3 Stichproben 
 
 ### Aufgabe  
 
-Wenn wir sicher sein wollen, dass wir den Populationsparameter treffen, sollten wir dann eher ein breites (z.B. 95%-CI) oder eher ein schmales Vertrauensintervall (60%-CI) verwenden?  
+Wenn wir sicher sein wollen, dass unser Vertrauensintervall den Populationsparameter beinhaltet, sollten wir dann eher ein breites (z.B. 95%-CI) oder eher ein schmales Vertrauensintervall (60%-CI) verwenden?  
 
 <br>
 
@@ -398,26 +403,26 @@ Verwenden Sie für diese Aufgaben die Angaben aus Tabelle 2 oben.
 
 ### Aufgaben
 
-1. Welche untere und obere Grenze hat das 95%-Vertrauensintervall der 3. Stichprobe? (m = 166.2, s = 5.308)
-2. Welche untere und obere Grenze hat das 95%-Vertrauensintervall der 4. Stichprobe? (m = 162.8, s = 4.872)
-3. Inwiefern unterscheiden sich die 95%-Vertrauensintervalle der 2. und der 4. Stichprobe bezüglich der Schätzung des Populationsmittelwerts $\mu = 166.9$?
+1. Welche untere und obere Grenze hat das 95%-Vertrauensintervall der 3. Stichprobe? (m = 166.2, s = 5.31, n = 10)
+2. Welche untere und obere Grenze hat das 95%-Vertrauensintervall der 4. Stichprobe? (m = 162.8, s = 4.87, n = 10)
+3. Inwiefern unterscheiden sich die 95%-Vertrauensintervalle der 2. und der 4. Stichprobe bezüglich der Schätzung des Populationsmittelwerts $\mu = 166.92$?
 <br />
 
 
 ### Lösungen
 
-$\bar{x} = 166.2, s = 5.308, n = 10$
+$\bar{x} = 166.2, s = 5.31, n = 10$
   
    Für die Berechnung des Vertrauensintervalls benötigen Sie den Standardfehler SE:
   
-$$SE = \frac{s}{\sqrt{n}} = \frac{5.308}{\sqrt{10}} = \frac{5.308}{3.162} = 1.679$$
+$$SE = \frac{s}{\sqrt{n}} = \frac{5.31}{\sqrt{10}} = \frac{5.31}{3.16} = 1.679$$
   
    Die Formel für die Berechnung des 95%-Vertrauensintervalls lautet
   
-$$CI_{95} = \bar{x} \pm 1.96 SE = 166.2 \pm 1.96 \times 1.679 = [162.9, 169.5]$$
+$$CI_{95} = \bar{x} \pm 1.96 SE = 166.2 \pm 1.96 \times 1.679 = [162.91, 169.50]$$
 
-2. Vorgehen wie Aufgabe 1: [159.8, 165.8]    
-3. Der Populationsmittelwert beträgt 166.94. Das 95%-Vertrauensintervall der Stichprobe 2 enthält den wahren Populationsmittelwert während das Intervall der 4. Stichprobe den wahren Mittelwert nicht enthält.   
+2. Vorgehen wie Aufgabe 1: [159.78, 165.82]    
+3. Der Populationsmittelwert beträgt 166.92 cm. Das 95%-Vertrauensintervall der Stichprobe 2 enthält den wahren Populationsmittelwert, während das Intervall der 4. Stichprobe den wahren Mittelwert nicht enthält.   
 
 <br />
 <br />
@@ -447,7 +452,8 @@ Wie können Sie die Präzision ihrer Schätzung des wahren Populationsmittelwert
 
 ### Lösung
 
-Durch die Erhöhung des Stichprobenumfangs  $n$. Da der Standardfehler $SE$ u.a. vom Stichprobenumfang abhängig ist, verkleinert sich das 95%-Vertrauensintervall proportional zur $\sqrt{n}$. Siehe z.B. hier https://seeing-theory.brown.edu/frequentist-inference/index.html#section2 
+Durch die Erhöhung des Stichprobenumfangs  $n$. Da der Standardfehler $SE$ u.a. vom Stichprobenumfang abhängig ist, verkleinert sich das 95%-Vertrauensintervall proportional zur $\sqrt{n}$. Eine schöne Animation zu dieser Frage liefert  https://seeing-theory.brown.edu/frequentist-inference/index.html#section2 . Verändern Sie in den Einstellungen den Stichprobenumfang $n$ und beachten Sie, wie sich die Breite der Konfidenzintervalle verändert.
+
 <br />
 <br />
 
