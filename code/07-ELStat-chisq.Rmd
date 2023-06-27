@@ -1,6 +1,6 @@
 ---
 title: "Chi-Quadrat-Test"
-author: "Lukas Stammler"
+author: Lukas Stammler & Nathanael Lutz
 date: "`r Sys.Date()`"
 output:
   html_document:
@@ -26,6 +26,8 @@ library(knitr)
 library(scatr)
 library(openintro)
 ```
+![](../png/Lizenz.jpeg){width=40%}   
+
 
 # Übung 1 {.tabset}   
 

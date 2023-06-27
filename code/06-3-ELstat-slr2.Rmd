@@ -1,6 +1,6 @@
 ---
 title: "Einfache lineare Regression - Teil 2"
-author: "Lukas Stammler"
+author: Lukas Stammler & Nathanael Lutz
 date: "`r Sys.Date()`"
 output:
   html_document:
@@ -26,6 +26,7 @@ library(scatr)
 library(equatiomatic)
 library(openintro)
 ```
+![](../png/Lizenz.jpeg){width=40%}   
 
 
 # Übung 1 {.tabset}

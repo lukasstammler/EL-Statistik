@@ -1,6 +1,6 @@
 ---
 title: 'Inferenzstatistik: p-Werte berechnen'
-author: "Lukas Stammler"
+author: Lukas Stammler & Nathanael Lutz
 date: "`r Sys.Date()`"
 output:
   html_document:
@@ -29,6 +29,9 @@ library(openintro)
 
 #data(COL)
 ```
+
+![](../png/Lizenz.jpeg){width=40%}   
+
 
 # Technische Vorbemerkung
 

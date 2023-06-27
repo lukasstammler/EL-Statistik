@@ -1,0 +1,11 @@
+name: Publish Document
+title:
+username:
+account: rpubs
+server: rpubs.com
+hostUrl: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/1000762/3fd13beaac1a482ebfc8ae5d0093c651
+bundleId: https://api.rpubs.com/api/v1/document/1000762/3fd13beaac1a482ebfc8ae5d0093c651
+url: http://rpubs.com/BFH-PHY-WA/1000762
+when: 1687846802.93801
+lastSyncTime: 1687846802.93802

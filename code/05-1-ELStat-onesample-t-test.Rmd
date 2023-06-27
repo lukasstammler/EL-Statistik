@@ -1,6 +1,6 @@
 ---
 title: 'Übungen: Mittelwertsvergleiche, Teil 1'
-author: "Lukas Stammler"
+author: Lukas Stammler & Nathanael Lutz
 date: "`r Sys.Date()`"
 output:
   html_document:
@@ -25,6 +25,7 @@ library(kableExtra)
 # library(openintro)
 # library(rio)
 ```
+![](../png/Lizenz.jpeg){width=40%}   
 
 
 # Kurze Einführung

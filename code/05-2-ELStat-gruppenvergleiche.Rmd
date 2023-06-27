@@ -1,6 +1,6 @@
 ---
 title: 'Übungen: Mittelwertsvergleiche, Teil 2'
-author: "Lukas Stammler"
+author: Lukas Stammler & Nathanael Lutz
 date: "`r Sys.Date()`"
 output:
   html_document:
@@ -22,6 +22,7 @@ library(tidyverse)
 library(jmv)
 library(knitr)
 ```
+![](../png/Lizenz.jpeg){width=40%}   
 
 
 # Exkurs: Die t-Verteilung    

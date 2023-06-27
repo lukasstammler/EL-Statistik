@@ -1,6 +1,6 @@
 ---
 title: 'Übungen: Normalverteilung und Wahrscheinlichkeiten'
-author: "Lukas Stammler"
+author: Lukas Stammler & Nathanael Lutz
 date: "`r Sys.Date()`"
 output:
   html_document:
@@ -33,6 +33,9 @@ phydata$Klasse <- factor(phydata$Klasse)
 phydata$Geschlecht <- factor(phydata$Geschlecht)
 phydata$Augenfarbe <- factor(phydata$Augenfarbe)
 ```
+
+![](../png/Lizenz.jpeg){width=40%}
+
 
 **Technischer Hinweis: Links in den Übungen öffnen Sie, indem sie darauf rechtsklicken und "Link in neuem Tab/Fenster öffnen" wählen.**   
 
